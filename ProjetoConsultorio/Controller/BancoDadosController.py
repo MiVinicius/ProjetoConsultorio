@@ -1,4 +1,9 @@
-from Model.BancoDadosModel import BancoDadosModel
+import sys
+sys.path.append('.')
+from ProjetoConsultorio.Model.BancoDadosModel import BancoDadosModel
+from ProjetoConsultorio.Model.UsuarioModel import Usuario
+from ProjetoConsultorio.Model.ClienteModel import Cliente
+from ProjetoConsultorio.Model.ConsultaModel import Consulta
 
 
 class BancoDadosController():
@@ -8,13 +13,21 @@ class BancoDadosController():
         BancoDadosModel._inicializarBase()
         
     @staticmethod
-    def cadastrarCliente(cliente):
-        return BancoDadosModel.cadastrarCliente(cliente)
+    def cadastrar_usuario(login, senha):
+        return BancoDadosModel.cadastrarUsuario(Usuario(login, senha))
+        
+    @staticmethod
+    def cadastrarCliente(nome, cpf):
+        return BancoDadosModel.cadastrarCliente(Cliente(nome, cpf))
     
     @staticmethod
-    def cadastrarConsulta(consulta):
-        return BancoDadosModel.cadastrarConsulta(consulta)
+    def cadastrarConsulta(descricao, data):
+        return BancoDadosModel.cadastrarConsulta(Consulta(descricao, data))
     
+    @staticmethod
+    def buscarUsuario(login, senha):
+        return BancoDadosModel.buscarUsuario(login, senha)
+        
     @staticmethod
     def buscarCliente(cliente):
         return BancoDadosModel.buscarCliente(cliente)
@@ -66,3 +79,7 @@ class BancoDadosController():
     @staticmethod
     def deletarMedico(medico):
         return BancoDadosModel.deletarMedico(medico)
+    
+    @staticmethod
+    def mostrar_consultas():
+        return BancoDadosModel.mostrarConsultas()

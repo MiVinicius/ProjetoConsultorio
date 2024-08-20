@@ -20,7 +20,7 @@ class consultaController():
     
     def modificarConsulta():
         consulta = consultaController.buscarConsulta()
-        if consulta != None:
+        if consulta is not None:
             descricao = str(input("Digite a descrição da consulta: \n")) 
             data = str(input("Digite a data da consulta (dd/mm/yyyy): \n"))
             consulta_nova = Consulta(descricao, data)

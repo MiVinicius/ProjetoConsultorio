@@ -27,7 +27,7 @@ class ClienteController():
     @staticmethod
     def deletarCliente():
         return BancoDadosController.deletarCliente(ClienteController.buscarCliente())
-              
+            
             
         
         

@@ -11,11 +11,17 @@ class BancoDadosModel():
     medicos :list = []
     clientes :list = []
     consultas :list = []
+    usuarios :list = []
     
     @staticmethod
     def _inicializarBase() -> None:
         cliente = Cliente("George", "12345678")
         BancoDadosModel.cadastrarCliente(cliente) 
+        return True
+    
+    @staticmethod
+    def cadastrarUsuario(usuario):
+        BancoDadosModel.usuarios.append(usuario)
         return True
     
     @staticmethod
@@ -37,6 +43,14 @@ class BancoDadosModel():
     def cadastrarFuncionario(funcionario):
         BancoDadosModel.funcionarios.append(funcionario)
         return True
+    
+    @staticmethod
+    def buscarUsuario(login, senha):
+        for usuario in BancoDadosModel.usuarios:
+            if usuario.login == login:
+                if usuario.senha == senha:
+                    return True
+        return None
     
     @staticmethod
     def buscarConsulta(consulta):
@@ -149,8 +163,10 @@ class BancoDadosModel():
             
     @staticmethod
     def mostrarConsultas():
+        consultasM = []
         for consulta in BancoDadosModel.consultas:
-            print(consulta)
+            consultasM.append(consulta.__str__()+ "\n")
+        return consultasM
     
 if __name__ == "__main__":
     BancoDadosModel._inicializarBase()
