@@ -136,7 +136,7 @@ def limpar_frame(frame):
         widget.destroy()
         
 def sair():
-    janela.quit()
+    janela.destroy()
 
 # janela Principal
 janela = tk.Tk()

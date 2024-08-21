@@ -5,13 +5,16 @@ from tkinter import messagebox
 from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosController
 from PIL import Image, ImageTk
 
+
 def realizar_login():
     usuario = entry_usuario.get()
     senha = entry_senha.get()
 
     if usuario == "admin" and senha == "1234":  # mudar depois
         messagebox.showinfo("Login", "Login realizado com sucesso!")
-    
+        sair()
+        from ProjetoConsultorio.View.menu import mostrar_menu
+        mostrar_menu()
     elif usuario == "" or senha == "":
         messagebox.showerror("Erro", "Preencha todos os campos.")
         
@@ -55,6 +58,9 @@ def cadastrar_usuario(entry_novo_usuario, entry_nova_senha, janela_cadastro):
     messagebox.showinfo("Cadastro", f"Usuário {novo_usuario} cadastrado com sucesso!")
 
     janela_cadastro.destroy()
+
+def sair():
+    janela.destroy()
 
 # Janela Principal de Login
 janela = tk.Tk()
