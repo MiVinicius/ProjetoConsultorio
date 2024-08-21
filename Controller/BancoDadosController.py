@@ -29,8 +29,8 @@ class BancoDadosController():
         return BancoDadosModel.buscarUsuario(login, senha)
         
     @staticmethod
-    def buscarCliente(cliente):
-        return BancoDadosModel.buscarCliente(cliente)
+    def buscarCliente(nome, cpf):
+        return BancoDadosModel.buscarCliente(Cliente(nome, cpf))
     
     @staticmethod
     def buscarConsulta(consulta):

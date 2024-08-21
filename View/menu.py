@@ -54,6 +54,9 @@ def cadastrarCliente():
 
     btn_salvar = tk.Button(frame_conteudo, text="Salvar", command=salvar_cliente)
     btn_salvar.pack(pady=10)
+    
+    btn_voltar = tk.Button(frame_conteudo, text="Voltar", command=voltar)
+    btn_voltar.pack(pady=10)
 
 def cadastrarConsulta():
     limpar_frame(frame_menu)
@@ -83,6 +86,9 @@ def cadastrarConsulta():
 
     btn_salvar = tk.Button(frame_conteudo, text="Salvar", command=salvar_consulta)
     btn_salvar.pack(pady=10)
+    
+    btn_voltar = tk.Button(frame_conteudo, text="Voltar", command=voltar)
+    btn_voltar.pack(pady=10)
 
 def buscarCliente():
     limpar_frame(frame_menu)
@@ -107,11 +113,14 @@ def buscarCliente():
             if BancoDadosController.buscarCliente(nome, cpf) is None:
                 messagebox.showerror("Erro", "Cliente não encontrado.")
             else:
-                messagebox.showinfo("Cliente já cadastrado!")
+                messagebox.showinfo("Sucesso", "Cliente já cadastrado!")
             mostrar_menu()
 
     btn_buscar = tk.Button(frame_conteudo, text="Buscar", command=buscar_cliente)
     btn_buscar.pack(pady=10)
+    
+    btn_voltar = tk.Button(frame_conteudo, text="Voltar", command=voltar)
+    btn_voltar.pack(pady=10)
 
 def buscarConsulta():
     limpar_frame(frame_menu)
@@ -123,17 +132,24 @@ def buscarConsulta():
     lbl_dados.config(text=dados)
     
     
-    
-    def voltar():
+    def volte():
+        lbl_dados.destroy()
+        limpar_frame(frame_conteudo)
+        limpar_frame(frame_menu)
         mostrar_menu()
     
-    btn_voltar = tk.Button(frame_conteudo, text="Voltar", command=voltar)
+    btn_voltar = tk.Button(frame_conteudo, text="Voltar", command=volte)
     btn_voltar.pack(pady=10)
 
 def limpar_frame(frame):
     # remove todos os widgets do frame atual
     for widget in frame.winfo_children():
         widget.destroy()
+        
+def voltar():
+        limpar_frame(frame_conteudo)
+        limpar_frame(frame_menu)
+        mostrar_menu()
         
 def sair():
     janela.destroy()
