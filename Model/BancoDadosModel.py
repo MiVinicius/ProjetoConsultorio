@@ -3,9 +3,12 @@ sys.path.append('.')
 from ProjetoConsultorio.Model.ClienteModel import Cliente
 from ProjetoConsultorio.Model.MedicoModel import Medico
 from ProjetoConsultorio.Model.FuncionarioModel import Funcionario
+from ProjetoConsultorio.Model.ConsultaModel import Consulta
 
 
 class BancoDadosModel():
+
+    
     
     funcionarios :list = []
     medicos :list = []
@@ -13,11 +16,23 @@ class BancoDadosModel():
     consultas :list = []
     usuarios :list = []
     
+    
     @staticmethod
     def _inicializarBase() -> None:
-        cliente = Cliente("George", "12345678")
-        BancoDadosModel.cadastrarCliente(cliente) 
+        try:
+            cliente = Cliente("George", "12345678")
+            BancoDadosModel.cadastrarCliente(cliente)
+            consulta = Consulta("Dor de cabeca", "01/01/2022")
+            BancoDadosModel.cadastrarConsulta(consulta)
+            funcionario = Funcionario("Rafael", "12345678")
+            BancoDadosModel.cadastrarFuncionario(funcionario)
+            medico = Medico("Carlos", "12345678")
+            BancoDadosModel.cadastrarMedico(medico)
+        except Exception:
+            print("Erro ao inicializar o banco de dados")
         return True
+    
+    # Create
     
     @staticmethod
     def cadastrarUsuario(usuario):
@@ -27,6 +42,12 @@ class BancoDadosModel():
     @staticmethod
     def cadastrarConsulta(consulta):
         BancoDadosModel.consultas.append(consulta)
+        cliente = consulta._getCliente()
+        for consultaAtual in BancoDadosModel.consultas:
+            if consultaAtual.getNumero() == consulta.getNumero():
+                cliente._setConsulta(consulta)
+            else:
+                return False
         return True
     
     @staticmethod
@@ -44,20 +65,22 @@ class BancoDadosModel():
         BancoDadosModel.funcionarios.append(funcionario)
         return True
     
+    # Retreave 
+    
     @staticmethod
-    def buscarUsuario(login, senha):
+    def buscarUsuario(usuario):
         for usuario in BancoDadosModel.usuarios:
-            if usuario.login == login:
-                if usuario.senha == senha:
+            if usuario.login == usuario.login:
+                if usuario.senha == usuario.senha:
                     return True
         return None
     
-    @staticmethod
-    def buscarConsulta(consulta):
+    @staticmethod       # provavelmente funciona
+    def buscarConsulta(numero):
         for consulta_atual in BancoDadosModel.consultas:
-            if consulta_atual.descricao == consulta.descricao:
-                if consulta_atual.data == consulta.data:
-                    return consulta_atual
+            if consulta_atual.numero == numero:
+                return consulta_atual
+        return None
     
     @staticmethod
     def buscarCliente(cliente):
@@ -86,34 +109,38 @@ class BancoDadosModel():
                         return medico_atual
         return None
     
+    # Update
+    
     @staticmethod
-    def modificarConsulta(consulta, consulta_nova):
-        for consulta_atual in BancoDadosModel.consultas:
-            if consulta_atual.getDescricao() == consulta.getDescricao():
-                if consulta_atual.getData() == consulta.getData():
-                    BancoDadosModel.consultas.index(consulta_atual).setDescricao(consulta_nova.getDescricao())
-                    BancoDadosModel.consultas.index(consulta_atual).setData(consulta_nova.getData())
-                    return True
-        return False
+    def modificarConsulta(consultaNova:Consulta, consultaModificar:Consulta):
+        for consulta in BancoDadosModel.consultas:
+            if isinstance(consulta, Consulta):
+                if consulta.getNumero() == consultaModificar.getNumero():
+                    print(f"consulta encontrada: {consulta.getNumero()} - {consultaModificar.getNumero()}")
+                    consulta._setDescricao(consultaNova._getDescricao())
+                    print(f"consulta modificada: {consulta._getDescricao()} - {consultaModificar._getDescricao()}")
+                    consulta._setData(consultaNova._getData())
+                    print(f"consulta modificada: {consulta._getData()} - {consultaModificar._getData()}")
+            else:
+                return print("consulta não encontrada")
+        return True
     
     @staticmethod
     def modificarCliente(id_cliente, cliente_novo):
         for cliente in BancoDadosModel.clientes:
-            if cliente._getNome() == id_cliente._getNome():
-                if cliente._getCpf() == id_cliente._getCpf():
-                    BancoDadosModel.clientes.index(cliente)._setNome(cliente_novo._getNome())
-                    BancoDadosModel.clientes.index(cliente)._setCpf(cliente_novo._getCpf())
-                    return True
+            if cliente._getNome() == id_cliente._getNome() and cliente._getCpf() == id_cliente._getCpf():
+                cliente._setNome(cliente_novo._getNome())
+                cliente._setCpf(cliente_novo._getCpf())
+            return True
         return False
     
     @staticmethod
     def modificarMedico(id_medico, medico_novo):
         for medico in BancoDadosModel.medicos:
-            if medico._getNome() == id_medico._getNome():
-                if medico._getCpf() == id_medico._getCpf():
-                    BancoDadosModel.medicos.index(medico)._setNome(medico_novo._getNome())
-                    BancoDadosModel.medicos.index(medico)._setCpf(medico_novo._getCpf())
-                    return True
+            if medico._getNome() == id_medico._getNome() and medico._getCpf() == id_medico._getCpf():
+                medico._setNome(medico_novo._getNome())
+                medico._setCpf(medico_novo._getCpf())
+                return True
         return False
     
     @staticmethod
@@ -121,10 +148,12 @@ class BancoDadosModel():
         for funcionario in BancoDadosModel.funcionarios:
             if funcionario._getNome() == id_funcionario._getNome():
                 if funcionario._getCpf() == id_funcionario._getCpf():
-                    BancoDadosModel.clientes.index(funcionario)._setNome(funcionario_novo._getNome())
-                    BancoDadosModel.clientes.index(funcionario)._setCpf(funcionario_novo._getCpf())
+                    funcionario._setNome(funcionario_novo._getNome())
+                    funcionario._setCpf(funcionario_novo._getCpf())
                     return True
         return False
+    
+    # Delete
     
     @staticmethod
     def deletarConsulta(consulta):
@@ -146,6 +175,9 @@ class BancoDadosModel():
         BancoDadosModel.clientes.remove(medico)
         return True
     
+    
+    # métodos adicionais
+    
     @staticmethod
     def mostrarClientes():
         for cliente in BancoDadosModel.clientes:
@@ -163,11 +195,13 @@ class BancoDadosModel():
             
     @staticmethod
     def mostrarConsultas():
-        consultasM = []
         for consulta in BancoDadosModel.consultas:
-            consultasM.append(consulta.__str__()+ "\n")
-        return consultasM
+            print(consulta.__str__())
+        
+    @staticmethod
+    def valorTotalConsultas():
+        total = 0
+        for consulta in BancoDadosModel.consultas:
+            total += consulta.getValor()
+        return f'R${total:.2f}' #retorna o valor total
     
-if __name__ == "__main__":
-    BancoDadosModel._inicializarBase()
-    BancoDadosModel.mostrarClientes()

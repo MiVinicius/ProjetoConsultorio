@@ -3,6 +3,7 @@ sys.path.append('.')
 from ProjetoConsultorio.Model.FuncionarioModel import Funcionario
 
 class Medico(Funcionario):
+    
     def __init__(self, nome, cpf, Endereco = None):
         super().__init__(nome, cpf, Endereco)
         self.__salario = 3212   

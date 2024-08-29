@@ -1,3 +1,5 @@
+import sys
+sys.path.append('.')
 class Funcionario():
     
     def __init__(self, nome, cpf, Endereco = None):

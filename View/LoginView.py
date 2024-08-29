@@ -11,7 +11,7 @@ class LoginView():
     def __init__(self):
         clear()
         print("-----------"*6)
-        print("Bem-vindo ao Clinitech, seu Software para clínicas veterinárias")
+        print("Bem-vindo ao Clinitech, seu Software para clínicas Médicas")
         print("-----------"*6)
         print("Login necessário")
         print("-----------"*6)

@@ -1,6 +1,8 @@
 import sys
 sys.path.append('.')
-from ProjetoCadastro.Model.EnderecoModel import Endereco
+from ProjetoConsultorio.Model.EnderecoModel import Endereco
+
+
 
 class EnderecoController:
     
@@ -10,7 +12,9 @@ class EnderecoController:
                             str(input("Digite o nome da Cidade: \n")),
                             int(input("Digite o nome do Bairro: \n")),
                             str(input("Digite o nome da Rua: \n")),
-                            str(input("Digite o número da Casa: \n")))
+                            str(input("Digite o número da Casa: \n")),
+                            str(input("Digite o CEP: \n"))
+                            )
         return endereco
     
     @staticmethod

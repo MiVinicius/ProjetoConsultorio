@@ -1,34 +1,43 @@
 import sys
 sys.path.append('.')
-
+import random
 
 class Consulta:
     
-    __nConsulta = 0 
+    _contador = 0 
     
-    def __init__(self, descricao, data, cliente= None):
+    def __init__(self, descricao, data, cliente):
         self.descricao = descricao
         self.data = data
-        self.numero = self.incrementar_consulta()
         self.cliente = cliente
-        
-    @classmethod
-    def incrementar_consulta(cls): 
-        cls.__nConsulta += 1
-        return cls.__nConsulta
+        self.valor = random.randint(100, 500)  # Cria um valor aleatório entre 100 e 500
+        Consulta._contador += 1  # Incrementa o contador de classe
+        self.numero = Consulta._contador
+
         
     def _getDescricao(self):
         return self.descricao
+    
     def _setDescricao(self, descricao):
         self.descricao = descricao
+        
     def _getData(self):
         return self.data
-    def _setDescricao(self, data):
-        self.data = data       
     
-    def setCliente(self, cliente):
+    def _setData(self, data):
+        self.data = data
+
+    def _getCliente(self):
+        return self.cliente
+    
+    def _setCliente(self, cliente):
         self.cliente = cliente
+        
     def getNumero(self):
         return self.numero
+    
+    def getValor(self):
+        return self.valor
+    
     def __str__(self):
-        return f"Número da consulta: {self.numero}\nDescrição: {self.descricao}\nData: {self.data}"
+        return f"Número da consulta: {self.numero}\nDescrição: {self.descricao}\nData: {self.data}\nCliente: {self.cliente}"

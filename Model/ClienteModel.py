@@ -1,10 +1,12 @@
+import sys
+sys.path.append('.')
 class Cliente():
     
-    def __init__(self, nome, cpf, Endereco = None, consulta = None):
+    def __init__(self, nome, cpf, Endereco = None):
         self.__nome = nome
         self.__cpf = cpf
         self.__endereco = Endereco
-        self.__consulta = consulta
+        self.__consulta = []
         
     def _getNome(self):
         return self.__nome
@@ -25,10 +27,11 @@ class Cliente():
         self.__endereco = Endereco
         
     def _getConsulta(self):
-        return self.__consulta
+        for consulta in self.__consulta:
+            print(f'Descrição: {consulta.descricao} - Data: {consulta.data} - Numero da consulta: {consulta.numero} - Cliente: {consulta.cliente}')
     
     def _setConsulta(self, consulta):
-        self.__consulta = consulta
+        self.__consulta.append(consulta)
         
     def __eq__(self, other):
         if isinstance(other, Cliente):

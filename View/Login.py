@@ -60,7 +60,7 @@ def cadastrar_usuario(entry_novo_usuario, entry_nova_senha, janela_cadastro):
     janela_cadastro.destroy()
 
 def sair():
-    janela.quit()
+    janela.destroy()
 
 # Janela Principal de Login
 janela = tk.Tk()

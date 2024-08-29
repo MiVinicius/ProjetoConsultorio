@@ -1,12 +1,14 @@
 from Model.BancoDadosModel import BancoDadosModel
-# from View.LoginView import LoginView
-from ProjetoConsultorio.View.Login import realizar_login
+from View.LoginView import LoginView
+# from ProjetoConsultorio.View.Login import realizar_login
 
 def Main():
     
     BancoDadosModel()  
     
-    realizar_login()
+    
+    LoginView()
+    # realizar_login()
     
     
 

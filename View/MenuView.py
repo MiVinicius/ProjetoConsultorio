@@ -1,71 +1,85 @@
+import sys
+sys.path.append('.')
+from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosController
+from ProjetoConsultorio.Controller.ClienteController import ClienteController
+from ProjetoConsultorio.Controller.ConsultaController import ConsultaController
+from ProjetoConsultorio.Controller.MedicoController import MedicoController
+from ProjetoConsultorio.Controller.FuncionarioController import FuncionarioController
+import os
+
+def clear():
+    return os.system('cls')
+
 class MenuView():
     
     def menuView(self):
         
         while True:
             print("""
-                   Menu 1x    Menu 2x      Menu 3x    
-                   Cliente   Consulta    Funcionários   
-                  
-                  11 - Cadastrar Cliente
-                  12 - Buscar Cliente
-                  13 - Modificar dados do cliente
-                  14 - Remover cliente 
-                  
-                  21 - Agendamento de consulta
-                  22 - Verificar histórico de consultas
-                  23 - Modificar consulta
-                  24 - Cancelar consulta
-                  
-                  31 - Cadastrar Médico
-                  32 - Cadastrar Funcionários
-                  33 - Buscar Médico
-                  34 - Buscar Funcionário
-                  35 - Modificar dados de Médico
-                  36 - Modificar dados de Funcionário
-                  37 - Remover Médico
-                  38 - Remover Funcionário
-                    
-                  00 - Sair
-                  """)
+                ------------------------------------------------
+                |Menu 1x    Menu 2x      Menu 3x       Menu 4x | 
+                |Cliente   Consulta    Funcionários  financeiro|
+                ------------------------------------------------  
+
+11 - Cadastrar Cliente			21 - Agendamento de consulta
+12 - Buscar Cliente			22 - Verificar histórico de consultas
+13 - Modificar dados do cliente		23 - Modificar consulta
+14 - Remover cliente 			24 - Cancelar consulta
+
+31 - Cadastrar Médico			41 - Consultas agendadas
+32 - Cadastrar Funcionário		42 - valor total das consultas
+33 - Buscar Médico			00 - Sair
+34 - Buscar Funcionário
+35 - Modificar dados de Médico
+36 - Modificar dados de Funcionário
+37 - Remover Médico
+38 - Remover Funcionário
+
+                """)
             opcao = int(input("Digite o número correspondente ao menu: "))
             match opcao:
                 case 11:
-                    pass
+                    ClienteController.cadastrarCliente()
                 case 12:
-                    pass
+                    ClienteController.buscarCliente()
                 case 13:
-                    pass
+                    ClienteController.modificarCliente()
                 case 14:
-                    pass
+                    ClienteController.deletarCliente()
                 case 21:
-                    pass
+                    ConsultaController.cadastrar()
                 case 22:
-                    pass
+                    ConsultaController.buscarConsulta()
                 case 23:
-                    pass
+                    ConsultaController.modificarConsulta()
                 case 24:
-                    pass
+                    ConsultaController.deletarConsulta()
                 case 31:
-                    pass
+                    MedicoController.cadastrarMedico()
                 case 32:
-                    pass
+                    FuncionarioController.cadastrarFuncionario()
                 case 33:
-                    pass
+                    MedicoController.buscarMedico()
                 case 34:
-                    pass
+                    FuncionarioController.buscarFuncionario()
                 case 35:
-                    pass
+                    MedicoController.modificarMedico()
                 case 36:
-                    pass
+                    FuncionarioController.modificarFuncionario()
                 case 37:
-                    pass
+                    MedicoController.deletarMedico()
                 case 38:
-                    pass
+                    FuncionarioController.deletarFuncionario()
+                case 41:
+                    BancoDadosController.mostrar_consultas()
+                case 42:
+                    BancoDadosController.valorTotalConsultas()
                 case 00:
                     break
                 case _:
+                    clear()
                     print("Opção invalida")
+                    input("Pressione Enter para continuar")
                     
 if __name__ == "__main__":
     
