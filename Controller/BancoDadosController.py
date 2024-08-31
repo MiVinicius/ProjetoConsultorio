@@ -63,8 +63,8 @@ class BancoDadosController():
     # Update
     
     @staticmethod
-    def modificarUsuario(clienteExistente, login, senha):
-        return BancoDadosModel.modificarUsuario(clienteExistente, Usuario(login, senha))
+    def modificarUsuario(usuario, login, senha):
+        return BancoDadosModel.modificarUsuario(usuario, Usuario(login, senha))
     
     @staticmethod
     def modificarCliente(clienteAntigo, nome, cpf, telefone, endereco):
@@ -75,8 +75,8 @@ class BancoDadosController():
         return BancoDadosModel.modificarConsulta(Consulta(descricao, data, horario, valor, cliente = None), consultaModificar)
     
     @staticmethod
-    def modificarFuncionario(idfuncionario, funcionario_novo):
-        return BancoDadosModel.modificarFuncionario(idfuncionario, funcionario_novo)
+    def modificarFuncionario(funcionario_existe, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo):
+        return BancoDadosModel.modificarFuncionario(funcionario_existe, Funcionario(nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo))
     
     @staticmethod
     def modificarMedico(medicoAntigo, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo, crmNovo):

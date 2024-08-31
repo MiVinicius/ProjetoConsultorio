@@ -15,11 +15,12 @@ class MenuView():
     def menuView(self):
         
         while True:
+            #clear()  # OBSERVAÇÃO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ISSO FAZ A TELA APAGAR NO TERMINAL SEMPRE QUE VOLTAR PRA LÁ
             print("""
-                ------------------------------------------------
-                |Menu 1x    Menu 2x      Menu 3x       Menu 4x | 
-                |Cliente   Consulta    Funcionários  financeiro|
-                ------------------------------------------------  
+                ----------------------------------------------------
+                |Menu 1x    Menu 2x      Menu 3x       Menu 4x     | 
+                |Cliente   Consulta    Funcionários  Administrativo|
+                ----------------------------------------------------  
 
 11 - Cadastrar Cliente			21 - Agendar consulta
 12 - Buscar Cliente			22 - Verificar histórico de consultas do cliente

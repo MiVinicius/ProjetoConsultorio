@@ -49,18 +49,35 @@ class FuncionarioController():
     def modificarFuncionario():
         nomeModificar = str(input("Digite o nome do funcionario para modificar: \n"))
         cpfModificar = str(input("Digite o CPF para modificar: \n"))
-        if BancoDadosController.buscarFuncionario(nomeModificar, cpfModificar) is None:
+        funcionario_existe = BancoDadosController.buscarFuncionario(nomeModificar, cpfModificar)
+        if funcionario_existe is None:
             print("o funcionario não existe!")
             input("pressione ENTER para continuar")
             return False
         else:
             nomeNovo = str(input("Digite o novo nome do Funcionario: \n"))
             cpfNovo = str(input("Digite o novo CPF: \n"))
-            if BancoDadosController.modificarFuncionario(BancoDadosController.buscarFuncionario(nomeModificar, cpfModificar), nomeNovo, cpfNovo):
-                return f'o Funcionario {nomeNovo} foi Atualizado'
-            else:
-                return f'o Funcionario {nomeNovo} não foi Atualizado'
+            telefoneNovo = str(input("Digite o telefone: \n"))
+            enderecoNovo = EnderecoController.cadastrarEndereco()
+            salarioNovo = float(input("Digite o salário: \n"))
+            try:
+                BancoDadosController.modificarFuncionario(funcionario_existe, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo)
+                print(f'o Funcionario {nomeNovo} foi Atualizado')
+                input("pressione ENTER para continuar")
+                return True
+            except Exception as e:
+                print(f'o Funcionario {nomeNovo} não foi Atualizado por erro: {e}')
+                return False
     
     @staticmethod
     def deletarFuncionario():
-        return BancoDadosController.deletarFuncionario(FuncionarioController.buscarFuncionario2())
+        try:
+            funcionario_deletar =FuncionarioController.buscarFuncionario2()
+            BancoDadosController.deletarFuncionario(funcionario_deletar)
+            print("Funcionario deletado com sucesso")
+            input("pressione ENTER para continuar")
+            return True
+        except Exception as e:
+            print(f'Erro ao deletar o Funcionario: {e}')
+            input("pressione ENTER para continuar")
+            return False
