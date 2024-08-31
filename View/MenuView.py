@@ -26,10 +26,10 @@ class MenuView():
 13 - Modificar dados do cliente		23 - Modificar consulta
 14 - Remover cliente 			24 - Cancelar consulta
 
-31 - Cadastrar Médico			41 - Consultas agendadas
-32 - Cadastrar Funcionário		42 - valor total das consultas
-33 - Buscar Médico			00 - Sair
-34 - Buscar Funcionário
+31 - Cadastrar Médico			41 - Todas as Consultas agendadas
+32 - Cadastrar Funcionário		42 - valor total das consultas agendadas
+33 - Buscar Médico			43 - Mostrar funcionários
+34 - Buscar Funcionário                 00 - Sair
 35 - Modificar dados de Médico
 36 - Modificar dados de Funcionário
 37 - Remover Médico
@@ -47,13 +47,13 @@ class MenuView():
                 case 14:
                     ClienteController.deletarCliente()
                 case 21:
-                    ConsultaController.cadastrar()
+                    ConsultaController.cadastrarConsulta()
                 case 22:
-                    ConsultaController.buscarConsulta()
+                    ConsultaController.buscarConsulta2()
                 case 23:
                     ConsultaController.modificarConsulta()
                 case 24:
-                    ConsultaController.deletarConsulta()
+                    ConsultaController.deletarConsulta2()
                 case 31:
                     MedicoController.cadastrarMedico()
                 case 32:
@@ -74,6 +74,8 @@ class MenuView():
                     BancoDadosController.mostrar_consultas()
                 case 42:
                     BancoDadosController.valorTotalConsultas()
+                case 43:
+                    BancoDadosController.mostrarFuncionarios()
                 case 00:
                     break
                 case _:

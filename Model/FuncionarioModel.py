@@ -1,12 +1,14 @@
 import sys
+from ProjetoConsultorio.Model.PessoaModelAbstract import Pessoa
 sys.path.append('.')
-class Funcionario():
+class Funcionario(Pessoa):
     
-    def __init__(self, nome, cpf, Endereco = None):
+    def __init__(self, nome, cpf, telefone, Endereco, salario):
         self._nome = nome
         self._cpf = cpf
+        self._telefone = telefone
         self._endereco = Endereco
-        self._salario = 1412
+        self._salario = salario
         
     def _getNome(self):
         return self._nome
@@ -19,6 +21,12 @@ class Funcionario():
     
     def _setCpf(self, cpf):
         self._cpf = cpf
+        
+    def _getTelefone(self):
+        return self._telefone
+    
+    def _setTelefone(self, telefone):
+        self._telefone = telefone
         
     def _getSalario(self):
         return self._salario
@@ -34,8 +42,8 @@ class Funcionario():
         
     def __eq__(self, other):
         if isinstance(other, Funcionario):
-            return self.__nome == other.__nome and self.__cpf == other.__cpf
+            return self._nome == other._nome and self._cpf == other._cpf
         return False
         
     def __repr__(self):
-        return f"Nome: {self.__nome}, Cpf: {self.__cpf}, Endereço: {self.__endereco}, Salário: {self.__salario}"
+        return f"Nome: {self._nome}, Cpf: {self._cpf}, Telefone: {self._telefone}, Endereço: {self._endereco}, Salário: {self._salario}"

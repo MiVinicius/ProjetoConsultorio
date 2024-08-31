@@ -21,20 +21,20 @@ class BancoDadosController():
         return BancoDadosModel.cadastrarUsuario(Usuario(login, senha))
         
     @staticmethod
-    def cadastrarCliente(nome, cpf):
-        return BancoDadosModel.cadastrarCliente(Cliente(nome, cpf))
+    def cadastrarCliente(nome, cpf, telefone, endereco):
+        return BancoDadosModel.cadastrarCliente(Cliente(nome, cpf, telefone, endereco))
     
     @staticmethod
-    def cadastrarConsulta(descricao, data, cliente):
-        return BancoDadosModel.cadastrarConsulta(Consulta(descricao, data, cliente))
+    def cadastrarConsulta(descricao, data, horario, valor, cliente):
+        return BancoDadosModel.cadastrarConsulta(Consulta(descricao, data, horario, valor, cliente))
     
     @staticmethod
     def cadastrarFuncionario(nome, cpf):
         return BancoDadosModel.cadastrarFuncionario(Funcionario(nome, cpf))
     
     @staticmethod
-    def cadastrarMedico(nome, cpf):
-        return BancoDadosModel.cadastrarMedico(Medico(nome, cpf))
+    def cadastrarMedico(nome, cpf, telefone, endereco, salario, crm):
+        return BancoDadosModel.cadastrarMedico(Medico(nome, cpf, telefone, endereco, salario, crm))
     
     
     # Retreave
@@ -46,45 +46,48 @@ class BancoDadosController():
         
     @staticmethod
     def buscarCliente(nome, cpf):
-        return BancoDadosModel.buscarCliente(Cliente(nome, cpf))
+        return BancoDadosModel.buscarCliente(Cliente(nome, cpf, None, None))
     
     @staticmethod
     def buscarConsulta(numero):
         return BancoDadosModel.buscarConsulta(numero)
     @staticmethod
     def buscarFuncionario(nome, cpf):
-        return BancoDadosModel.buscarFuncionario(Funcionario(nome, cpf))
+        return BancoDadosModel.buscarFuncionario(Funcionario(nome, cpf, None, None, None))
     
     @staticmethod
     def buscarMedico(nome, cpf):
-        return BancoDadosModel.buscarMedico(Medico(nome, cpf))
+        return BancoDadosModel.buscarMedico(Medico(nome, cpf, None, None, None, None))
     
     
     # Update
     
     @staticmethod
-    def modificarCliente(clienteAntigo, nome, cpf):
-        return BancoDadosModel.modificarCliente(clienteAntigo, Cliente(nome, cpf))
+    def modificarUsuario(clienteExistente, login, senha):
+        return BancoDadosModel.modificarUsuario(clienteExistente, Usuario(login, senha))
     
     @staticmethod
-    def modificarConsulta(descricao, data, consultaModificar, cliente):
-        return BancoDadosModel.modificarConsulta(Consulta(descricao, data, cliente), consultaModificar)
+    def modificarCliente(clienteAntigo, nome, cpf, telefone, endereco):
+        return BancoDadosModel.modificarCliente(clienteAntigo, Cliente(nome, cpf, telefone, endereco))
+    
+    @staticmethod
+    def modificarConsulta(descricao, data, horario, valor, consultaModificar):
+        return BancoDadosModel.modificarConsulta(Consulta(descricao, data, horario, valor, cliente = None), consultaModificar)
     
     @staticmethod
     def modificarFuncionario(idfuncionario, funcionario_novo):
         return BancoDadosModel.modificarFuncionario(idfuncionario, funcionario_novo)
     
     @staticmethod
-    def modificarMedico(idMedico, medicoNovo):
-        return BancoDadosModel.modificarMedico(idMedico, medicoNovo)
-    
-    
-    # @staticmethod
-    # def modificarConsulta2(descricao, data, cliente):
-    #     return BancoDadosModel.modificarConsulta2(Consulta(descricao, data), cliente)
+    def modificarMedico(medicoAntigo, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo, crmNovo):
+        return BancoDadosModel.modificarMedico(medicoAntigo, Medico(nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo, crmNovo))
     
     
     # Delete
+    
+    @staticmethod
+    def deletarUsuario(login):
+        return BancoDadosModel.deletarUsuario(login)
     
     @staticmethod
     def deletarCliente(cliente):
@@ -111,3 +114,7 @@ class BancoDadosController():
     @staticmethod
     def valorTotalConsultas():
         return BancoDadosModel.valorTotalConsultas()
+    
+    @staticmethod
+    def mostrarFuncionarios():
+        return BancoDadosModel.mostrarFuncionarios()

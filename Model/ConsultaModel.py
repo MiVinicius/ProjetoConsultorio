@@ -1,43 +1,53 @@
 import sys
 sys.path.append('.')
-import random
+
 
 class Consulta:
     
-    _contador = 0 
+    __contador = 0 
     
-    def __init__(self, descricao, data, cliente):
-        self.descricao = descricao
-        self.data = data
-        self.cliente = cliente
-        self.valor = random.randint(100, 500)  # Cria um valor aleatório entre 100 e 500
-        Consulta._contador += 1  # Incrementa o contador de classe
-        self.numero = Consulta._contador
+    def __init__(self, descricao, data, horario, valor, cliente):
+        self.__descricao = descricao
+        self.__data = data
+        self.__horario = horario
+        self.__cliente = cliente
+        self.__valor = valor
+        Consulta.__contador += 1  # Incrementa o contador de classe
+        self.__numero = Consulta._contador
 
         
     def _getDescricao(self):
-        return self.descricao
+        return self.__descricao
     
     def _setDescricao(self, descricao):
-        self.descricao = descricao
+        self.__descricao = descricao
         
     def _getData(self):
-        return self.data
+        return self.__data
     
     def _setData(self, data):
-        self.data = data
+        self.__data = data
+        
+    def _getHorario(self):
+        return self.__horario
+    
+    def _setHorario(self, horario):
+        self.__horario = horario
 
     def _getCliente(self):
-        return self.cliente
+        return self.__cliente
     
     def _setCliente(self, cliente):
-        self.cliente = cliente
+        self.__cliente = cliente
         
-    def getNumero(self):
-        return self.numero
+    def _getNumero(self):
+        return self.__numero
     
-    def getValor(self):
-        return self.valor
+    def _getValor(self):
+        return self.__valor
+    
+    def _setValor(self, valor):
+        self.__valor = valor
     
     def __str__(self):
-        return f"Número da consulta: {self.numero}\nDescrição: {self.descricao}\nData: {self.data}\nCliente: {self.cliente}"
+        return f"Número da consulta: {self.__numero}\nDescrição: {self.__descricao}\nData: {self.__data}\n Horário: {self.__horario}\n Valor: {self.__valor}\nCliente CPF: {self.__cliente}"

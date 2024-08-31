@@ -15,12 +15,12 @@ class BancoDadosModel():
     clientes :list = []
     consultas :list = []
     usuarios :list = []
-    
+    recepcionistas :list = []
     
     @staticmethod
     def _inicializarBase() -> None:
         try:
-            cliente = Cliente("George", "12345678")
+            cliente = Cliente("George", "12345678", "88888888", )
             BancoDadosModel.cadastrarCliente(cliente)
             consulta = Consulta("Dor de cabeca", "01/01/2022")
             BancoDadosModel.cadastrarConsulta(consulta)
@@ -34,40 +34,46 @@ class BancoDadosModel():
     
     # Create
     
-    @staticmethod
+    
     def cadastrarUsuario(usuario):
         BancoDadosModel.usuarios.append(usuario)
         return True
     
-    @staticmethod
-    def cadastrarConsulta(consulta):
-        BancoDadosModel.consultas.append(consulta)
-        cliente = consulta._getCliente()
-        for consultaAtual in BancoDadosModel.consultas:
-            if consultaAtual.getNumero() == consulta.getNumero():
-                cliente._setConsulta(consulta)
-            else:
-                return False
-        return True
     
-    @staticmethod
+    def cadastrarConsulta(consulta):
+        try:
+            BancoDadosModel.consultas.append(consulta)
+            cliente = consulta._getCliente()
+            for cliente_atual in BancoDadosModel.clientes:
+                if cliente_atual._getCpf() == cliente:
+                    cliente_atual._setConsulta(consulta._getNumero())
+                else:
+                    return False
+            return True
+        except Exception as e:
+            print("Erro ao cadastrar consulta na Base de dados", e)
+            return False
+        
+        
+    
+    
     def cadastrarCliente(cliente):
         BancoDadosModel.clientes.append(cliente)
         return True
     
-    @staticmethod
+    
     def cadastrarMedico(medico):
         BancoDadosModel.medicos.append(medico)
         return True
     
-    @staticmethod
+    
     def cadastrarFuncionario(funcionario):
         BancoDadosModel.funcionarios.append(funcionario)
         return True
     
     # Retreave 
     
-    @staticmethod
+    
     def buscarUsuario(usuario):
         for usuario in BancoDadosModel.usuarios:
             if usuario.login == usuario.login:
@@ -75,14 +81,14 @@ class BancoDadosModel():
                     return True
         return None
     
-    @staticmethod       # provavelmente funciona
+
     def buscarConsulta(numero):
         for consulta_atual in BancoDadosModel.consultas:
             if consulta_atual.numero == numero:
                 return consulta_atual
         return None
     
-    @staticmethod
+    
     def buscarCliente(cliente):
         for cliente_atual in BancoDadosModel.clientes:
             if isinstance(cliente_atual, Cliente):
@@ -91,7 +97,7 @@ class BancoDadosModel():
                         return cliente_atual
         return None
     
-    @staticmethod
+    
     def buscarFuncionario(funcionario):
         for funcionario_atual in BancoDadosModel.funcionarios:
             if isinstance(funcionario_atual, Funcionario):
@@ -100,7 +106,7 @@ class BancoDadosModel():
                         return funcionario_atual
         return None
     
-    @staticmethod
+    
     def buscarMedico(medico):
         for medico_atual in BancoDadosModel.medicos:
             if isinstance(medico_atual, Medico):
@@ -111,66 +117,95 @@ class BancoDadosModel():
     
     # Update
     
-    @staticmethod
+    
+    def modificarUsuario(clienteAntigo, clienteAtualizado):
+        for usuario in BancoDadosModel.usuarios:
+            if usuario.login == clienteAntigo.login:
+                if usuario.senha == clienteAntigo.senha:
+                    usuario.login = clienteAtualizado.login
+                    usuario.senha = clienteAtualizado.senha
+                    return True
+        return False
+    
+    
     def modificarConsulta(consultaNova:Consulta, consultaModificar:Consulta):
         for consulta in BancoDadosModel.consultas:
             if isinstance(consulta, Consulta):
-                if consulta.getNumero() == consultaModificar.getNumero():
-                    print(f"consulta encontrada: {consulta.getNumero()} - {consultaModificar.getNumero()}")
+                if consulta._getNumero() == consultaModificar._getNumero():
+                    print(f"consulta encontrada: {consulta._getNumero()} - {consultaModificar._getNumero()}")
                     consulta._setDescricao(consultaNova._getDescricao())
                     print(f"consulta modificada: {consulta._getDescricao()} - {consultaModificar._getDescricao()}")
                     consulta._setData(consultaNova._getData())
                     print(f"consulta modificada: {consulta._getData()} - {consultaModificar._getData()}")
+                    consulta._setHorario(consultaNova._getHorario())
+                    print(f"consulta modificada: {consulta._getHorario()} - {consultaNova._getHorario()}")
+                    consulta._setValor(consultaNova._getValor())
+                    print(f"consulta modificada: {consulta._getValor()} - {consultaNova._getValor()}")
+                    return True
             else:
                 return print("consulta não encontrada")
         return True
     
-    @staticmethod
+    
     def modificarCliente(id_cliente, cliente_novo):
         for cliente in BancoDadosModel.clientes:
             if cliente._getNome() == id_cliente._getNome() and cliente._getCpf() == id_cliente._getCpf():
                 cliente._setNome(cliente_novo._getNome())
                 cliente._setCpf(cliente_novo._getCpf())
-            return True
+                cliente._setTelefone(cliente_novo._getTelefone())
+                cliente._setEndereco(cliente_novo._getEndereco())
+                return True
         return False
     
-    @staticmethod
+    
     def modificarMedico(id_medico, medico_novo):
         for medico in BancoDadosModel.medicos:
             if medico._getNome() == id_medico._getNome() and medico._getCpf() == id_medico._getCpf():
                 medico._setNome(medico_novo._getNome())
                 medico._setCpf(medico_novo._getCpf())
+                medico._setTelefone(medico_novo._getTelefone())
+                medico._setEndereco(medico_novo._getEndereco())
+                medico._setSalario(medico_novo._getSalario())
+                medico._setCrm(medico_novo._getCrm())
                 return True
         return False
     
-    @staticmethod
+    
     def modificarFuncionario(id_funcionario, funcionario_novo):
         for funcionario in BancoDadosModel.funcionarios:
             if funcionario._getNome() == id_funcionario._getNome():
                 if funcionario._getCpf() == id_funcionario._getCpf():
                     funcionario._setNome(funcionario_novo._getNome())
                     funcionario._setCpf(funcionario_novo._getCpf())
+                    funcionario._setTelefone(funcionario_novo._getTelefone())
+                    funcionario._setEndereco(funcionario_novo._getEndereco())
+                    funcionario._setSalario(funcionario_novo._getSalario())
                     return True
         return False
     
     # Delete
     
-    @staticmethod
+    
+    def deletarUsuario(usuario):
+        BancoDadosModel.usuarios.remove(usuario)
+        return True
+    
+    
     def deletarConsulta(consulta):
         BancoDadosModel.consultas.remove(consulta)
         return True
     
-    @staticmethod
+    
     def deletarCliente(cliente):
         BancoDadosModel.clientes.remove(cliente)
         return True
     
-    @staticmethod
+    
     def deletarFuncionario(funcionario):
         BancoDadosModel.clientes.remove(funcionario)
         return True
     
-    @staticmethod
+    
     def deletarMedico(medico):
         BancoDadosModel.clientes.remove(medico)
         return True
@@ -202,6 +237,7 @@ class BancoDadosModel():
     def valorTotalConsultas():
         total = 0
         for consulta in BancoDadosModel.consultas:
-            total += consulta.getValor()
+            total += consulta._getValor()
         return f'R${total:.2f}' #retorna o valor total
+    
     

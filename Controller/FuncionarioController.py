@@ -11,9 +11,12 @@ class FuncionarioController():
     def cadastrarFuncionario():
         nome = str(input("Digite o nome do Cliente: \n"))
         cpf = str(input("Digite o CPF: \n"))
-        if BancoDadosController.buscarFuncionario(nome, cpf) is None:
+        funcionario_existe = BancoDadosController.buscarFuncionario(nome, cpf)
+        if funcionario_existe is None:
+            telefone = str(input("Digite o Telefone: \n"))
             endereco = EnderecoController.cadastrarEndereco()
-            BancoDadosController.cadastrarCliente(nome, cpf, endereco)
+            salario = float(input("Digite o Salário: \n"))
+            BancoDadosController.cadastrarCliente(nome, cpf, telefone, endereco, salario)
             print("cadastro do funcionario sucedido!")
             input("pressione ENTER para continuar")
             return True

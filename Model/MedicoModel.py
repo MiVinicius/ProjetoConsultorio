@@ -4,9 +4,9 @@ from ProjetoConsultorio.Model.FuncionarioModel import Funcionario
 
 class Medico(Funcionario):
     
-    def __init__(self, nome, cpf, Endereco = None):
-        super().__init__(nome, cpf, Endereco)
-        self.__salario = 3212   
+    def __init__(self, nome, cpf, telefone, Endereco, salario, crm):
+        super().__init__(nome, cpf, telefone, Endereco, salario)
+        self._crm = crm
     
     def _getNome(self):
         return super()._getNome()
@@ -19,23 +19,35 @@ class Medico(Funcionario):
     
     def _setCpf(self, cpf):
         super()._setCpf(cpf)
+        
+    def _getTelefone(self):
+        return super()._getTelefone()
+    
+    def _setTelefone(self, telefone):
+        super()._setTelefone(telefone)
     
     def _getSalario(self):
-        return self.__salario
+        return super()._getSalario()
     
     def _setSalario(self, salario):
-        self.__salario - salario
+        super()._setSalario(salario)
         
     def _getEndereco(self):
-        return self._endereco
+        return super()._getEndereco()
     
     def _setEndereco(self, endereco):
-        self._endereco = endereco
+        super()._setEndereco(endereco)
+        
+    def _getCrm(self):
+        return self._crm
+    
+    def _setCrm(self, crm):
+        self._crm = crm
         
     def __eq__(self, other):
         if isinstance(other, Medico):
-            return self.__nome == other.__nome and self.__cpf == other.__cpf
+            return self._nome == other._nome and self._cpf == other._cpf
         return False
         
     def __repr__(self):
-        return f"Nome: {self.__nome}, Cpf: {self.__cpf}, Endereço: {self.__endereco}, Salário: {self.__salario}"
+        return f"Nome: {self._nome}, Cpf: {self._cpf}, Endereço: {self._endereco}, Salário: {self._salario}"

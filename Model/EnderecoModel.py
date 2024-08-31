@@ -2,10 +2,11 @@ import sys
 sys.path.append('.')
 class Endereco():
     
-    def __init__(self, estado, cidade, bairro, numero, cep):
+    def __init__(self, estado, cidade, bairro, rua, numero, cep):
         self.__estado = estado
         self.__cidade = cidade
         self.__bairro = bairro
+        self.__rua = rua
         self.__numero = numero
         self.__cep = cep
     
@@ -27,6 +28,12 @@ class Endereco():
     def _setBairro(self, bairro):
         self.__bairro = bairro
         
+    def _getRua(self):
+        return self.__rua
+    
+    def _setRua(self, rua):
+        self.__rua = rua
+        
     def _getNumero(self):
         return self.__numero
     
@@ -40,5 +47,5 @@ class Endereco():
         self.__cep = cep
         
     def __repr__(self) -> str:
-        return f"Rua: {self.__rua}, Bairro: {self.__bairro}, Número: {self.__numero}, Cidade: {self.__cidade}, Estado: {self.__estado}"
+        return f"Rua: {self.__rua}, Bairro: {self.__bairro}, Número: {self.__numero}, CEP: {self.__cep}, Cidade: {self.__cidade}, Estado: {self.__estado}"
     

@@ -10,7 +10,7 @@ def realizar_login():
     usuario = entry_usuario.get()
     senha = entry_senha.get()
 
-    if usuario == "admin" and senha == "1234":  # mudar depois
+    if usuario == "admin" and senha == "admin":  # mudar depois
         messagebox.showinfo("Login", "Login realizado com sucesso!")
         sair()
         from ProjetoConsultorio.View.menu import mostrar_menu
@@ -54,7 +54,7 @@ def cadastrar_usuario(entry_novo_usuario, entry_nova_senha, janela_cadastro):
     novo_usuario = entry_novo_usuario.get()
     nova_senha = entry_nova_senha.get()
     
-    BancoDadosController.cadastrar_usuario (novo_usuario, nova_senha)
+    BancoDadosController.cadastrarUsuario (novo_usuario, nova_senha)
     messagebox.showinfo("Cadastro", f"Usuário {novo_usuario} cadastrado com sucesso!")
 
     janela_cadastro.destroy()

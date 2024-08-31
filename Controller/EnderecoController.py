@@ -10,7 +10,7 @@ class EnderecoController:
     def cadastrarEndereco():
         endereco = Endereco(str(input("Digite o nome do Estado: \n")),
                             str(input("Digite o nome da Cidade: \n")),
-                            int(input("Digite o nome do Bairro: \n")),
+                            str(input("Digite o nome do Bairro: \n")),
                             str(input("Digite o nome da Rua: \n")),
                             str(input("Digite o número da Casa: \n")),
                             str(input("Digite o CEP: \n"))
