@@ -1,6 +1,7 @@
 import sys
-from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosController
 sys.path.append('.')
+from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosController
+
 
 
 class UsuarioController:
@@ -9,8 +10,9 @@ class UsuarioController:
     def cadastrarUsuario():
         nome = str(input("Digite o nome do usuario: \n"))
         senha = str(input("Digite a senha do usuario: \n"))
-        if BancoDadosController.buscarUsuario(nome, senha) is None:
-            BancoDadosController.cadastrarUsuario(nome, senha)
+        tipo = int(input("Digite o tipo do usuario: ->Funcionario = 1, Medico = 2<- \n"))
+        if BancoDadosController.buscarUsuario(nome, senha, tipo) is None:
+            BancoDadosController.cadastrarUsuario(nome, senha, tipo)
             print("o usuario foi Cadastrado")
             input("pressione ENTER para continuar")
             return True
@@ -23,36 +25,55 @@ class UsuarioController:
     def buscarUsuario():
         nome = str(input("Digite o nome do usuario: \n"))
         senha = str(input("Digite a senha do usuario: \n"))
-        if BancoDadosController.buscarUsuario(nome, senha) is None:
+        tipo = int(input("Digite o tipo do usuario: ->Funcionario = 1, Medico = 2<- \n"))
+        usuario_buscar = BancoDadosController.buscarUsuario(nome, senha, tipo)
+        if usuario_buscar is None:
             print("o usuario não existe")
             input("pressione ENTER para continuar")
         else:
-            print(BancoDadosController.buscarUsuario(nome, senha).__str__())
+            print(usuario_buscar.__str__())
             input("pressione ENTER para continuar")
+            return usuario_buscar
+            
             
     @staticmethod
     def modificarUsuario():
         nome = str(input("Digite o nome do usuario: \n"))
         senha = str(input("Digite a senha do usuario: \n"))
-        usuario_existente = BancoDadosController.buscarUsuario(nome, senha)
+        tipo = int(input("Digite o tipo do usuario: ->Funcionario = 1, Medico = 2<- \n"))
+        usuario_existente = BancoDadosController.buscarUsuario(nome, senha, tipo)
         if usuario_existente is None:
             print("o usuario não existe")
             input("pressione ENTER para continuar")
         else:
             nomeNovo = str(input("Digite o novo nome do usuario: \n"))
             senhaNova = str(input("Digite a nova senha do usuario: \n"))
-            return BancoDadosController.modificarUsuario(usuario_existente, nomeNovo, senhaNova)
+            tipoNovo = int(input("Digite o novo tipo do usuario: ->Funcionario = 1, Medico = 2<- \n"))
+            return BancoDadosController.modificarUsuario(usuario_existente, nomeNovo, senhaNova, tipoNovo)
     
     @staticmethod
     def excluirUsuario():
         nome = str(input("Digite o nome do usuario: \n"))
         senha = str(input("Digite a senha do usuario: \n"))
-        usuario_existente = BancoDadosController.buscarUsuario(nome, senha)
+        tipo = int(input("Digite o tipo do usuario: ->Funcionario = 1, Medico = 2<- \n"))
+        usuario_existente = BancoDadosController.buscarUsuario(nome, senha, tipo)
         if usuario_existente is None:
             print("o usuario não existe")
             input("pressione ENTER para continuar")
         else:
-            return BancoDadosController.deletarUsuario(usuario_existente)
+            try:
+                BancoDadosController.deletarUsuario(usuario_existente)
+                print("o usuario foi excluído")
+                input("pressione ENTER para continuar")
+                return True
+            except Exception as e:
+                print("o usuario não foi excluído, erro", e)
+                input("pressione ENTER para continuar")
+                return False
             
             
-    
+if __name__ == "__main__":
+    UsuarioController.cadastrarUsuario()
+    UsuarioController.buscarUsuario()
+    UsuarioController.modificarUsuario()
+    UsuarioController.excluirUsuario()

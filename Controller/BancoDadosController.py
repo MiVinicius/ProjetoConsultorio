@@ -17,8 +17,8 @@ class BancoDadosController():
         
     # Create
     @staticmethod
-    def cadastrarUsuario(login, senha):
-        return BancoDadosModel.cadastrarUsuario(Usuario(login, senha))
+    def cadastrarUsuario(login, senha, tipo):
+        return BancoDadosModel.cadastrarUsuario(Usuario(login, senha, tipo))
         
     @staticmethod
     def cadastrarCliente(nome, cpf, telefone, endereco):
@@ -41,8 +41,8 @@ class BancoDadosController():
     
     
     @staticmethod
-    def buscarUsuario(login, senha):
-        return BancoDadosModel.buscarUsuario(Usuario(login, senha))
+    def buscarUsuario(login, senha, tipo):
+        return BancoDadosModel.buscarUsuario(Usuario(login, senha, tipo))
         
     @staticmethod
     def buscarCliente(nome, cpf):
@@ -63,8 +63,8 @@ class BancoDadosController():
     # Update
     
     @staticmethod
-    def modificarUsuario(usuario, login, senha):
-        return BancoDadosModel.modificarUsuario(usuario, Usuario(login, senha))
+    def modificarUsuario(usuario, login, senha, tipo):
+        return BancoDadosModel.modificarUsuario(usuario, Usuario(login, senha, tipo))
     
     @staticmethod
     def modificarCliente(clienteAntigo, nome, cpf, telefone, endereco):

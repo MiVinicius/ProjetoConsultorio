@@ -21,6 +21,8 @@ class BancoDadosModel():
     @staticmethod
     def _inicializarBase() -> None:
         try:
+            admin = Usuario("admin", "admin", 0, True)
+            BancoDadosModel.cadastrarUsuario(admin)
             endereco = Endereco("SP", "Bauru", "Tomás", "Tomate", "52", "45.450-000")
             cliente = Cliente("George", "123.456.789-00", "8888-8888", endereco)
             BancoDadosModel.cadastrarCliente(cliente)
@@ -80,7 +82,8 @@ class BancoDadosModel():
         for usuario in BancoDadosModel.usuarios:
             if usuario.login == usuario.login:
                 if usuario.senha == usuario.senha:
-                    return True
+                    if usuario.tipo == usuario.tipo:
+                        return usuario
         return None
     
 
@@ -188,8 +191,14 @@ class BancoDadosModel():
     
     
     def deletarUsuario(usuario):
-        BancoDadosModel.usuarios.remove(usuario)
-        return True
+        for Usuario in BancoDadosModel.usuarios:
+            if isinstance(Usuario, Usuario):
+                if Usuario._getLogin() == usuario._getLogin():
+                    if Usuario._getSenha() == usuario._getSenha():
+                        if Usuario._getTipo() == usuario._getTipo():
+                            BancoDadosModel.usuarios.remove(usuario)
+                            return True
+        return False
     
     
     def deletarConsulta(consulta):
