@@ -39,7 +39,7 @@ class MenuView():
             opcao = int(input("Digite o número correspondente ao menu: "))
             match opcao:
                 case 11:
-                    ClienteController.cadastrarCliente()
+                    ClienteController.cadastrarCliente()  # esses comandos eu deveria colocar na View...
                 case 12:
                     ClienteController.buscarCliente()
                 case 13:

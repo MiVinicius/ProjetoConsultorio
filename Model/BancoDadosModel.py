@@ -203,18 +203,33 @@ class BancoDadosModel():
     
     
     def deletarCliente(cliente):
-        BancoDadosModel.clientes.remove(cliente)
-        return True
+        for cliente_atual in BancoDadosModel.clientes:
+            if isinstance(cliente_atual, Cliente):
+                if cliente_atual._getNome() == cliente._getNome():
+                    if cliente_atual._getCpf() == cliente._getCpf():
+                        BancoDadosModel.clientes.remove(cliente)
+                        return True
+        return False
     
     
     def deletarFuncionario(funcionario):
-        BancoDadosModel.clientes.remove(funcionario)
-        return True
+        for funcionario_atual in BancoDadosModel.funcionarios:
+            if isinstance(funcionario_atual, Funcionario):
+                if funcionario_atual._getNome() == funcionario._getNome():
+                    if funcionario_atual._getCpf() == funcionario._getCpf():
+                        BancoDadosModel.funcionarios.remove(funcionario)
+                        return True
+        return False
     
     
     def deletarMedico(medico):
-        BancoDadosModel.clientes.remove(medico)
-        return True
+        for medico_atual in BancoDadosModel.medicos:
+            if isinstance(medico_atual, Medico):
+                if medico_atual._getNome() == medico._getNome():
+                    if medico_atual._getCpf() ==medico._getCpf():
+                        BancoDadosModel.medicos.remove(medico)
+                        return True
+        return False
     
     
     # métodos adicionais
@@ -258,10 +273,3 @@ class BancoDadosModel():
         input("pressione ENTER para continuar")
     
     
-if __name__ == "__main__":
-    BancoDadosModel._inicializarBase()
-    # BancoDadosModel.mostrarConsultas()
-    # BancoDadosModel.mostrarFuncionarios()
-    # BancoDadosModel.mostrarMedicos()
-    # BancoDadosModel.mostrarClientes()
-    BancoDadosModel.valorTotalConsultas()

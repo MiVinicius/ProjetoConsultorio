@@ -6,6 +6,8 @@ from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosControl
 from PIL import Image, ImageTk
 
 
+# EVENTUAL DESENVOLVIMENTO DE UMA INTERFACE GRAFICA PARA O MENU DE LOGIN!
+
 def realizar_login():
     usuario = entry_usuario.get()
     senha = entry_senha.get()

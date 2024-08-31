@@ -5,6 +5,9 @@ from tkinter import messagebox
 from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosController
 
 
+# EVENTUAL DESENVOLVIMENTO DE UMA INTERFACE GRAFICA PARA O MENU DE OPÇÕES!
+
+
 def mostrar_menu():
     # limpa o frame do conteúdo e exibe novamente o menu
     limpar_frame(frame_conteudo)

@@ -27,7 +27,7 @@ class MedicoController():
     def buscarMedico():
         nome = str(input("Digite o nome do medico: \n"))
         cpf = str(input("Digite o CPF: \n"))
-        if BancoDadosController.buscarMedico(nome, cpf) is None:
+        if BancoDadosController.buscarMedico(nome, cpf) is None:  
             print("o medico não existe!")
             input("pressione ENTER para continuar")
         else: 
@@ -61,12 +61,27 @@ class MedicoController():
             enderecoNovo = EnderecoController.cadastrarEndereco()
             salarioNovo = float(input("Digite o salário: \n"))
             crmNovo = str(input("Digite o CRM: \n"))
-            if BancoDadosController.modificarMedico(medico_existe, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo, crmNovo):
-                return f'o medico {nomeNovo} foi Atualizado'
-            else:
-                return f'o medico {nomeNovo} não foi Atualizado'
+            try:
+                BancoDadosController.modificarMedico(medico_existe, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo, crmNovo)
+                print("o medico foi Atualizado")
+                input("pressione ENTER para continuar")
+                return True
+            except Exception as e:
+                print("o medico não foi Atualizado, erro", e)
+                input("pressione ENTER para continuar")
+                return False
+
         
     
     @staticmethod
     def deletarMedico():
-        return BancoDadosController.deletarMedico(MedicoController.buscarMedico2())
+        try:
+            medicoDeletar = MedicoController.buscarMedico2()
+            BancoDadosController.deletarMedico(medicoDeletar)
+            print("o medico foi excluído")
+            input("pressione ENTER para continuar")
+            return True
+        except Exception as e:
+            print("o medico não foi excluído, erro", e)
+            input("pressione ENTER para continuar")
+            return False
