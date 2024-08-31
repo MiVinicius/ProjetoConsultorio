@@ -17,7 +17,6 @@ class BancoDadosModel():
     clientes :list = []
     consultas :list = []
     usuarios :list = []
-    recepcionistas :list = []
     
     @staticmethod
     def _inicializarBase() -> None:
@@ -141,6 +140,7 @@ class BancoDadosModel():
                     consulta._setHorario(consultaNova._getHorario())
                     consulta._setValor(consultaNova._getValor())
                     print("Cadastro alterado com sucesso")
+                    input("pressione ENTER para continuar")
                     return True
             else:
                 print("consulta não encontrada")
@@ -193,8 +193,13 @@ class BancoDadosModel():
     
     
     def deletarConsulta(consulta):
-        BancoDadosModel.consultas.remove(consulta)
-        return True
+        for consulta in BancoDadosModel.consultas:
+            if consulta._getNumero() == consulta._getNumero():
+                BancoDadosModel.consultas.remove(consulta)
+                return True
+        print("Consulta não encontrada na lista")
+        return False
+
     
     
     def deletarCliente(cliente):
@@ -216,30 +221,41 @@ class BancoDadosModel():
     
     @staticmethod
     def mostrarClientes():
+        print("Clientes:")
         for cliente in BancoDadosModel.clientes:
             print(cliente)
+        input("pressione ENTER para continuar")
     
     @staticmethod
     def mostrarMedicos():
+        print("Medicos:")
         for medico in BancoDadosModel.medicos:
             print(medico)
+        input("pressione ENTER para continuar")
             
     @staticmethod
     def mostrarFuncionarios():
+        print("Funcionários:")
         for funcionario in BancoDadosModel.funcionarios:
             print(funcionario)
+        input("pressione ENTER para continuar")
             
     @staticmethod
     def mostrarConsultas():
+        print("Consultas Cadastradas:")
         for consulta in BancoDadosModel.consultas:
             print(consulta.__str__())
+            print()
+        input("pressione ENTER para continuar")
         
     @staticmethod
     def valorTotalConsultas():
         total = 0
+        print("Consultas Cadastradas:")
         for consulta in BancoDadosModel.consultas:
             total += consulta._getValor()
-        print(f'R${total:.2f}')  #retorna o valor total
+        print(f'O valor total dos consultas é: R${total:.2f}')  #retorna o valor total
+        input("pressione ENTER para continuar")
     
     
 if __name__ == "__main__":

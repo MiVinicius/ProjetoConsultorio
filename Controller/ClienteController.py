@@ -72,6 +72,7 @@ class ClienteController():
     def deletarCliente():
         try:
             BancoDadosController.deletarCliente(ClienteController.buscarCliente2())
+            print("cliente deletado com sucesso!")
         except Exception as e:
             print("ocorreu um erro ao deletar o cliente: ", e)
             input("pressione ENTER para continuar")

@@ -13,23 +13,24 @@ class ConsultaController():
     
     def cadastrarConsulta():
         while True:
-            opcao = str(input("O cliente já tem cadastro? S para continuar - N para cadastrar! \n"))
-            if opcao == "s" or "S":
-                nome = str(input("Digite o nome do cliente para procurar: \n"))
-                cpf = str(input("Digite o CPF do cliente para procurar: \n"))
+            opcao = input("O cliente já tem cadastro? S para continuar - N para cadastrar! \n").lower()  # Assim não tem problema de digitar S maiúsculo
+            if opcao == "s":
+                nome = input("Digite o nome do cliente para procurar: \n")
+                cpf = input("Digite o CPF do cliente para procurar: \n")
                 cliente_existente = BancoDadosController.buscarCliente(nome, cpf)
                 if cliente_existente:
                     ConsultaController.cadastrarConsulta2(cliente_existente)
                     break
                 else:
                     print("Cliente não encontrado. Por favor, tente novamente.")
-                    ConsultaController.cadastrarConsulta()
-            elif opcao == "n" or "N":
+                    input("Pressione ENTER para continuar")
+                    break
+            elif opcao == "n":
                 ClienteController.cadastrarCliente()
                 break
             else:
                 print("Opção inválida. Por favor, responda 's' ou 'n'.")
-                pass 
+
     
     def cadastrarConsulta2(cliente: Cliente):
         descricao = str(input("Digite a descrição da consulta: \n"))
@@ -44,36 +45,35 @@ class ConsultaController():
 
     # Retrieve
 
-    def buscarClienteConsulta():
+    def buscarClienteConsulta():  # isso aqui eu acho que deveria não estar aqui
         nome = str(input("Digite o nome do cliente para procurar: \n"))
         cpf = str(input("Digite o CPF do cliente para procurar: \n"))
         return BancoDadosController.buscarCliente(nome, cpf)
 
     
     def buscarNumeroListaConsulta():
-        nome = str(input("Digite o nome do cliente para procurar: \n"))
-        cpf = str(input("Digite o CPF do cliente para procurar: \n"))
-        return BancoDadosController.buscarCliente(nome, cpf)._getConsulta()
+        lista = ConsultaController.buscarClienteConsulta()._getConsulta()
+        print("Consultas:")
+        for consulta in lista:
+            print(BancoDadosController.buscarConsulta(consulta))  # funciona!
+            print()
+        input("pressione ENTER para continuar")
+        
     
     
     def buscarConsulta():
         numero = int(input("Digite o número da consulta para procurar: \n"))
         consulta = BancoDadosController.buscarConsulta(numero)
         if consulta is not None:
-            print(consulta.__str__())
+            print(consulta)
             input("pressione ENTER para continuar")
             return consulta
         else:
             print("consulta inexistente")
             input("pressione ENTER para continuar")
             return None
-    
-    
-    # def buscarConsulta2():
-    #     numero = int(input("Digite o número da consulta para procurar: \n"))
-    #     return BancoDadosController.buscarConsulta(numero)
-    
-    
+
+
     # Update
     
     def modificarConsulta():
@@ -91,17 +91,23 @@ class ConsultaController():
         
     # Delete
     
-    def deletarConsulta2():
+    def deletarConsulta():
         cliente = ConsultaController.buscarClienteConsulta()
         if cliente:
             consulta = ConsultaController.buscarConsulta()._getNumero()
             if consulta:
-                cliente._getConsulta().remove(consulta)
+                
                 BancoDadosController.deletarConsulta(consulta)
+                cliente._getConsulta().remove(consulta)
+                print("consulta deletada com sucesso!")
+                input("pressione ENTER para continuar")
                 return True
             else:
                 print("consulta inexistente")
                 return False
+        else:
+            print("consulta inexistente")
+            return False
             
     
 if __name__ == "__main__":

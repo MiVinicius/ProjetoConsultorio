@@ -48,6 +48,11 @@ class Consulta:
     
     def _setValor(self, valor):
         self.__valor = valor
+        
+    def __eq__(self, other):
+        if isinstance(other, Consulta):
+            return self.numero == other.numero
+        return False
     
     def __str__(self):
         return f"Número da consulta: {self.__numero}\nDescrição: {self.__descricao}\nData: {self.__data}\nHorário: {self.__horario}\nValor: {self.__valor}\nCliente CPF: {self.__cliente}"

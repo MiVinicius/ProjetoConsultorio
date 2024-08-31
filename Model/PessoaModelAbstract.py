@@ -16,3 +16,19 @@ class Pessoa(ABC):
     @abstractmethod
     def _getEndereco(self):
         pass
+    
+    @abstractmethod
+    def _setNome(self, nome):
+        pass
+
+    @abstractmethod
+    def _setCpf(self, cpf):
+        pass
+    
+    @abstractmethod
+    def _setTelefone(self, telefone):
+        pass
+
+    @abstractmethod
+    def _setEndereco(self, endereco):
+        pass

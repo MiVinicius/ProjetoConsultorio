@@ -21,17 +21,17 @@ class MenuView():
                 |Cliente   Consulta    Funcionários  financeiro|
                 ------------------------------------------------  
 
-11 - Cadastrar Cliente			21 - Agendamento de consulta
-12 - Buscar Cliente			22 - Verificar histórico de consultas
-13 - Modificar dados do cliente		23 - Modificar consulta
+11 - Cadastrar Cliente			21 - Agendar consulta
+12 - Buscar Cliente			22 - Verificar histórico de consultas do cliente
+13 - Modificar dados do cliente		23 - Modificar consulta (precisa do numero da consulta)
 14 - Remover cliente 			24 - Cancelar consulta
 
 31 - Cadastrar Médico			41 - Todas as Consultas agendadas
-32 - Cadastrar Funcionário		42 - valor total das consultas agendadas
+32 - Cadastrar Funcionário		42 - valor total do faturamento das consultas agendadas
 33 - Buscar Médico			43 - Mostrar todos os funcionários
 34 - Buscar Funcionário                 44 - Mostrar todos os clientes
-35 - Modificar dados de Médico          00 - Sair
-36 - Modificar dados de Funcionário
+35 - Modificar dados de Médico          45 - Mostrar todos os médicos
+36 - Modificar dados de Funcionário     00 - Sair
 37 - Remover Médico
 38 - Remover Funcionário
 
@@ -49,11 +49,11 @@ class MenuView():
                 case 21:
                     ConsultaController.cadastrarConsulta()
                 case 22:
-                    ConsultaController.buscarConsulta()
+                    ConsultaController.buscarNumeroListaConsulta()
                 case 23:
                     ConsultaController.modificarConsulta()
                 case 24:
-                    ConsultaController.deletarConsulta2()
+                    ConsultaController.deletarConsulta()
                 case 31:
                     MedicoController.cadastrarMedico()
                 case 32:
@@ -78,6 +78,8 @@ class MenuView():
                     BancoDadosController.mostrarFuncionarios()
                 case 44:
                     BancoDadosController.mostrarClientes()
+                case 45:
+                    BancoDadosController.mostrarMedicos()
                 case 00:
                     break
                 case _:

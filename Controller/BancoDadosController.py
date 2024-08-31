@@ -123,3 +123,7 @@ class BancoDadosController():
     def mostrarClientes():
         return BancoDadosModel.mostrarClientes()
     
+    @staticmethod
+    def mostrarMedicos():
+        return BancoDadosModel.mostrarMedicos()
+    
