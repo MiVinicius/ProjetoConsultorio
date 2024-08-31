@@ -28,9 +28,9 @@ class MenuView():
 
 31 - Cadastrar Médico			41 - Todas as Consultas agendadas
 32 - Cadastrar Funcionário		42 - valor total das consultas agendadas
-33 - Buscar Médico			43 - Mostrar funcionários
-34 - Buscar Funcionário                 00 - Sair
-35 - Modificar dados de Médico
+33 - Buscar Médico			43 - Mostrar todos os funcionários
+34 - Buscar Funcionário                 44 - Mostrar todos os clientes
+35 - Modificar dados de Médico          00 - Sair
 36 - Modificar dados de Funcionário
 37 - Remover Médico
 38 - Remover Funcionário
@@ -49,7 +49,7 @@ class MenuView():
                 case 21:
                     ConsultaController.cadastrarConsulta()
                 case 22:
-                    ConsultaController.buscarConsulta2()
+                    ConsultaController.buscarConsulta()
                 case 23:
                     ConsultaController.modificarConsulta()
                 case 24:
@@ -76,6 +76,8 @@ class MenuView():
                     BancoDadosController.valorTotalConsultas()
                 case 43:
                     BancoDadosController.mostrarFuncionarios()
+                case 44:
+                    BancoDadosController.mostrarClientes()
                 case 00:
                     break
                 case _:

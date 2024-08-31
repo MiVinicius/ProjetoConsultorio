@@ -118,3 +118,8 @@ class BancoDadosController():
     @staticmethod
     def mostrarFuncionarios():
         return BancoDadosModel.mostrarFuncionarios()
+    
+    @staticmethod
+    def mostrarClientes():
+        return BancoDadosModel.mostrarClientes()
+    

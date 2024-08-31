@@ -5,6 +5,7 @@ from ProjetoConsultorio.Model.ClienteModel import Cliente
 from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosController
 from ProjetoConsultorio.Controller.ClienteController import ClienteController
 
+
 class ConsultaController():
     
     
@@ -49,22 +50,34 @@ class ConsultaController():
         return BancoDadosController.buscarCliente(nome, cpf)
 
     
-    def buscarNumeroConsulta():
+    def buscarNumeroListaConsulta():
         nome = str(input("Digite o nome do cliente para procurar: \n"))
         cpf = str(input("Digite o CPF do cliente para procurar: \n"))
         return BancoDadosController.buscarCliente(nome, cpf)._getConsulta()
     
     
-    
-    def buscarConsulta2():
+    def buscarConsulta():
         numero = int(input("Digite o número da consulta para procurar: \n"))
-        return BancoDadosController.buscarConsulta(numero)
+        consulta = BancoDadosController.buscarConsulta(numero)
+        if consulta is not None:
+            print(consulta.__str__())
+            input("pressione ENTER para continuar")
+            return consulta
+        else:
+            print("consulta inexistente")
+            input("pressione ENTER para continuar")
+            return None
+    
+    
+    # def buscarConsulta2():
+    #     numero = int(input("Digite o número da consulta para procurar: \n"))
+    #     return BancoDadosController.buscarConsulta(numero)
     
     
     # Update
     
     def modificarConsulta():
-        consultaModificar = ConsultaController.buscarConsulta2()
+        consultaModificar = ConsultaController.buscarConsulta()
         if consultaModificar is not None:
             descricao = str(input("Digite a nova descrição da consulta: \n"))
             data = str(input("Digite a nova data da consulta (dd/mm/yyyy): \n"))
@@ -76,28 +89,12 @@ class ConsultaController():
             return False
         
         
-    # def modificarConsulta2():
-    #     cliente = ClienteController.buscarCliente()
-    #     if cliente is not None:
-    #         descricao = str(input("Digite a nova descrição da consulta: \n"))
-    #         data = str(input("Digite a nova data da consulta (dd/mm/yyyy): \n"))
-    #         return BancoDadosController.modificarConsulta2(descricao, data, cliente)
-    #     else:
-    #         print("consulta inexistente")
-    #         return False
-    
     # Delete
-    
-            
-    # def deletarConsulta():
-    #     consulta = ConsultaController.buscarConsulta2()
-    #     if consulta:
-    #         return BancoDadosController.deletarConsulta(consulta)
     
     def deletarConsulta2():
         cliente = ConsultaController.buscarClienteConsulta()
         if cliente:
-            consulta = ConsultaController.buscarNumeroConsulta()
+            consulta = ConsultaController.buscarConsulta()._getNumero()
             if consulta:
                 cliente._getConsulta().remove(consulta)
                 BancoDadosController.deletarConsulta(consulta)
@@ -109,5 +106,5 @@ class ConsultaController():
     
 if __name__ == "__main__":
     caos = ConsultaController()
-    caos.cadastrar()
+    caos.cadastrarConsulta()
     # caos.buscarConsulta()

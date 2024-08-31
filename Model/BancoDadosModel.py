@@ -4,6 +4,8 @@ from ProjetoConsultorio.Model.ClienteModel import Cliente
 from ProjetoConsultorio.Model.MedicoModel import Medico
 from ProjetoConsultorio.Model.FuncionarioModel import Funcionario
 from ProjetoConsultorio.Model.ConsultaModel import Consulta
+from ProjetoConsultorio.Model.UsuarioModel import Usuario
+from ProjetoConsultorio.Model.EnderecoModel import Endereco
 
 
 class BancoDadosModel():
@@ -20,13 +22,14 @@ class BancoDadosModel():
     @staticmethod
     def _inicializarBase() -> None:
         try:
-            cliente = Cliente("George", "12345678", "88888888", )
+            endereco = Endereco("SP", "Bauru", "Tomás", "Tomate", "52", "45.450-000")
+            cliente = Cliente("George", "123.456.789-00", "8888-8888", endereco)
             BancoDadosModel.cadastrarCliente(cliente)
-            consulta = Consulta("Dor de cabeca", "01/01/2022")
+            consulta = Consulta("Dor de cabeca", "01/01/2022", "10:00", 100, cliente._getCpf())
             BancoDadosModel.cadastrarConsulta(consulta)
-            funcionario = Funcionario("Rafael", "12345678")
+            funcionario = Funcionario("Rafael", "456.123.785-00", "9999-9999", endereco, 1000)
             BancoDadosModel.cadastrarFuncionario(funcionario)
-            medico = Medico("Carlos", "12345678")
+            medico = Medico("Carlos", "127.834.566-00", "7777-7777", endereco, 1500, "123456")
             BancoDadosModel.cadastrarMedico(medico)
         except Exception:
             print("Erro ao inicializar o banco de dados")
@@ -74,7 +77,7 @@ class BancoDadosModel():
     # Retreave 
     
     
-    def buscarUsuario(usuario):
+    def buscarUsuario(usuario:Usuario):
         for usuario in BancoDadosModel.usuarios:
             if usuario.login == usuario.login:
                 if usuario.senha == usuario.senha:
@@ -84,8 +87,9 @@ class BancoDadosModel():
 
     def buscarConsulta(numero):
         for consulta_atual in BancoDadosModel.consultas:
-            if consulta_atual.numero == numero:
-                return consulta_atual
+            if isinstance(consulta_atual, Consulta):
+                if consulta_atual._getNumero() == numero:
+                    return consulta_atual
         return None
     
     
@@ -132,18 +136,15 @@ class BancoDadosModel():
         for consulta in BancoDadosModel.consultas:
             if isinstance(consulta, Consulta):
                 if consulta._getNumero() == consultaModificar._getNumero():
-                    print(f"consulta encontrada: {consulta._getNumero()} - {consultaModificar._getNumero()}")
                     consulta._setDescricao(consultaNova._getDescricao())
-                    print(f"consulta modificada: {consulta._getDescricao()} - {consultaModificar._getDescricao()}")
                     consulta._setData(consultaNova._getData())
-                    print(f"consulta modificada: {consulta._getData()} - {consultaModificar._getData()}")
                     consulta._setHorario(consultaNova._getHorario())
-                    print(f"consulta modificada: {consulta._getHorario()} - {consultaNova._getHorario()}")
                     consulta._setValor(consultaNova._getValor())
-                    print(f"consulta modificada: {consulta._getValor()} - {consultaNova._getValor()}")
+                    print("Cadastro alterado com sucesso")
                     return True
             else:
-                return print("consulta não encontrada")
+                print("consulta não encontrada")
+                return False
         return True
     
     
@@ -238,6 +239,13 @@ class BancoDadosModel():
         total = 0
         for consulta in BancoDadosModel.consultas:
             total += consulta._getValor()
-        return f'R${total:.2f}' #retorna o valor total
+        print(f'R${total:.2f}')  #retorna o valor total
     
     
+if __name__ == "__main__":
+    BancoDadosModel._inicializarBase()
+    # BancoDadosModel.mostrarConsultas()
+    # BancoDadosModel.mostrarFuncionarios()
+    # BancoDadosModel.mostrarMedicos()
+    # BancoDadosModel.mostrarClientes()
+    BancoDadosModel.valorTotalConsultas()

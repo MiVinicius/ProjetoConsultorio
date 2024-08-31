@@ -50,4 +50,4 @@ class Medico(Funcionario):
         return False
         
     def __repr__(self):
-        return f"Nome: {self._nome}, Cpf: {self._cpf}, Endereço: {self._endereco}, Salário: {self._salario}"
+        return f"Nome: {self._nome}, Cpf: {self._cpf}, Endereço: {self._endereco}, Salário: {self._salario}, CRM: {self._crm}"

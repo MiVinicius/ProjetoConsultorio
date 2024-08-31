@@ -13,7 +13,7 @@ class Consulta:
         self.__cliente = cliente
         self.__valor = valor
         Consulta.__contador += 1  # Incrementa o contador de classe
-        self.__numero = Consulta._contador
+        self.__numero = Consulta.__contador
 
         
     def _getDescricao(self):
@@ -50,4 +50,7 @@ class Consulta:
         self.__valor = valor
     
     def __str__(self):
-        return f"Número da consulta: {self.__numero}\nDescrição: {self.__descricao}\nData: {self.__data}\n Horário: {self.__horario}\n Valor: {self.__valor}\nCliente CPF: {self.__cliente}"
+        return f"Número da consulta: {self.__numero}\nDescrição: {self.__descricao}\nData: {self.__data}\nHorário: {self.__horario}\nValor: {self.__valor}\nCliente CPF: {self.__cliente}"
+    
+    def __repr__(self):
+        return f"Número da consulta: {self.__numero}\nDescrição: {self.__descricao}\nData: {self.__data}\nHorário: {self.__horario}\nValor: {self.__valor}\nCliente CPF: {self.__cliente}"
