@@ -1,0 +1,15 @@
+{
+    "clientes": [],
+    "consultas": [],
+    "medicos": [],
+    "atendentes": [
+        {
+            "_Pessoa__nome": "Clara",
+            "_Pessoa__cpf": "00000000000",
+            "_Pessoa__endereco": "tal, 87991131313 - isso, cepa, 55280000",
+            "_Funcionario__login": "Clara123",
+            "_Funcionario__senha": "Clara123",
+            "_Funcionario__salario": 2000.0
+        }
+    ]
+}
