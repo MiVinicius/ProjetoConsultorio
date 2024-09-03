@@ -37,8 +37,8 @@ class ConsultaController():
         data = str(input("Digite a data da consulta (dd/mm/yyyy): \n"))
         horario = str(input("Digite o horário da consulta (hh:mm): \n"))
         valor = float(input("Digite o valor da consulta: \n"))
-        if BancoDadosController.cadastrarConsulta(descricao, data, horario, valor, cliente._getCpf()):
-            print(f"Consulta adicionada para o cliente {cliente._getNome()}")
+        if BancoDadosController.cadastrarConsulta(descricao, data, horario, valor, cliente.cpf):
+            print(f"Consulta adicionada para o cliente {cliente.nome}")
             input("pressione ENTER para continuar")
             return True
         return False
@@ -52,7 +52,7 @@ class ConsultaController():
 
     
     def buscarNumeroListaConsulta():
-        lista = ConsultaController.buscarClienteConsulta()._getConsulta()
+        lista = ConsultaController.buscarClienteConsulta().consulta
         print("Consultas:")
         for consulta in lista:
             print(BancoDadosController.buscarConsulta(consulta))  # funciona!
@@ -94,11 +94,10 @@ class ConsultaController():
     def deletarConsulta():
         cliente = ConsultaController.buscarClienteConsulta()
         if cliente:
-            consulta = ConsultaController.buscarConsulta()._getNumero()
+            consulta = ConsultaController.buscarConsulta()
             if consulta:
-                
-                BancoDadosController.deletarConsulta(consulta)
-                cliente._getConsulta().remove(consulta)
+                cliente.consulta.remove(consulta.numero)
+                BancoDadosController.deletarConsulta(consulta.numero)
                 print("consulta deletada com sucesso!")
                 input("pressione ENTER para continuar")
                 return True

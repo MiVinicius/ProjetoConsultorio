@@ -2,7 +2,7 @@ import sys
 sys.path.append('.')
 from ProjetoConsultorio.Model.ClienteModel import Cliente
 from ProjetoConsultorio.Model.MedicoModel import Medico
-from ProjetoConsultorio.Model.FuncionarioModel import Funcionario
+from ProjetoConsultorio.Model.AtendenteModel import Atendente
 from ProjetoConsultorio.Model.ConsultaModel import Consulta
 from ProjetoConsultorio.Model.UsuarioModel import Usuario
 from ProjetoConsultorio.Model.EnderecoModel import Endereco
@@ -12,45 +12,46 @@ class BancoDadosModel():
 
     
     
-    funcionarios :list = []
+    atendentes :list = []
     medicos :list = []
     clientes :list = []
     consultas :list = []
     usuarios :list = []
     
     @staticmethod
-    def _inicializarBase() -> None:
+    def _inicializarBase():
         try:
             admin = Usuario("admin", "admin", 0, True)
             BancoDadosModel.cadastrarUsuario(admin)
             endereco = Endereco("SP", "Bauru", "Tomás", "Tomate", "52", "45.450-000")
             cliente = Cliente("George", "123.456.789-00", "8888-8888", endereco)
             BancoDadosModel.cadastrarCliente(cliente)
-            consulta = Consulta("Dor de cabeca", "01/01/2022", "10:00", 100, cliente._getCpf())
+            consulta = Consulta("Dor de cabeça", "01/01/2022", "10:00", 100, cliente.cpf)
             BancoDadosModel.cadastrarConsulta(consulta)
-            funcionario = Funcionario("Rafael", "456.123.785-00", "9999-9999", endereco, 1000)
-            BancoDadosModel.cadastrarFuncionario(funcionario)
+            atendente = Atendente("Rafael", "456.123.785-00", "9999-9999", endereco, 1000)
+            BancoDadosModel.cadastrarAtendente(atendente)
             medico = Medico("Carlos", "127.834.566-00", "7777-7777", endereco, 1500, "123456")
             BancoDadosModel.cadastrarMedico(medico)
-        except Exception:
-            print("Erro ao inicializar o banco de dados")
+        except Exception as e:
+            print("Erro ao inicializar o banco de dados", e)
+            return False
         return True
     
     # Create
     
     
-    def cadastrarUsuario(usuario):
+    def cadastrarUsuario(usuario: Usuario):
         BancoDadosModel.usuarios.append(usuario)
         return True
     
     
-    def cadastrarConsulta(consulta):
+    def cadastrarConsulta(consulta: Consulta):
         try:
             BancoDadosModel.consultas.append(consulta)
-            cliente = consulta._getCliente()
+            cliente = consulta.cliente
             for cliente_atual in BancoDadosModel.clientes:
-                if cliente_atual._getCpf() == cliente:
-                    cliente_atual._setConsulta(consulta._getNumero())
+                if cliente_atual.cpf == cliente:
+                    cliente_atual.consulta = consulta.numero
                 else:
                     return False
             return True
@@ -61,89 +62,89 @@ class BancoDadosModel():
         
     
     
-    def cadastrarCliente(cliente):
+    def cadastrarCliente(cliente: Cliente):
         BancoDadosModel.clientes.append(cliente)
         return True
     
     
-    def cadastrarMedico(medico):
+    def cadastrarMedico(medico: Medico):
         BancoDadosModel.medicos.append(medico)
         return True
     
     
-    def cadastrarFuncionario(funcionario):
-        BancoDadosModel.funcionarios.append(funcionario)
+    def cadastrarAtendente(atendente: Atendente):
+        BancoDadosModel.atendentes.append(atendente)
         return True
     
     # Retreave 
     
     
     def buscarUsuario(usuario:Usuario):
-        for usuario in BancoDadosModel.usuarios:
-            if usuario.login == usuario.login:
-                if usuario.senha == usuario.senha:
-                    if usuario.tipo == usuario.tipo:
-                        return usuario
+        for usuario_atual in BancoDadosModel.usuarios:
+            if usuario_atual.login == usuario.login:
+                if usuario_atual.senha == usuario.senha:
+                    if usuario_atual.tipo == usuario.tipo:
+                        return usuario_atual
         return None
     
 
     def buscarConsulta(numero):
         for consulta_atual in BancoDadosModel.consultas:
             if isinstance(consulta_atual, Consulta):
-                if consulta_atual._getNumero() == numero:
+                if consulta_atual.numero == numero:
                     return consulta_atual
         return None
     
     
-    def buscarCliente(cliente):
+    def buscarCliente(cliente: Cliente):
         for cliente_atual in BancoDadosModel.clientes:
             if isinstance(cliente_atual, Cliente):
-                if  cliente_atual._getNome()==cliente._getNome():
-                    if cliente_atual._getCpf() == cliente._getCpf():
+                if  cliente_atual.nome==cliente.nome:
+                    if cliente_atual.cpf == cliente.cpf:
                         return cliente_atual
         return None
     
     
-    def buscarFuncionario(funcionario):
-        for funcionario_atual in BancoDadosModel.funcionarios:
-            if isinstance(funcionario_atual, Funcionario):
-                if  funcionario_atual._getNome()==funcionario._getNome():
-                    if funcionario_atual._getCpf() == funcionario._getCpf():
-                        return funcionario_atual
+    def buscarAtendente(atendente: Atendente):
+        for atendente_atual in BancoDadosModel.atendentes:
+            if isinstance(atendente_atual, Atendente):
+                if  atendente_atual.nome==atendente.nome:
+                    if atendente_atual.cpf == atendente.cpf:
+                        return atendente_atual
         return None
     
     
-    def buscarMedico(medico):
+    def buscarMedico(medico: Medico):
         for medico_atual in BancoDadosModel.medicos:
             if isinstance(medico_atual, Medico):
-                if  medico_atual._getNome()==medico._getNome():
-                    if medico_atual._getCpf() == medico._getCpf():
+                if  medico_atual.nome==medico.nome:
+                    if medico_atual.cpf == medico.cpf:
                         return medico_atual
         return None
     
     # Update
     
     
-    def modificarUsuario(clienteAntigo, clienteAtualizado):
-        for usuario in BancoDadosModel.usuarios:
-            if usuario.login == clienteAntigo.login:
-                if usuario.senha == clienteAntigo.senha:
-                    usuario.login = clienteAtualizado.login
-                    usuario.senha = clienteAtualizado.senha
+    def modificarUsuario(usuarioAntigo, usuarioAtualizado):
+        for usuario_atual in BancoDadosModel.usuarios:
+            if usuario_atual.login == usuarioAntigo.login:
+                if usuario_atual.senha == usuarioAntigo.senha:
+                    usuario_atual.login = usuarioAtualizado.login
+                    usuario_atual.senha = usuarioAtualizado.senha
                     return True
         return False
     
     
     def modificarConsulta(consultaNova:Consulta, consultaModificar:Consulta):
-        for consulta in BancoDadosModel.consultas:
-            if isinstance(consulta, Consulta):
-                if consulta._getNumero() == consultaModificar._getNumero():
-                    consulta._setDescricao(consultaNova._getDescricao())
-                    consulta._setData(consultaNova._getData())
-                    consulta._setHorario(consultaNova._getHorario())
-                    consulta._setValor(consultaNova._getValor())
+        for consulta_atual in BancoDadosModel.consultas:
+            if isinstance(consulta_atual, Consulta):
+                if consulta_atual.numero == consultaModificar.numero:
+                    consulta_atual.descricao = consultaNova.descricao
+                    consulta_atual.data = consultaNova.data
+                    consulta_atual.horario = consultaNova.horario
+                    consulta_atual.valor = consultaNova.valor
                     print("Cadastro alterado com sucesso")
-                    input("pressione ENTER para continuar")
+                    input("pressione ENTER para continuar")  # lembrar de tirar daqui e colocar em outro lugar
                     return True
             else:
                 print("consulta não encontrada")
@@ -153,37 +154,37 @@ class BancoDadosModel():
     
     def modificarCliente(id_cliente, cliente_novo):
         for cliente in BancoDadosModel.clientes:
-            if cliente._getNome() == id_cliente._getNome() and cliente._getCpf() == id_cliente._getCpf():
-                cliente._setNome(cliente_novo._getNome())
-                cliente._setCpf(cliente_novo._getCpf())
-                cliente._setTelefone(cliente_novo._getTelefone())
-                cliente._setEndereco(cliente_novo._getEndereco())
+            if cliente.nome == id_cliente.nome and cliente.cpf == id_cliente.cpf:
+                cliente.nome = cliente_novo.nome
+                cliente.cpf = cliente_novo.cpf
+                cliente.telefone = cliente_novo.telefone
+                cliente.endereco = cliente_novo.endereco
                 return True
         return False
     
     
     def modificarMedico(id_medico, medico_novo):
         for medico in BancoDadosModel.medicos:
-            if medico._getNome() == id_medico._getNome() and medico._getCpf() == id_medico._getCpf():
-                medico._setNome(medico_novo._getNome())
-                medico._setCpf(medico_novo._getCpf())
-                medico._setTelefone(medico_novo._getTelefone())
-                medico._setEndereco(medico_novo._getEndereco())
-                medico._setSalario(medico_novo._getSalario())
-                medico._setCrm(medico_novo._getCrm())
+            if medico.nome == id_medico.nome and medico.cpf == id_medico.cpf:
+                medico.nome = medico_novo.nome
+                medico.cpf = medico_novo.cpf
+                medico.telefone = medico_novo.telefone
+                medico.endereco = medico_novo.endereco
+                medico.salario = medico_novo.salario
+                medico.crm = medico_novo.crm
                 return True
         return False
     
     
-    def modificarFuncionario(id_funcionario, funcionario_novo):
-        for funcionario in BancoDadosModel.funcionarios:
-            if funcionario._getNome() == id_funcionario._getNome():
-                if funcionario._getCpf() == id_funcionario._getCpf():
-                    funcionario._setNome(funcionario_novo._getNome())
-                    funcionario._setCpf(funcionario_novo._getCpf())
-                    funcionario._setTelefone(funcionario_novo._getTelefone())
-                    funcionario._setEndereco(funcionario_novo._getEndereco())
-                    funcionario._setSalario(funcionario_novo._getSalario())
+    def modificarAtendente(id_atendente, atendente_novo):
+        for atendente in BancoDadosModel.atendentes:
+            if atendente.nome == id_atendente.nome:
+                if atendente.cpf == id_atendente.cpf:
+                    atendente.nome = atendente_novo.nome
+                    atendente.cpf = atendente_novo.cpf
+                    atendente.telefone = atendente_novo.telefone
+                    atendente.endereco = atendente_novo.endereco
+                    atendente.salario = atendente_novo.salario
                     return True
         return False
     
@@ -191,20 +192,19 @@ class BancoDadosModel():
     
     
     def deletarUsuario(usuario):
-        for Usuario in BancoDadosModel.usuarios:
-            if isinstance(Usuario, Usuario):
-                if Usuario._getLogin() == usuario._getLogin():
-                    if Usuario._getSenha() == usuario._getSenha():
-                        if Usuario._getTipo() == usuario._getTipo():
-                            BancoDadosModel.usuarios.remove(usuario)
-                            return True
+        for Usuario_atual in BancoDadosModel.usuarios:
+            if isinstance(Usuario_atual, Usuario):
+                if Usuario_atual.login == usuario.login:
+                    if Usuario_atual.senha == usuario.senha:
+                        BancoDadosModel.usuarios.remove(Usuario_atual)
+                        return True
         return False
     
     
     def deletarConsulta(consulta):
-        for consulta in BancoDadosModel.consultas:
-            if consulta._getNumero() == consulta._getNumero():
-                BancoDadosModel.consultas.remove(consulta)
+        for consulta_atual in BancoDadosModel.consultas:
+            if consulta_atual.numero == consulta:
+                BancoDadosModel.consultas.remove(consulta_atual)
                 return True
         print("Consulta não encontrada na lista")
         return False
@@ -214,19 +214,19 @@ class BancoDadosModel():
     def deletarCliente(cliente):
         for cliente_atual in BancoDadosModel.clientes:
             if isinstance(cliente_atual, Cliente):
-                if cliente_atual._getNome() == cliente._getNome():
-                    if cliente_atual._getCpf() == cliente._getCpf():
-                        BancoDadosModel.clientes.remove(cliente)
+                if cliente_atual.nome == cliente.nome:
+                    if cliente_atual.cpf == cliente.cpf:
+                        BancoDadosModel.clientes.remove(cliente_atual)
                         return True
         return False
     
     
-    def deletarFuncionario(funcionario):
-        for funcionario_atual in BancoDadosModel.funcionarios:
-            if isinstance(funcionario_atual, Funcionario):
-                if funcionario_atual._getNome() == funcionario._getNome():
-                    if funcionario_atual._getCpf() == funcionario._getCpf():
-                        BancoDadosModel.funcionarios.remove(funcionario)
+    def deletarAtendente(atendente):
+        for atendente_atual in BancoDadosModel.atendentes:
+            if isinstance(atendente_atual, Atendente):
+                if atendente_atual.nome == atendente.nome:
+                    if atendente_atual.cpf == atendente.cpf:
+                        BancoDadosModel.atendentes.remove(atendente_atual)
                         return True
         return False
     
@@ -234,9 +234,9 @@ class BancoDadosModel():
     def deletarMedico(medico):
         for medico_atual in BancoDadosModel.medicos:
             if isinstance(medico_atual, Medico):
-                if medico_atual._getNome() == medico._getNome():
-                    if medico_atual._getCpf() ==medico._getCpf():
-                        BancoDadosModel.medicos.remove(medico)
+                if medico_atual.nome == medico.nome:
+                    if medico_atual.cpf == medico.cpf:
+                        BancoDadosModel.medicos.remove(medico_atual)
                         return True
         return False
     
@@ -258,10 +258,10 @@ class BancoDadosModel():
         input("pressione ENTER para continuar")
             
     @staticmethod
-    def mostrarFuncionarios():
-        print("Funcionários:")
-        for funcionario in BancoDadosModel.funcionarios:
-            print(funcionario)
+    def mostrarAtendentes():
+        print("Atendentes:")
+        for atendente_atual in BancoDadosModel.atendentes:
+            print(atendente_atual)
         input("pressione ENTER para continuar")
             
     @staticmethod
@@ -277,7 +277,7 @@ class BancoDadosModel():
         total = 0
         print("Consultas Cadastradas:")
         for consulta in BancoDadosModel.consultas:
-            total += consulta._getValor()
+            total += consulta.valor
         print(f'O valor total dos consultas é: R${total:.2f}')  #retorna o valor total
         input("pressione ENTER para continuar")
     

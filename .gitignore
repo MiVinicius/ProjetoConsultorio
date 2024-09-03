@@ -17,3 +17,6 @@ Model/__pycache__/UsuarioModel.cpython-312.pyc
 View/__pycache__/__init__.cpython-312.pyc
 View/__pycache__/MenuView.cpython-312.pyc
 View/__pycache__/LoginView.cpython-312.pyc
+Model/__pycache__/AtendenteModel.cpython-312.pyc
+Model/__pycache__/FuncionarioModelAbstract.cpython-312.pyc
+Controller/__pycache__/AtendenteController.cpython-312.pyc

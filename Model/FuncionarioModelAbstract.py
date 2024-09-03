@@ -1,10 +1,12 @@
+import sys
+sys.path.append('.')
 from abc import ABC, abstractmethod
 
-class Pessoa(ABC):
+class Funcionario(ABC):
     
     def __init__(self):
         pass
-        
+
     @property
     @abstractmethod
     def nome(self):
@@ -37,6 +39,16 @@ class Pessoa(ABC):
 
     @property
     @abstractmethod
+    def salario(self):
+        pass
+    
+    @salario.setter
+    @abstractmethod
+    def salario(self, salario):
+        pass
+
+    @property
+    @abstractmethod
     def endereco(self):
         pass
     
@@ -44,3 +56,4 @@ class Pessoa(ABC):
     @abstractmethod
     def endereco(self, endereco):
         pass
+        

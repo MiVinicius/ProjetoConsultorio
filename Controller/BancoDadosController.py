@@ -5,7 +5,7 @@ from ProjetoConsultorio.Model.UsuarioModel import Usuario
 from ProjetoConsultorio.Model.ClienteModel import Cliente
 from ProjetoConsultorio.Model.ConsultaModel import Consulta
 from ProjetoConsultorio.Model.MedicoModel import Medico
-from ProjetoConsultorio.Model.FuncionarioModel import Funcionario
+from ProjetoConsultorio.Model.AtendenteModel import Atendente
 
 
 class BancoDadosController():
@@ -29,8 +29,8 @@ class BancoDadosController():
         return BancoDadosModel.cadastrarConsulta(Consulta(descricao, data, horario, valor, cliente))
     
     @staticmethod
-    def cadastrarFuncionario(nome, cpf):
-        return BancoDadosModel.cadastrarFuncionario(Funcionario(nome, cpf))
+    def cadastrarAtendente(nome, cpf):
+        return BancoDadosModel.cadastrarAtendente(Atendente(nome, cpf))
     
     @staticmethod
     def cadastrarMedico(nome, cpf, telefone, endereco, salario, crm):
@@ -52,8 +52,8 @@ class BancoDadosController():
     def buscarConsulta(numero):
         return BancoDadosModel.buscarConsulta(numero)
     @staticmethod
-    def buscarFuncionario(nome, cpf):
-        return BancoDadosModel.buscarFuncionario(Funcionario(nome, cpf, None, None, None))
+    def buscarAtendente(nome, cpf):
+        return BancoDadosModel.buscarAtendente(Atendente(nome, cpf, None, None, None))
     
     @staticmethod
     def buscarMedico(nome, cpf):
@@ -75,8 +75,8 @@ class BancoDadosController():
         return BancoDadosModel.modificarConsulta(Consulta(descricao, data, horario, valor, cliente = None), consultaModificar)
     
     @staticmethod
-    def modificarFuncionario(funcionario_existe, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo):
-        return BancoDadosModel.modificarFuncionario(funcionario_existe, Funcionario(nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo))
+    def modificarAtendente(atendente_existe, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo):
+        return BancoDadosModel.modificarAtendente(atendente_existe, Atendente(nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo))
     
     @staticmethod
     def modificarMedico(medicoAntigo, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo, crmNovo):
@@ -94,8 +94,8 @@ class BancoDadosController():
         return BancoDadosModel.deletarCliente(cliente)
     
     @staticmethod
-    def deletarFuncionario(funcionario):
-        return BancoDadosModel.deletarFuncionario(funcionario)
+    def deletarAtendente(atendente):
+        return BancoDadosModel.deletarAtendente(atendente)
     
     @staticmethod
     def deletarMedico(medico):
@@ -116,8 +116,8 @@ class BancoDadosController():
         return BancoDadosModel.valorTotalConsultas()
     
     @staticmethod
-    def mostrarFuncionarios():
-        return BancoDadosModel.mostrarFuncionarios()
+    def mostrarAtendentes():
+        return BancoDadosModel.mostrarAtendentes()
     
     @staticmethod
     def mostrarClientes():

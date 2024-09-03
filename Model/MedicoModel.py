@@ -1,53 +1,72 @@
 import sys
 sys.path.append('.')
-from ProjetoConsultorio.Model.FuncionarioModel import Funcionario
+from ProjetoConsultorio.Model.FuncionarioModelAbstract import Funcionario
 
 class Medico(Funcionario):
     
-    def __init__(self, nome, cpf, telefone, Endereco, salario, crm):
-        super().__init__(nome, cpf, telefone, Endereco, salario)
+    def __init__(self, nome, cpf, telefone, endereco, salario, crm):
+        self._nome = nome
+        self._cpf = cpf
+        self._telefone = telefone
+        self._endereco = endereco
+        self._salario = salario
         self._crm = crm
+
+    @property
+    def nome(self):
+        return self._nome
     
-    def _getNome(self):
-        return super()._getNome()
+    @nome.setter
+    def nome(self, nome):
+        self._nome = nome
+
+    @property
+    def cpf(self):
+        return self._cpf
     
-    def _setNome(self, nome):
-        super()._setNome(nome)
-        
-    def _getCpf(self):
-        return super()._getCpf()
+    @cpf.setter
+    def cpf(self, cpf):
+        self._cpf = cpf
+
+    @property
+    def telefone(self):
+        return self._telefone
     
-    def _setCpf(self, cpf):
-        super()._setCpf(cpf)
-        
-    def _getTelefone(self):
-        return super()._getTelefone()
+    @telefone.setter
+    def telefone(self, telefone):
+        self._telefone = telefone
+
+    @property
+    def salario(self):
+        return self._salario
     
-    def _setTelefone(self, telefone):
-        super()._setTelefone(telefone)
+    @salario.setter
+    def salario(self, salario):
+        self._salario = salario
+
+    @property
+    def endereco(self):
+        return self._endereco
     
-    def _getSalario(self):
-        return super()._getSalario()
-    
-    def _setSalario(self, salario):
-        super()._setSalario(salario)
-        
-    def _getEndereco(self):
-        return super()._getEndereco()
-    
-    def _setEndereco(self, endereco):
-        super()._setEndereco(endereco)
-        
-    def _getCrm(self):
+    @endereco.setter
+    def endereco(self, endereco):
+        self._endereco = endereco
+
+    @property
+    def crm(self):
         return self._crm
     
-    def _setCrm(self, crm):
+    @crm.setter
+    def crm(self, crm):
         self._crm = crm
-        
+
     def __eq__(self, other):
         if isinstance(other, Medico):
-            return self._nome == other._nome and self._cpf == other._cpf
+            return (self.nome == other.nome and self.cpf == other.cpf and 
+                    self.telefone == other.telefone and self.endereco == other.endereco and 
+                    self.salario == other.salario and self.crm == other.crm)
         return False
-        
+
     def __repr__(self):
-        return f"Nome: {self._nome}, Cpf: {self._cpf}, Endereço: {self._endereco}, Salário: {self._salario}, CRM: {self._crm}"
+        return (f"Nome: {self.nome}, Cpf: {self.cpf}, Telefone: {self.telefone}, "
+                f"Endereço: {self.endereco}, Salário: {self.salario}, CRM: {self.crm}")

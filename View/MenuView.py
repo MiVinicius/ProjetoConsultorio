@@ -4,7 +4,7 @@ from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosControl
 from ProjetoConsultorio.Controller.ClienteController import ClienteController
 from ProjetoConsultorio.Controller.ConsultaController import ConsultaController
 from ProjetoConsultorio.Controller.MedicoController import MedicoController
-from ProjetoConsultorio.Controller.FuncionarioController import FuncionarioController
+from ProjetoConsultorio.Controller.AtendenteController import AtendenteController
 import os
 
 def clear():
@@ -19,7 +19,7 @@ class MenuView():
             print("""
                 ----------------------------------------------------
                 |Menu 1x    Menu 2x      Menu 3x       Menu 4x     | 
-                |Cliente   Consulta    Funcionários  Administrativo|
+                |Cliente   Consulta    Atendentes  Administrativo|
                 ----------------------------------------------------  
 
 11 - Cadastrar Cliente			21 - Agendar consulta
@@ -28,19 +28,19 @@ class MenuView():
 14 - Remover cliente 			24 - Cancelar consulta
 
 31 - Cadastrar Médico			41 - Todas as Consultas agendadas
-32 - Cadastrar Funcionário		42 - valor total do faturamento das consultas agendadas
-33 - Buscar Médico			43 - Mostrar todos os funcionários
-34 - Buscar Funcionário                 44 - Mostrar todos os clientes
+32 - Cadastrar Atendente		42 - valor total do faturamento das consultas agendadas
+33 - Buscar Médico			43 - Mostrar todos os Atendentes
+34 - Buscar Atendente                   44 - Mostrar todos os clientes
 35 - Modificar dados de Médico          45 - Mostrar todos os médicos
-36 - Modificar dados de Funcionário     00 - Sair
+36 - Modificar dados de Atendente       00 - Sair
 37 - Remover Médico
-38 - Remover Funcionário
+38 - Remover Atendente
 
                 """)
             opcao = int(input("Digite o número correspondente ao menu: "))
             match opcao:
                 case 11:
-                    ClienteController.cadastrarCliente()  # esses comandos eu deveria colocar na View...
+                    ClienteController.cadastrarCliente()  # esses comandos eu deveria colocar na View própria...
                 case 12:
                     ClienteController.buscarCliente()
                 case 13:
@@ -58,25 +58,25 @@ class MenuView():
                 case 31:
                     MedicoController.cadastrarMedico()
                 case 32:
-                    FuncionarioController.cadastrarFuncionario()
+                    AtendenteController.cadastrarAtendente()
                 case 33:
                     MedicoController.buscarMedico()
                 case 34:
-                    FuncionarioController.buscarFuncionario()
+                    AtendenteController.buscarAtendente()
                 case 35:
                     MedicoController.modificarMedico()
                 case 36:
-                    FuncionarioController.modificarFuncionario()
+                    AtendenteController.modificarAtendente()
                 case 37:
                     MedicoController.deletarMedico()
                 case 38:
-                    FuncionarioController.deletarFuncionario()
+                    AtendenteController.deletarAtendente()
                 case 41:
                     BancoDadosController.mostrar_consultas()
                 case 42:
                     BancoDadosController.valorTotalConsultas()
                 case 43:
-                    BancoDadosController.mostrarFuncionarios()
+                    BancoDadosController.mostrarAtendentes()
                 case 44:
                     BancoDadosController.mostrarClientes()
                 case 45:
@@ -88,7 +88,7 @@ class MenuView():
                     print("Opção invalida")
                     input("Pressione Enter para continuar")
                     
-if __name__ == "__main__":
+# if __name__ == "__main__":
     
-    menuview = MenuView()
-    menuview.menuView()
+    # menuview = MenuView()
+    # menuview.menuView()

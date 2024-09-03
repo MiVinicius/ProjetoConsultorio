@@ -14,10 +14,15 @@ class MedicoController():
             endereco = EnderecoController.cadastrarEndereco()
             salario = float(input("Digite o salário: \n"))
             crm = str(input("Digite o CRM: \n"))
-            BancoDadosController.cadastrarMedico(nome, cpf, telefone, endereco, salario, crm)
-            print("cadastro do médico sucedido!")
-            input("pressione ENTER para continuar")
-            return True
+            try:
+                BancoDadosController.cadastrarMedico(nome, cpf, telefone, endereco, salario, crm)
+                print("cadastro do médico sucedido!")
+                input("pressione ENTER para continuar")
+                return True
+            except Exception as e:
+                print(f"cadastro do usuário falhou por erro: {e}")
+                input("pressione ENTER para continuar")
+                return False
         else: 
             print("o medico já existe!")
             input("pressione ENTER para continuar")
@@ -47,7 +52,7 @@ class MedicoController():
     
     @staticmethod
     def modificarMedico():
-        nomeModificar = str(input("Digite o nome do cliente para modificar: \n"))
+        nomeModificar = str(input("Digite o nome do médico para modificar: \n"))
         cpfModificar = str(input("Digite o CPF para modificar: \n"))
         medico_existe = BancoDadosController.buscarMedico(nomeModificar, cpfModificar)
         if medico_existe is None:
@@ -55,7 +60,7 @@ class MedicoController():
             input("pressione ENTER para continuar")
             return False
         else:
-            nomeNovo = str(input("Digite o novo nome do cliente: \n"))
+            nomeNovo = str(input("Digite o novo nome do médico: \n"))
             cpfNovo = str(input("Digite o novo CPF: \n"))
             telefoneNovo = str(input("Digite o telefone: \n"))
             enderecoNovo = EnderecoController.cadastrarEndereco()

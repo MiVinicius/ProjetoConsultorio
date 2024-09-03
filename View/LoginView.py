@@ -14,7 +14,7 @@ class LoginView:
 
     def menu(self):
         while True:
-            clear()
+            # clear()
             print("-----------" * 6)
             print("Bem-vindo ao Clinitech, seu Software para clínicas Médicas")
             print("-----------" * 6)
@@ -22,20 +22,25 @@ class LoginView:
             print("-----------" * 6)
             print("1 - Logar  --  2 - Cadastrar")
             print()
-            opcao = input("Opção: ")
+            opcao = str(input("Opção: "))
             print("-----------" * 6)
-            if opcao == "1":
-                self.login()
-                break
-            elif opcao == "2":
-                self.cadastro()
-                break
-            else:
-                print('Opção inválida')
+            try:
+                if opcao == "1":
+                    self.login()
+                    break
+                elif opcao == "2":
+                    self.cadastro()
+                    break
+                else:
+                    print('Opção inválida')
+                    input("Pressione ENTER para continuar")
+            except Exception as e:
+                print("Ocorreu um erro", e, "! Tente novamente")
                 input("Pressione ENTER para continuar")
+                self.menu()
     
     def login(self):
-        clear()
+        # clear()
         print("-----------"*6)
         print("Bem-vindo ao Clinitech, seu Software para clínicas Médicas")
         print("-----------"*6)
@@ -44,12 +49,11 @@ class LoginView:
         login = input(str("Login: "))
         senha = input(str("Senha: "))
         print("->Funcionario = 1, Medico = 2<-")
-        tipo = int(input(str("Tipo: ")))
+        tipo = input(str("Tipo: "))
         print("-----------"*6)
         try:
-            verificar = BancoDadosController.buscarUsuario(login, senha, tipo)
+            verificar = BancoDadosController.buscarUsuario(login, senha, int(tipo))
             if verificar is not None:
-                
                 if verificar.admin is True:
                     MenuView().menuView()
                 elif verificar.tipo == 1:
@@ -61,15 +65,15 @@ class LoginView:
                     input("pressione ENTER para continuar")
                     self.menu()
             else:
-                
                 print('login ou senha incorreta')
+                input("pressione ENTER para continuar")
+                self.login()
         except Exception as e:
-            
             print('Ocorreu um erro', e)
             self.login()
             
     def cadastro(self):
-        clear()
+        # clear()
         print("-----------"*6)
         print("Bem-vindo ao Clinitech, seu Software para clínicas Médicas")
         print("-----------"*6)
@@ -82,19 +86,16 @@ class LoginView:
         print("-----------"*6)
         try:
             verificar = BancoDadosController.buscarUsuario(login, senha, tipo)
-            
             if verificar is None:
                 BancoDadosController.cadastrarUsuario(login, senha, tipo)
                 print("Cadastrado com sucesso")
                 input("pressione ENTER para continuar")
                 self.menu()
             else:
-                
                 print('login ou senha incorreta')
                 input("pressione ENTER para continuar")
                 self.menu()
         except Exception as e:
-            
             print('Ocorreu um erro', e)
             self.cadastro()
             

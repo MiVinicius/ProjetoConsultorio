@@ -65,13 +65,25 @@ class ClienteController():
             endereco = EnderecoController.cadastrarEndereco()  # tem que criar um novo endereço, depois eu penso em outra solução
             cliente_novo = BancoDadosController.modificarCliente(cliente_existe, nomeNovo, cpfNovo, telefone, endereco)
             if cliente_novo:
-                return f'o cliente {nomeNovo} foi Atualizado'
+                print(f"o cliente {nomeNovo} foi Atualizado com sucesso!")
+                input("pressione ENTER para continuar")
+                return True
             else:
-                return f'o cliente {nomeNovo} não foi Atualizado'
+                print("ocorreu um erro ao atualizar o cliente")
+                input("pressione ENTER para continuar")
+                return False
     
     def deletarCliente():
         try:
-            BancoDadosController.deletarCliente(ClienteController.buscarCliente2())
+            clienteDeletar = ClienteController.buscarCliente2()
+            if clienteDeletar is None:
+                print("o cliente não existe!")
+                input("pressione ENTER para continuar")
+                return False
+            if clienteDeletar.consulta is not None:
+                for consulta in clienteDeletar.consulta:
+                    BancoDadosController.deletarConsulta(consulta)
+            BancoDadosController.deletarCliente(clienteDeletar)
             print("cliente deletado com sucesso!")
             input("pressione ENTER para continuar")
             return True

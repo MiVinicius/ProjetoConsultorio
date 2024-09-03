@@ -10,52 +10,61 @@ class Consulta:
         self.__descricao = descricao
         self.__data = data
         self.__horario = horario
-        self.__cliente = cliente
         self.__valor = valor
+        self.__cliente = cliente
         Consulta.__contador += 1  # Incrementa o contador de classe
         self.__numero = Consulta.__contador
 
-        
-    def _getDescricao(self):
+    @property
+    def descricao(self):
         return self.__descricao
     
-    def _setDescricao(self, descricao):
+    @descricao.setter
+    def descricao(self, descricao):
         self.__descricao = descricao
-        
-    def _getData(self):
+
+    @property
+    def data(self):
         return self.__data
     
-    def _setData(self, data):
+    @data.setter
+    def data(self, data):
         self.__data = data
-        
-    def _getHorario(self):
+
+    @property
+    def horario(self):
         return self.__horario
     
-    def _setHorario(self, horario):
+    @horario.setter
+    def horario(self, horario):
         self.__horario = horario
 
-    def _getCliente(self):
-        return self.__cliente
-    
-    def _setCliente(self, cliente):
-        self.__cliente = cliente
-        
-    def _getNumero(self):
-        return self.__numero
-    
-    def _getValor(self):
+    @property
+    def valor(self):
         return self.__valor
     
-    def _setValor(self, valor):
+    @valor.setter
+    def valor(self, valor):
         self.__valor = valor
-        
+
+    @property
+    def cliente(self):
+        return self.__cliente
+    
+    @cliente.setter
+    def cliente(self, cliente):
+        self.__cliente = cliente
+
+    @property
+    def numero(self):
+        return self.__numero
+
     def __eq__(self, other):
         if isinstance(other, Consulta):
             return self.numero == other.numero
         return False
-    
-    def __str__(self):
-        return f"Número da consulta: {self.__numero}\nDescrição: {self.__descricao}\nData: {self.__data}\nHorário: {self.__horario}\nValor: {self.__valor}\nCliente CPF: {self.__cliente}"
-    
+
     def __repr__(self):
-        return f"Número da consulta: {self.__numero}\nDescrição: {self.__descricao}\nData: {self.__data}\nHorário: {self.__horario}\nValor: {self.__valor}\nCliente CPF: {self.__cliente}"
+        return (f"Número da consulta: {self.numero}\nDescrição: {self.descricao}\n"
+                f"Data: {self.data}\nHorário: {self.horario}\nValor: {self.valor}\n"
+                f"Cliente CPF: {self.cliente}")
