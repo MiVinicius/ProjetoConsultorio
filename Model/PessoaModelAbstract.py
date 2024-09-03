@@ -1,46 +1,47 @@
+import sys
+sys.path.append('.')
 from abc import ABC, abstractmethod
 
 class Pessoa(ABC):
     
-    def __init__(self):
-        pass
+    def __init__(self, nome, cpf, telefone, endereco):
+        self._nome = nome
+        self._cpf = cpf
+        self._telefone = telefone
+        self._endereco = endereco
         
     @property
-    @abstractmethod
     def nome(self):
-        pass
+        return self._nome  # Corrigido: Adicionado return
     
     @nome.setter
-    @abstractmethod
     def nome(self, nome):
-        pass
+        self._nome = nome  # Corrigido: Removido return e atribuição correta
 
     @property
-    @abstractmethod
     def cpf(self):
-        pass
+        return self._cpf  # Corrigido: Adicionado return
     
     @cpf.setter
-    @abstractmethod
     def cpf(self, cpf):
-        pass
+        self._cpf = cpf  # Corrigido: Removido return e atribuição correta
 
     @property
-    @abstractmethod
     def telefone(self):
-        pass
+        return self._telefone  # Corrigido: Adicionado return
     
     @telefone.setter
-    @abstractmethod
     def telefone(self, telefone):
-        pass
+        self._telefone = telefone  # Corrigido: Removido return e atribuição correta
 
     @property
-    @abstractmethod
     def endereco(self):
-        pass
+        return self._endereco  # Corrigido: Adicionado return
     
     @endereco.setter
-    @abstractmethod
     def endereco(self, endereco):
+        self._endereco = endereco  # Corrigido: Removido return e atribuição correta
+    
+    @abstractmethod
+    def mostrarInformacoes(self):
         pass

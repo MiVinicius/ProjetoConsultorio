@@ -12,7 +12,7 @@ class BancoDadosController():
     
     @staticmethod
     def inicializarBase():
-        BancoDadosModel._inicializarBase()
+        return BancoDadosModel._inicializarBase()
         
         
     # Create

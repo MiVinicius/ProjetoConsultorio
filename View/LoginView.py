@@ -1,8 +1,11 @@
 import sys
 sys.path.append('.')
 from ProjetoConsultorio.View.MenuView import MenuView
+from ProjetoConsultorio.View.MenuViewMedico import MenuViewMedico
+from ProjetoConsultorio.View.MenuViewAtendente import MenuViewAtendente
 from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosController
 import os
+
 
 def clear():
     return os.system('cls')
@@ -48,7 +51,7 @@ class LoginView:
         print("-----------"*6)
         login = input(str("Login: "))
         senha = input(str("Senha: "))
-        print("->Funcionario = 1, Medico = 2<-")
+        print("->Atendente = 1, Medico = 2<-")
         tipo = input(str("Tipo: "))
         print("-----------"*6)
         try:
@@ -57,9 +60,9 @@ class LoginView:
                 if verificar.admin is True:
                     MenuView().menuView()
                 elif verificar.tipo == 1:
-                    MenuView().menuView()
+                    MenuViewAtendente().menuView()
                 elif verificar.tipo == 2:
-                    MenuView().menuView()
+                    MenuViewMedico().menuView()
                 else:
                     print("Esse sistema não é pra você!")
                     input("pressione ENTER para continuar")

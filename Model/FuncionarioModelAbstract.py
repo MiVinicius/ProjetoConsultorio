@@ -1,59 +1,23 @@
 import sys
 sys.path.append('.')
 from abc import ABC, abstractmethod
+from ProjetoConsultorio.Model.PessoaModelAbstract import Pessoa
 
-class Funcionario(ABC):
+class Funcionario(Pessoa, ABC ):
     
-    def __init__(self):
-        pass
+    def __init__(self, nome, cpf, telefone, salario, endereco):
+        super().__init__(nome, cpf, telefone, endereco)
+        self.__salario = float(salario)
 
     @property
-    @abstractmethod
-    def nome(self):
-        pass
-    
-    @nome.setter
-    @abstractmethod
-    def nome(self, nome):
-        pass
-
-    @property
-    @abstractmethod
-    def cpf(self):
-        pass
-    
-    @cpf.setter
-    @abstractmethod
-    def cpf(self, cpf):
-        pass
-
-    @property
-    @abstractmethod
-    def telefone(self):
-        pass
-    
-    @telefone.setter
-    @abstractmethod
-    def telefone(self, telefone):
-        pass
-
-    @property
-    @abstractmethod
     def salario(self):
-        pass
-    
-    @salario.setter
-    @abstractmethod
-    def salario(self, salario):
-        pass
+        return self.__salario
 
-    @property
+    @salario.setter
+    def salario(self, novo_salario):
+        self.__salario = novo_salario
+        
     @abstractmethod
-    def endereco(self):
-        pass
-    
-    @endereco.setter
-    @abstractmethod
-    def endereco(self, endereco):
-        pass
+    def mostrarInformacoes(self):
+        return super().mostrarInformacoes()
         

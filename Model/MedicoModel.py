@@ -59,6 +59,10 @@ class Medico(Funcionario):
     @crm.setter
     def crm(self, crm):
         self._crm = crm
+        
+    def mostrarInformacoes(self):
+        print(f"Nome: {self.nome}, Cpf: {self.cpf}, Telefone: {self.telefone}, "
+            f"Endereço: {self.endereco}, Salário: {self.salario}, CRM: {self.crm}")
 
     def __eq__(self, other):
         if isinstance(other, Medico):

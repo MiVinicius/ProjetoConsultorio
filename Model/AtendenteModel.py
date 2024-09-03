@@ -50,7 +50,11 @@ class Atendente(Funcionario):
     def endereco(self, endereco):
         self.__endereco = endereco
 
+    def mostrarInformacoes(self):
+        print(f"Nome: {self.nome}, Cpf: {self.cpf}, Telefone: {self.telefone}, "
+            f"Endereço: {self.endereco}, Salário: {self.salario}")
         
+    
     def __eq__(self, other):
         if isinstance(other, Atendente):
             return self.nome == other.nome and self.cpf == other.cpf

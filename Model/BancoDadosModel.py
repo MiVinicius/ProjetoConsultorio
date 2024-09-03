@@ -11,7 +11,6 @@ from ProjetoConsultorio.Model.EnderecoModel import Endereco
 class BancoDadosModel():
 
     
-    
     atendentes :list = []
     medicos :list = []
     clientes :list = []
