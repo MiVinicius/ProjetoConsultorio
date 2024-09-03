@@ -12,35 +12,35 @@ class Pessoa(ABC):
         
     @property
     def nome(self):
-        return self._nome  # Corrigido: Adicionado return
+        return self._nome  
     
     @nome.setter
     def nome(self, nome):
-        self._nome = nome  # Corrigido: Removido return e atribuição correta
+        self._nome = nome  
 
     @property
     def cpf(self):
-        return self._cpf  # Corrigido: Adicionado return
+        return self._cpf  
     
     @cpf.setter
     def cpf(self, cpf):
-        self._cpf = cpf  # Corrigido: Removido return e atribuição correta
+        self._cpf = cpf  
 
     @property
     def telefone(self):
-        return self._telefone  # Corrigido: Adicionado return
+        return self._telefone  
     
     @telefone.setter
     def telefone(self, telefone):
-        self._telefone = telefone  # Corrigido: Removido return e atribuição correta
+        self._telefone = telefone  
 
     @property
     def endereco(self):
-        return self._endereco  # Corrigido: Adicionado return
+        return self._endereco  
     
     @endereco.setter
     def endereco(self, endereco):
-        self._endereco = endereco  # Corrigido: Removido return e atribuição correta
+        self._endereco = endereco  
     
     @abstractmethod
     def mostrarInformacoes(self):
