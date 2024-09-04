@@ -4,7 +4,7 @@
 
 ## Descrição
 
-Projeto de um consultório médico com a finalidade de criar um abiente que permita ao usuario agilidade e facilitar o trabalho para gerenciamente de consultas, clientes e funcionarios, permitindo armazenar e acessar as informações quando necessario.
+Este é um projeto de um consultório médico chamado Clinitech com a finalidade de criar um ambiente que permita ao usuário agilidade e facilitar o trabalho para gerenciamento de consultas, clientes e funcionários, permitindo armazenar e acessar as informações quando necessário.
 
 
 ## Funcionalidades
@@ -48,6 +48,8 @@ Projeto de um consultório médico com a finalidade de criar um abiente que perm
 - python -m venv venv
 
 - python main.py
+
+- (se eu não estiver errado sobre isso)
 
 - Login = admin
 - senha = admin
