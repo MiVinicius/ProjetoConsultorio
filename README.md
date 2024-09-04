@@ -53,5 +53,5 @@ Projeto de um consultório médico com a finalidade de criar um abiente que perm
 - senha = admin
 - tipo = 0
 
-<img src="./Util/loginview.jpg" alt="login" width="500"/>
-<img src="./Util/menu principal.jpg" alt="menu" width="500"/>
+<img src="./Util/loginview.png" alt="login" width="500"/>
+<img src="./Util/menu principal.png" alt="menu" width="500"/>
