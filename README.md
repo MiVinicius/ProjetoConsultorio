@@ -41,14 +41,16 @@ Projeto de um consultório médico com a finalidade de criar um abiente que perm
 
 ## Como Usar
 
-git clone https://github.com/MiVinicius/ProjetoConsultorio.git
+- git clone https://github.com/MiVinicius/ProjetoConsultorio.git
 
-cd ProjetoConsultorio
+- cd ProjetoConsultorio
 
-python -m venv venv
+- python -m venv venv
 
-python main.py
+- python main.py
 
-Login = admin
-senha = admin
-tipo = 0
+- Login = admin
+- senha = admin
+- tipo = 0
+
+![LoginView](./Util/loginview.jpg)
