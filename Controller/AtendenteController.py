@@ -1,21 +1,22 @@
 import sys
 sys.path.append('.')
-from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosController
 from ProjetoConsultorio.Controller.EnderecoController import EnderecoController
 
 
 class AtendenteController():
     
-    @staticmethod
-    def cadastrarAtendente():
-        nome = str(input("Digite o nome do Cliente: \n"))
+    def __init__(self, banco_dados_controller):
+        self.banco_dados_controller = banco_dados_controller
+    
+    def cadastrarAtendente(self):
+        nome = str(input("Digite o nome do Atendente: \n"))
         cpf = str(input("Digite o CPF: \n"))
-        Atendente_existe = BancoDadosController.buscarAtendente(nome, cpf)
+        Atendente_existe = self.banco_dados_controller.buscarAtendente(nome, cpf)
         if Atendente_existe is None:
             telefone = str(input("Digite o Telefone: \n"))
             endereco = EnderecoController.cadastrarEndereco()
             salario = float(input("Digite o Salário: \n"))
-            BancoDadosController.cadastrarCliente(nome, cpf, telefone, endereco, salario)
+            self.banco_dados_controller.cadastrarAtendente(nome, cpf, telefone, endereco, salario)
             print("cadastro do Atendente sucedido!")
             input("pressione ENTER para continuar")
             return True
@@ -24,31 +25,31 @@ class AtendenteController():
             input("pressione ENTER para continuar")
             return False
     
-    @staticmethod
-    def buscarAtendente():
+    
+    def buscarAtendente(self):
         nome = str(input("Digite o nome do Atendente: \n"))
         cpf = str(input("Digite o CPF: \n"))
-        if BancoDadosController.buscarAtendente(nome, cpf) is None:
+        if self.banco_dados_controller.buscarAtendente(nome, cpf) is None:
             print("o Atendente não existe!")
             input("pressione ENTER para continuar")
         else: 
-            print(BancoDadosController.buscarAtendente(nome, cpf).__str__())
+            print(self.banco_dados_controller.buscarAtendente(nome, cpf).__str__())
             input("pressione ENTER para continuar")
     
-    @staticmethod
-    def buscarAtendente2():
+    
+    def buscarAtendente2(self):
         nome = str(input("Digite o nome do Atendente: \n"))
         cpf = str(input("Digite o CPF: \n"))
-        if BancoDadosController.buscarAtendente(nome, cpf) is None:
+        if self.banco_dados_controller.buscarAtendente(nome, cpf) is None:
             return None
         else:
-            return BancoDadosController.buscarAtendente(nome, cpf)
+            return self.banco_dados_controller.buscarAtendente(nome, cpf)
     
-    @staticmethod
-    def modificarAtendente():
+    
+    def modificarAtendente(self):
         nomeModificar = str(input("Digite o nome do Atendente para modificar: \n"))
         cpfModificar = str(input("Digite o CPF para modificar: \n"))
-        Atendente_existe = BancoDadosController.buscarAtendente(nomeModificar, cpfModificar)
+        Atendente_existe = self.banco_dados_controller.buscarAtendente(nomeModificar, cpfModificar)
         if Atendente_existe is None:
             print("o Atendente não existe!")
             input("pressione ENTER para continuar")
@@ -60,19 +61,20 @@ class AtendenteController():
             enderecoNovo = EnderecoController.cadastrarEndereco()
             salarioNovo = float(input("Digite o salário: \n"))
             try:
-                BancoDadosController.modificarAtendente(Atendente_existe, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo)
+                self.banco_dados_controller.modificarAtendente(Atendente_existe, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo)
                 print(f'o Atendente {nomeNovo} foi Atualizado')
                 input("pressione ENTER para continuar")
                 return True
             except Exception as e:
                 print(f'o Atendente {nomeNovo} não foi Atualizado por erro: {e}')
+                input("pressione ENTER para continuar")
                 return False
     
-    @staticmethod
-    def deletarAtendente():
+    
+    def deletarAtendente(self):
         try:
-            Atendente_deletar =AtendenteController.buscarAtendente2()
-            BancoDadosController.deletarAtendente(Atendente_deletar)
+            Atendente_deletar =self.buscarAtendente2()
+            self.banco_dados_controller.deletarAtendente(Atendente_deletar)
             print("Atendente deletado com sucesso")
             input("pressione ENTER para continuar")
             return True

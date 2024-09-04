@@ -1,21 +1,23 @@
 import sys
 sys.path.append('.')
-from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosController
 from ProjetoConsultorio.Controller.EnderecoController import EnderecoController
 
 class MedicoController():
-    @staticmethod
-    def cadastrarMedico():
+    
+    def __init__(self, banco_dados_controller):
+        self.banco_dados_controller = banco_dados_controller
+    
+    def cadastrarMedico(self):
         nome = str(input("Digite o nome do Médico: \n"))
         cpf = str(input("Digite o CPF: \n"))
-        medico_existe = BancoDadosController.buscarMedico(nome, cpf)
+        medico_existe = self.banco_dados_controller.buscarMedico(nome, cpf)
         if medico_existe is None:
             telefone = str(input("Digite o telefone: \n"))
             endereco = EnderecoController.cadastrarEndereco()
             salario = float(input("Digite o salário: \n"))
             crm = str(input("Digite o CRM: \n"))
             try:
-                BancoDadosController.cadastrarMedico(nome, cpf, telefone, endereco, salario, crm)
+                self.banco_dados_controller.cadastrarMedico(nome, cpf, telefone, endereco, salario, crm)
                 print("cadastro do médico sucedido!")
                 input("pressione ENTER para continuar")
                 return True
@@ -28,33 +30,33 @@ class MedicoController():
             input("pressione ENTER para continuar")
             return False
     
-    @staticmethod
-    def buscarMedico():
+    
+    def buscarMedico(self):
         nome = str(input("Digite o nome do medico: \n"))
         cpf = str(input("Digite o CPF: \n"))
-        if BancoDadosController.buscarMedico(nome, cpf) is None:  
+        if self.banco_dados_controller.buscarMedico(nome, cpf) is None:  
             print("o medico não existe!")
             input("pressione ENTER para continuar")
         else: 
-            print(BancoDadosController.buscarMedico(nome, cpf).__str__())
+            print(self.banco_dados_controller.buscarMedico(nome, cpf).__str__())
             input("pressione ENTER para continuar")
             
-    @staticmethod
-    def buscarMedico2():
+    
+    def buscarMedico2(self):
         nome = str(input("Digite o nome do medico: \n"))
         cpf = str(input("Digite o CPF: \n"))
-        medico_existe = BancoDadosController.buscarMedico(nome, cpf)
+        medico_existe = self.banco_dados_controller.buscarMedico(nome, cpf)
         if medico_existe is None:
             return None
         else:
             return medico_existe
         
     
-    @staticmethod
-    def modificarMedico():
+    
+    def modificarMedico(self):
         nomeModificar = str(input("Digite o nome do médico para modificar: \n"))
         cpfModificar = str(input("Digite o CPF para modificar: \n"))
-        medico_existe = BancoDadosController.buscarMedico(nomeModificar, cpfModificar)
+        medico_existe = self.banco_dados_controller.buscarMedico(nomeModificar, cpfModificar)
         if medico_existe is None:
             print("o medico não existe!")
             input("pressione ENTER para continuar")
@@ -67,7 +69,7 @@ class MedicoController():
             salarioNovo = float(input("Digite o salário: \n"))
             crmNovo = str(input("Digite o CRM: \n"))
             try:
-                BancoDadosController.modificarMedico(medico_existe, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo, crmNovo)
+                self.banco_dados_controller.modificarMedico(medico_existe, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo, crmNovo)
                 print("o medico foi Atualizado")
                 input("pressione ENTER para continuar")
                 return True
@@ -78,11 +80,11 @@ class MedicoController():
 
         
     
-    @staticmethod
-    def deletarMedico():
+    
+    def deletarMedico(self):
         try:
-            medicoDeletar = MedicoController.buscarMedico2()
-            BancoDadosController.deletarMedico(medicoDeletar)
+            medicoDeletar = self.buscarMedico2()
+            self.banco_dados_controller.deletarMedico(medicoDeletar)
             print("o medico foi excluído")
             input("pressione ENTER para continuar")
             return True

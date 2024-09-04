@@ -8,122 +8,89 @@ from ProjetoConsultorio.Model.MedicoModel import Medico
 from ProjetoConsultorio.Model.AtendenteModel import Atendente
 
 
-class BancoDadosController():
+class BancoDadosController:
     
-    @staticmethod
-    def inicializarBase():
-        return BancoDadosModel._inicializarBase()
-        
-        
+    def __init__(self):
+        self.model = BancoDadosModel()
+
     # Create
-    @staticmethod
-    def cadastrarUsuario(login, senha, tipo):
-        return BancoDadosModel.cadastrarUsuario(Usuario(login, senha, tipo))
+    def cadastrarUsuario(self, login, senha, tipo):
+        return self.model.cadastrarUsuario(Usuario(login, senha, tipo))
         
-    @staticmethod
-    def cadastrarCliente(nome, cpf, telefone, endereco):
-        return BancoDadosModel.cadastrarCliente(Cliente(nome, cpf, telefone, endereco))
+    def cadastrarCliente(self, nome, cpf, telefone, endereco):
+        return self.model.cadastrarCliente(Cliente(nome, cpf, telefone, endereco))
     
-    @staticmethod
-    def cadastrarConsulta(descricao, data, horario, valor, cliente):
-        return BancoDadosModel.cadastrarConsulta(Consulta(descricao, data, horario, valor, cliente))
+    def cadastrarConsulta(self, descricao, data, horario, valor, cliente):
+        return self.model.cadastrarConsulta(Consulta(descricao, data, horario, valor, cliente))
     
-    @staticmethod
-    def cadastrarAtendente(nome, cpf):
-        return BancoDadosModel.cadastrarAtendente(Atendente(nome, cpf))
+    def cadastrarAtendente(self, nome, cpf, telefone, endereco, salario):
+        return self.model.cadastrarAtendente(Atendente(nome, cpf, telefone, endereco, salario))
     
-    @staticmethod
-    def cadastrarMedico(nome, cpf, telefone, endereco, salario, crm):
-        return BancoDadosModel.cadastrarMedico(Medico(nome, cpf, telefone, endereco, salario, crm))
-    
+    def cadastrarMedico(self, nome, cpf, telefone, endereco, salario, crm):
+        return self.model.cadastrarMedico(Medico(nome, cpf, telefone, endereco, salario, crm))
     
     # Retreave
-    
-    
-    @staticmethod
-    def buscarUsuario(login, senha, tipo):
-        return BancoDadosModel.buscarUsuario(Usuario(login, senha, tipo))
+    def buscarUsuario(self, login, senha, tipo):
+        return self.model.buscarUsuario(Usuario(login, senha, tipo, False))
         
-    @staticmethod
-    def buscarCliente(nome, cpf):
-        return BancoDadosModel.buscarCliente(Cliente(nome, cpf, None, None))
+    def buscarCliente(self, nome, cpf):
+        return self.model.buscarCliente(Cliente(nome, cpf, None, None))
     
-    @staticmethod
-    def buscarConsulta(numero):
-        return BancoDadosModel.buscarConsulta(numero)
-    @staticmethod
-    def buscarAtendente(nome, cpf):
-        return BancoDadosModel.buscarAtendente(Atendente(nome, cpf, None, None, None))
+    def buscarConsulta(self, numero):
+        return self.model.buscarConsulta(numero)
     
-    @staticmethod
-    def buscarMedico(nome, cpf):
-        return BancoDadosModel.buscarMedico(Medico(nome, cpf, None, None, None, None))
+    def buscarAtendente(self, nome, cpf):
+        return self.model.buscarAtendente(Atendente(nome, cpf, None, None, None))
     
+    def buscarMedico(self, nome, cpf):
+        return self.model.buscarMedico(Medico(nome, cpf, None, None, None, None))
     
     # Update
+    def modificarUsuario(self, usuario, login, senha, tipo):
+        return self.model.modificarUsuario(usuario, Usuario(login, senha, tipo))
     
-    @staticmethod
-    def modificarUsuario(usuario, login, senha, tipo):
-        return BancoDadosModel.modificarUsuario(usuario, Usuario(login, senha, tipo))
+    def modificarCliente(self, clienteAntigo, nome, cpf, telefone, endereco):
+        return self.model.modificarCliente(clienteAntigo, Cliente(nome, cpf, telefone, endereco))
     
-    @staticmethod
-    def modificarCliente(clienteAntigo, nome, cpf, telefone, endereco):
-        return BancoDadosModel.modificarCliente(clienteAntigo, Cliente(nome, cpf, telefone, endereco))
+    def modificarConsulta(self, descricao, data, horario, valor, consultaModificar):
+        return self.model.modificarConsulta(Consulta(descricao, data, horario, valor, cliente=None), consultaModificar)
     
-    @staticmethod
-    def modificarConsulta(descricao, data, horario, valor, consultaModificar):
-        return BancoDadosModel.modificarConsulta(Consulta(descricao, data, horario, valor, cliente = None), consultaModificar)
+    def modificarAtendente(self, atendente_existe, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo):
+        return self.model.modificarAtendente(atendente_existe, Atendente(nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo))
     
-    @staticmethod
-    def modificarAtendente(atendente_existe, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo):
-        return BancoDadosModel.modificarAtendente(atendente_existe, Atendente(nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo))
-    
-    @staticmethod
-    def modificarMedico(medicoAntigo, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo, crmNovo):
-        return BancoDadosModel.modificarMedico(medicoAntigo, Medico(nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo, crmNovo))
-    
+    def modificarMedico(self, medicoAntigo, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo, crmNovo):
+        return self.model.modificarMedico(medicoAntigo, Medico(nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo, crmNovo))
     
     # Delete
+    def deletarUsuario(self, login):
+        return self.model.deletarUsuario(login)
     
-    @staticmethod
-    def deletarUsuario(login):
-        return BancoDadosModel.deletarUsuario(login)
+    def deletarCliente(self, cliente):
+        return self.model.deletarCliente(cliente)
     
-    @staticmethod
-    def deletarCliente(cliente):
-        return BancoDadosModel.deletarCliente(cliente)
+    def deletarAtendente(self, atendente):
+        return self.model.deletarAtendente(atendente)
     
-    @staticmethod
-    def deletarAtendente(atendente):
-        return BancoDadosModel.deletarAtendente(atendente)
+    def deletarMedico(self, medico):
+        return self.model.deletarMedico(medico)
     
-    @staticmethod
-    def deletarMedico(medico):
-        return BancoDadosModel.deletarMedico(medico)
-    
-    @staticmethod
-    def deletarConsulta(consulta):
-        return BancoDadosModel.deletarConsulta(consulta)
+    def deletarConsulta(self, consulta):
+        return self.model.deletarConsulta(consulta)
     
     # opcionais
+    def mostrar_consultas(self):
+        return self.model.mostrarConsultas()
     
-    @staticmethod
-    def mostrar_consultas():
-        return BancoDadosModel.mostrarConsultas()
+    def valorTotalConsultas(self):
+        return self.model.valorTotalConsultas()
     
-    @staticmethod
-    def valorTotalConsultas():
-        return BancoDadosModel.valorTotalConsultas()
+    def mostrarAtendentes(self):
+        return self.model.mostrarAtendentes()
     
-    @staticmethod
-    def mostrarAtendentes():
-        return BancoDadosModel.mostrarAtendentes()
+    def mostrarClientes(self):
+        return self.model.mostrarClientes()
     
-    @staticmethod
-    def mostrarClientes():
-        return BancoDadosModel.mostrarClientes()
-    
-    @staticmethod
-    def mostrarMedicos():
-        return BancoDadosModel.mostrarMedicos()
+    def mostrarMedicos(self):
+        return self.model.mostrarMedicos()
+
     

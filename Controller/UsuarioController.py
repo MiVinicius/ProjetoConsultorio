@@ -6,7 +6,9 @@ from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosControl
 
 class UsuarioController:
     
-    @staticmethod
+    def __init__(self, banco_dados_controller):
+        self.banco_dados_controller = banco_dados_controller
+    
     def cadastrarUsuario():
         nome = str(input("Digite o nome do usuario: \n"))
         senha = str(input("Digite a senha do usuario: \n"))
@@ -21,7 +23,7 @@ class UsuarioController:
             input("pressione ENTER para continuar")
             return False
             
-    @staticmethod
+    
     def buscarUsuario():
         nome = str(input("Digite o nome do usuario: \n"))
         senha = str(input("Digite a senha do usuario: \n"))
@@ -36,7 +38,7 @@ class UsuarioController:
             return usuario_buscar
             
             
-    @staticmethod
+    
     def modificarUsuario():
         nome = str(input("Digite o nome do usuario: \n"))
         senha = str(input("Digite a senha do usuario: \n"))
@@ -51,7 +53,7 @@ class UsuarioController:
             tipoNovo = int(input("Digite o novo tipo do usuario: ->Funcionario = 1, Medico = 2<- \n"))
             return BancoDadosController.modificarUsuario(usuario_existente, nomeNovo, senhaNova, tipoNovo)
     
-    @staticmethod
+    
     def excluirUsuario():
         nome = str(input("Digite o nome do usuario: \n"))
         senha = str(input("Digite a senha do usuario: \n"))

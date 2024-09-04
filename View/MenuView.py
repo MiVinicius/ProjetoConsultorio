@@ -10,16 +10,20 @@ import os
 def clear():
     return os.system('cls')
 
-class MenuView():
-    
+class MenuView:
+    def __init__(self):
+        self.banco_dados_controller = BancoDadosController()
+        self.cliente_controller = ClienteController(self.banco_dados_controller)
+        self.consulta_controller = ConsultaController(self.banco_dados_controller)
+        self.medico_controller = MedicoController(self.banco_dados_controller)
+        self.atendente_controller = AtendenteController(self.banco_dados_controller)
+
     def menuView(self):
-        
         while True:
-            #clear()  # OBSERVAÇÃO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ISSO FAZ A TELA APAGAR NO TERMINAL SEMPRE QUE VOLTAR PRA LÁ
             print("""
                 ----------------------------------------------------
                 |Menu 1x    Menu 2x      Menu 3x       Menu 4x     | 
-                |Cliente   Consulta    Atendentes  Administrativo|
+                |Cliente   Consulta    Atendentes  Administrativo  |
                 ----------------------------------------------------  
 
 11 - Cadastrar Cliente			21 - Agendar consulta
@@ -36,57 +40,63 @@ class MenuView():
 37 - Remover Médico
 38 - Remover Atendente
 
-                """)
-            opcao = int(input("Digite o número correspondente ao menu: "))
-            match opcao:
-                case 11:
-                    ClienteController.cadastrarCliente()  # esses comandos eu deveria colocar na View própria...
-                case 12:
-                    ClienteController.buscarCliente()
-                case 13:
-                    ClienteController.modificarCliente()
-                case 14:
-                    ClienteController.deletarCliente()
-                case 21:
-                    ConsultaController.cadastrarConsulta()
-                case 22:
-                    ConsultaController.buscarNumeroListaConsulta()
-                case 23:
-                    ConsultaController.modificarConsulta()
-                case 24:
-                    ConsultaController.deletarConsulta()
-                case 31:
-                    MedicoController.cadastrarMedico()
-                case 32:
-                    AtendenteController.cadastrarAtendente()
-                case 33:
-                    MedicoController.buscarMedico()
-                case 34:
-                    AtendenteController.buscarAtendente()
-                case 35:
-                    MedicoController.modificarMedico()
-                case 36:
-                    AtendenteController.modificarAtendente()
-                case 37:
-                    MedicoController.deletarMedico()
-                case 38:
-                    AtendenteController.deletarAtendente()
-                case 41:
-                    BancoDadosController.mostrar_consultas()
-                case 42:
-                    BancoDadosController.valorTotalConsultas()
-                case 43:
-                    BancoDadosController.mostrarAtendentes()
-                case 44:
-                    BancoDadosController.mostrarClientes()
-                case 45:
-                    BancoDadosController.mostrarMedicos()
-                case 00:
-                    break
-                case _:
-                    clear()
-                    print("Opção invalida")
-                    input("Pressione Enter para continuar")
+            """)
+            try:
+                opcao = input("Digite o número correspondente ao menu: ").strip()
+                opcao = int(opcao)
+                match opcao:
+                    case 11:
+                        self.cliente_controller.cadastrarCliente()  
+                    case 12:
+                        self.cliente_controller.buscarCliente()
+                    case 13:
+                        self.cliente_controller.modificarCliente()
+                    case 14:
+                        self.cliente_controller.deletarCliente()
+                    case 21:
+                        self.consulta_controller.cadastrarConsulta()
+                    case 22:
+                        self.consulta_controller.buscarNumeroListaConsulta()
+                    case 23:
+                        self.consulta_controller.modificarConsulta()
+                    case 24:
+                        self.consulta_controller.deletarConsulta()
+                    case 31:
+                        self.medico_controller.cadastrarMedico()
+                    case 32:
+                        self.atendente_controller.cadastrarAtendente()
+                    case 33:
+                        self.medico_controller.buscarMedico()
+                    case 34:
+                        self.atendente_controller.buscarAtendente()
+                    case 35:
+                        self.medico_controller.modificarMedico()
+                    case 36:
+                        self.atendente_controller.modificarAtendente()
+                    case 37:
+                        self.medico_controller.deletarMedico()
+                    case 38:
+                        self.atendente_controller.deletarAtendente()
+                    case 41:
+                        self.banco_dados_controller.mostrar_consultas()
+                    case 42:
+                        self.banco_dados_controller.valorTotalConsultas()
+                    case 43:
+                        self.banco_dados_controller.mostrarAtendentes()
+                    case 44:
+                        self.banco_dados_controller.mostrarClientes()
+                    case 45:
+                        self.banco_dados_controller.mostrarMedicos()
+                    case 00:
+                        break
+            except ValueError:
+                print("Opção inválida")
+                input("Pressione Enter para continuar")
+                self.menuView()
+
+# menu = MenuView()
+# menu.menuView()
+
                     
 # if __name__ == "__main__":
     
