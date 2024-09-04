@@ -20,8 +20,8 @@ class BancoDadosController:
     def cadastrarCliente(self, nome, cpf, telefone, endereco):
         return self.model.cadastrarCliente(Cliente(nome, cpf, telefone, endereco))
     
-    def cadastrarConsulta(self, descricao, data, horario, valor, cliente):
-        return self.model.cadastrarConsulta(Consulta(descricao, data, horario, valor, cliente))
+    def cadastrarConsulta(self, descricao, data, horario, valor, cliente, medico):
+        return self.model.cadastrarConsulta(Consulta(descricao, data, horario, valor, cliente, medico))
     
     def cadastrarAtendente(self, nome, cpf, telefone, endereco, salario):
         return self.model.cadastrarAtendente(Atendente(nome, cpf, telefone, endereco, salario))
@@ -52,8 +52,8 @@ class BancoDadosController:
     def modificarCliente(self, clienteAntigo, nome, cpf, telefone, endereco):
         return self.model.modificarCliente(clienteAntigo, Cliente(nome, cpf, telefone, endereco))
     
-    def modificarConsulta(self, descricao, data, horario, valor, consultaModificar):
-        return self.model.modificarConsulta(Consulta(descricao, data, horario, valor, cliente=None), consultaModificar)
+    def modificarConsulta(self, descricao, data, horario, valor, medico, consultaModificar):
+        return self.model.modificarConsulta(Consulta(descricao, data, horario, valor, cliente=None, medico=medico), consultaModificar)
     
     def modificarAtendente(self, atendente_existe, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo):
         return self.model.modificarAtendente(atendente_existe, Atendente(nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo))

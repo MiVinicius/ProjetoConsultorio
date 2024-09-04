@@ -38,7 +38,10 @@ class ConsultaController():
         data = str(input("Digite a data da consulta (dd/mm/yyyy): \n"))
         horario = str(input("Digite o horário da consulta (hh:mm): \n"))
         valor = float(input("Digite o valor da consulta: \n"))
-        if self.banco_dados_controller.cadastrarConsulta(descricao, data, horario, valor, cliente.cpf):
+        crm = self.buscarMedicoConsulta()
+        if crm is None:
+            print("Medico inexistente")  # vou deixar passar mesmo se o medico não existir por enquanto
+        if self.banco_dados_controller.cadastrarConsulta(descricao, data, horario, valor, cliente.cpf, crm):
             print(f"Consulta adicionada para o cliente {cliente.nome}")
             input("pressione ENTER para continuar")
             return True
@@ -50,6 +53,11 @@ class ConsultaController():
         nome = str(input("Digite o nome do cliente para procurar: \n"))
         cpf = str(input("Digite o CPF do cliente para procurar: \n"))
         return self.banco_dados_controller.buscarCliente(nome, cpf)
+    
+    def buscarMedicoConsulta(self):
+        nome = str(input("Digite o nome do medico para procurar: \n"))
+        cpf = str(input("Digite o CPF do medico para procurar: \n"))
+        return self.banco_dados_controller.buscarMedico(nome, cpf).crm
 
     
     def buscarNumeroListaConsulta(self):
@@ -84,7 +92,8 @@ class ConsultaController():
             data = str(input("Digite a nova data da consulta (dd/mm/yyyy): \n"))
             horario = str(input("Digite o novo horário da consulta (hh:mm): \n"))
             valor = float(input("Digite o novo valor da consulta: \n"))
-            consulta = self.banco_dados_controller.modificarConsulta(descricao, data, horario, valor, consultaModificar)
+            crm = self.buscarMedicoConsulta()
+            consulta = self.banco_dados_controller.modificarConsulta(descricao, data, horario, valor, crm, consultaModificar)
             if consulta is not None:
                 print("consulta modificada com sucesso!")
                 input("pressione ENTER para continuar")

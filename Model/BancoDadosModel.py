@@ -25,12 +25,13 @@ class BancoDadosModel:
             self.cadastrarUsuario(admin)
             cliente = Cliente("George", "123.456.789-00", "8888-8888", endereco)
             self.cadastrarCliente(cliente)
-            consulta = Consulta("Dor de cabeça", "01/01/2022", "10:00", 100, cliente.cpf)
+            medico = Medico("Carlos", "127.834.566-00", "7777-7777", endereco, 1500, "123456")
+            self.cadastrarMedico(medico)
+            consulta = Consulta("Dor de cabeça", "01/01/2022", "10:00", 100, cliente.cpf, medico.crm)
             self.cadastrarConsulta(consulta)
             atendente = Atendente("Rafael", "456.123.785-00", "9999-9999", endereco, 1000)
             self.cadastrarAtendente(atendente)
-            medico = Medico("Carlos", "127.834.566-00", "7777-7777", endereco, 1500, "123456")
-            self.cadastrarMedico(medico)
+            
         except Exception as e:
             print("Erro ao inicializar o banco de dados:", e)
             return False
@@ -106,6 +107,7 @@ class BancoDadosModel:
             consulta.data = consultaNova.data
             consulta.horario = consultaNova.horario
             consulta.valor = consultaNova.valor
+            consulta.medico = consultaNova.medico
             return True
         return False
     

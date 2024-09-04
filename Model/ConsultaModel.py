@@ -6,7 +6,7 @@ class Consulta:
     
     __contador = 0 
     
-    def __init__(self, descricao, data, horario, valor, cliente):
+    def __init__(self, descricao, data, horario, valor, cliente, medico):
         self.__descricao = descricao
         self.__data = data
         self.__horario = horario
@@ -14,6 +14,7 @@ class Consulta:
         self.__cliente = cliente
         Consulta.__contador += 1  # Incrementa o contador de classe
         self.__numero = Consulta.__contador
+        self.__medico = medico
 
     @property
     def descricao(self):
@@ -58,6 +59,14 @@ class Consulta:
     @property
     def numero(self):
         return self.__numero
+    
+    @property
+    def medico(self):
+        return self.__medico
+
+    @medico.setter
+    def medico(self, medico):
+        self.__medico = medico
 
     def __eq__(self, other):
         if isinstance(other, Consulta):
@@ -67,4 +76,4 @@ class Consulta:
     def __repr__(self):
         return (f"Número da consulta: {self.numero}\nDescrição: {self.descricao}\n"
                 f"Data: {self.data}\nHorário: {self.horario}\nValor: {self.valor}\n"
-                f"Cliente CPF: {self.cliente}")
+                f"Cliente CPF: {self.cliente}\nMédico CRM: {self.medico}")
