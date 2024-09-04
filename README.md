@@ -53,4 +53,4 @@ Projeto de um consultório médico com a finalidade de criar um abiente que perm
 - senha = admin
 - tipo = 0
 
-![LoginView](./Util/loginview.jpg)
+<img src="./Util/logo.jpg" alt="Clinitech" width="500"/>
