@@ -209,4 +209,6 @@ class BancoDadosModel:
         print(f'O valor total das consultas é: R${total:.2f}')
         input("pressione ENTER para continuar")
 
-    
+# if __name__ == "__main__":
+#     bd = BancoDadosModel()
+#     bd.mostrarConsultas()

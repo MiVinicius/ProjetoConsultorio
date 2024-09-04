@@ -1,6 +1,5 @@
 import sys
 sys.path.append('.')
-from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosController
 from ProjetoConsultorio.Controller.ClienteController import ClienteController
 from ProjetoConsultorio.Controller.ConsultaController import ConsultaController
 from ProjetoConsultorio.Controller.MedicoController import MedicoController
@@ -11,8 +10,8 @@ def clear():
     return os.system('cls')
 
 class MenuView:
-    def __init__(self):
-        self.banco_dados_controller = BancoDadosController()
+    def __init__(self,BancoDadosController):  # deveria estar tudo no main...
+        self.banco_dados_controller = BancoDadosController
         self.cliente_controller = ClienteController(self.banco_dados_controller)
         self.consulta_controller = ConsultaController(self.banco_dados_controller)
         self.medico_controller = MedicoController(self.banco_dados_controller)
@@ -98,7 +97,7 @@ class MenuView:
 # menu.menuView()
 
                     
-# if __name__ == "__main__":
+if __name__ == "__main__":
     
-    # menuview = MenuView()
-    # menuview.menuView()
+    menuview = MenuView()
+    menuview.menuView()

@@ -13,7 +13,7 @@ def clear():
 class LoginView:
 
     def __init__(self):
-        self.BancoDadosController = BancoDadosController()
+        self.BancoDadosController = BancoDadosController()  # isso nem deveria estar aqui...
         self.menu()
 
     def menu(self):
@@ -60,11 +60,11 @@ class LoginView:
                 usuario = self.BancoDadosController.buscarUsuario(login, senha, tipo)
                 if usuario:
                     if usuario.admin:
-                        MenuView().menuView()
+                        MenuView(self.BancoDadosController).menuView()
                     elif usuario.tipo == 1:
-                        MenuViewAtendente().menuView()
+                        MenuViewAtendente(self.BancoDadosController).menuView()
                     elif usuario.tipo == 2:
-                        MenuViewMedico().menuView()
+                        MenuViewMedico(self.BancoDadosController).menuView()
                     else:
                         print("Esse sistema não é para você!")
                         input("Pressione ENTER para continuar")
