@@ -1,6 +1,6 @@
 # ProjetoConsultorio
 
-![Clinitech](./Util/logo.jpg)
+<img src="./Util/logo.jpg" alt="Clinitech" width="300"/>
 
 ## Descrição
 
