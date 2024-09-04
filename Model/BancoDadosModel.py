@@ -184,24 +184,29 @@ class BancoDadosModel:
         print("Clientes:")
         for cliente in self.clientes:
             print(cliente, end='\n\n')
+        input("pressione ENTER para continuar")
 
     def mostrarMedicos(self):
         print("Médicos:")
         for medico in self.medicos:
             print(medico, end='\n\n')
+        input("pressione ENTER para continuar")
 
     def mostrarAtendentes(self):
         print("Atendentes:")
         for atendente in self.atendentes:
             print(atendente, end='\n\n')
+        input("pressione ENTER para continuar")
 
     def mostrarConsultas(self):
         print("Consultas Cadastradas:")
         for consulta in self.consultas:
             print(consulta, end='\n\n')
+        input("pressione ENTER para continuar")
 
     def valorTotalConsultas(self):
         total = sum(consulta.valor for consulta in self.consultas)
         print(f'O valor total das consultas é: R${total:.2f}')
+        input("pressione ENTER para continuar")
 
     

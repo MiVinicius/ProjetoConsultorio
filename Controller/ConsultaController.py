@@ -84,7 +84,15 @@ class ConsultaController():
             data = str(input("Digite a nova data da consulta (dd/mm/yyyy): \n"))
             horario = str(input("Digite o novo horário da consulta (hh:mm): \n"))
             valor = float(input("Digite o novo valor da consulta: \n"))
-            return self.banco_dados_controller.modificarConsulta(descricao, data, horario, valor, consultaModificar)
+            consulta = self.banco_dados_controller.modificarConsulta(descricao, data, horario, valor, consultaModificar)
+            if consulta is not None:
+                print("consulta modificada com sucesso!")
+                input("pressione ENTER para continuar")
+                return True
+            else:
+                print("consulta não foi modificada!")
+                input("pressione ENTER para continuar")
+                return False
         else:
             print("consulta inexistente")
             return False
@@ -104,13 +112,15 @@ class ConsultaController():
                 return True
             else:
                 print("consulta inexistente")
+                input("pressione ENTER para continuar")
                 return False
         else:
             print("consulta inexistente")
+            input("pressione ENTER para continuar")
             return False
             
     
-if __name__ == "__main__":
-    caos = ConsultaController()
-    caos.cadastrarConsulta()
-    # caos.buscarConsulta()
+# if __name__ == "__main__":
+#     caos = ConsultaController()
+#     caos.cadastrarConsulta()
+#     # caos.buscarConsulta()

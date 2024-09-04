@@ -74,8 +74,8 @@ class UsuarioController:
                 return False
             
             
-if __name__ == "__main__":
-    UsuarioController.cadastrarUsuario()
-    UsuarioController.buscarUsuario()
-    UsuarioController.modificarUsuario()
-    UsuarioController.excluirUsuario()
+# if __name__ == "__main__":
+#     UsuarioController.cadastrarUsuario()
+#     UsuarioController.buscarUsuario()
+#     UsuarioController.modificarUsuario()
+#     UsuarioController.excluirUsuario()
