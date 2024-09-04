@@ -18,6 +18,7 @@ class LoginView:
 
     def menu(self):
         while True:
+            clear()
             print("-----------" * 6)
             print("Bem-vindo ao Clinitech, seu Software para clínicas Médicas")
             print("-----------" * 6)
@@ -39,6 +40,7 @@ class LoginView:
 
     def login(self):
         while True:
+            clear()
             print("-----------" * 6)
             print("Bem-vindo ao Clinitech, seu Software para clínicas Médicas")
             print("-----------" * 6)
@@ -79,6 +81,7 @@ class LoginView:
 
     def cadastro(self):
         while True:
+            clear()
             print("-----------" * 6)
             print("Bem-vindo ao Clinitech, seu Software para clínicas Médicas")
             print("-----------" * 6)

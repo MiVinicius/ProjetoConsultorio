@@ -10,7 +10,7 @@ def clear():
     return os.system('cls')
 
 class MenuView:
-    def __init__(self,BancoDadosController):  # deveria estar tudo no main...
+    def __init__(self, BancoDadosController):  # deveria estar tudo no main...
         self.banco_dados_controller = BancoDadosController
         self.cliente_controller = ClienteController(self.banco_dados_controller)
         self.consulta_controller = ConsultaController(self.banco_dados_controller)
@@ -18,6 +18,7 @@ class MenuView:
         self.atendente_controller = AtendenteController(self.banco_dados_controller)
 
     def menuView(self):
+        clear()
         while True:
             print("""
                 ----------------------------------------------------
