@@ -3,7 +3,6 @@ sys.path.append('.')
 from ProjetoConsultorio.View.MenuView import MenuView
 from ProjetoConsultorio.View.MenuViewMedico import MenuViewMedico
 from ProjetoConsultorio.View.MenuViewAtendente import MenuViewAtendente
-from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosController
 import os
 
 
@@ -12,13 +11,13 @@ def clear():
 
 class LoginView:
 
-    def __init__(self):
-        self.BancoDadosController = BancoDadosController()  
+    def __init__(self, BancoDadosController):
+        self.BancoDadosController = BancoDadosController
         self.menu()
 
     def menu(self):
         while True:
-            clear()
+            # clear()
             print("-----------" * 6)
             print("Bem-vindo ao Clinitech, seu Software para clínicas Médicas")
             print("-----------" * 6)

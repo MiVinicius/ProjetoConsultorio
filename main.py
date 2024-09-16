@@ -1,10 +1,17 @@
 
 from View.LoginView import LoginView
 
+import Model.TabelaModel
+from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosController
+
+
 
 def Main():
 
-    LoginView()
+
+    Model.TabelaModel.main()
+    bancoDados = BancoDadosController()
+    LoginView(bancoDados)
 
 
 

@@ -1,3 +1,4 @@
+
 import sys
 sys.path.append('.')
 import sqlite3
@@ -6,8 +7,8 @@ from ProjetoConsultorio.Model.ClienteModel import Cliente
 from ProjetoConsultorio.Model.MedicoModel import Medico
 from ProjetoConsultorio.Model.AtendenteModel import Atendente
 from ProjetoConsultorio.Model.ConsultaModel import Consulta
+import Model.TabelaModel
 
-# from ProjetoConsultorio.Model.EnderecoModel import Endereco
 
 class BancoDadosModel:
     def __init__(self, db_path):
@@ -428,11 +429,11 @@ class BancoDadosModel:
     def obterTodasConsultas(self):
         query = 'SELECT * FROM consultas'
         self.cursor.execute(query)
-        consultas = []
         for row in self.cursor.fetchall():
             consulta = Consulta(row[2], row[3], row[4], row[5], row[1], row[6], row[0])
-            consultas.append(consulta)
-        return print(consultas)
+            print(consulta)
+        input("Pressione ENTER para continuar...")
+        return
 
     def calcularValorTotalConsultas(self):
         query = 'SELECT SUM(valor) FROM consultas'
@@ -448,9 +449,18 @@ class BancoDadosModel:
 
     def close(self):
         self.connection.close()
-
-if __name__ == "__main__":
+        
+if __name__ == "ProjetoConsultorio.Model.BancoDadosModel":  # A maior gambiarra da minha vida! kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+    tabela = Model.TabelaModel.main()                       # não tive ideia melhor na hora kkkkkkkkkkkkk
     banco = BancoDadosModel('Consultorio.db')
+    user = Usuario("administrador", "administrador", 0, True)
+    banco.cadastrarUsuario(user)
+    
+# if __name__:
+#     print(__name__)
+
+# if __name__ == "__main__":
+#     banco = BancoDadosModel('Consultorio.db')
 
     # Testes!
     
