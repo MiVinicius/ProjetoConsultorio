@@ -1,59 +1,25 @@
+import re
 import sys
-from ProjetoConsultorio.Model.FuncionarioModelAbstract import Funcionario
 sys.path.append('.')
+from ProjetoConsultorio.Model.FuncionarioModelAbstract import Funcionario
+
 class Atendente(Funcionario):
     
-    def __init__(self, nome, cpf, telefone, endereco, salario):
-        self.__nome = nome
-        self.__cpf = cpf
-        self.__telefone = telefone
-        self.__endereco = endereco
-        self.__salario = salario
-
-    @property
-    def nome(self):
-        return self.__nome
-    
-    @nome.setter
-    def nome(self, nome):
-        self.__nome = nome
-
-    @property
-    def cpf(self):
-        return self.__cpf
-    
-    @cpf.setter
-    def cpf(self, cpf):
-        self.__cpf = cpf
-
-    @property
-    def telefone(self):
-        return self.__telefone
-    
-    @telefone.setter
-    def telefone(self, telefone):
-        self.__telefone = telefone
-
-    @property
-    def salario(self):
-        return self.__salario
-    
-    @salario.setter
-    def salario(self, salario):
-        self.__salario = salario
-
-    @property
-    def endereco(self):
-        return self.__endereco
-    
-    @endereco.setter
-    def endereco(self, endereco):
-        self.__endereco = endereco
-
-    def mostrarInformacoes(self):
-        print(f"Nome: {self.nome}, Cpf: {self.cpf}, Telefone: {self.telefone}, "
-            f"Endereço: {self.endereco}, Salário: {self.salario}")
+    def __init__(self, nome, cpf, DataNasc, telefone, endereco, salario):
+        super().__init__(nome, cpf, DataNasc, telefone, endereco, salario)
         
+    def mostrar_informacoes(self):
+        print(f"Nome: {self.nome}, Cpf: {self.cpf}, Data de Nascimento: {self.DataNasc}, Telefone: {self.telefone}, "
+            f"Endereço: {self.endereco_id}, Salário: {self.salario}")
+    
+    @staticmethod
+    def validar_cpf(cpf: str) -> str:
+        cpf_limpo = re.sub(r'[\s.-]', '', cpf)
+        if not cpf_limpo.isdigit():
+            raise ValueError("CPF deve conter apenas números.")
+        if len(cpf_limpo) != 11:
+            raise ValueError("CPF deve conter exatamente 11 dígitos.")
+        return cpf_limpo
     
     def __eq__(self, other):
         if isinstance(other, Atendente):
@@ -61,5 +27,5 @@ class Atendente(Funcionario):
         return False
         
     def __repr__(self):
-        return (f"Nome: {self.nome}, Cpf: {self.cpf}, Telefone: {self.telefone}, "
-            f"Endereço: {self.endereco}, Salário: {self.salario}")
+        return (f"Nome: {self.nome}, Cpf: {self.cpf}, Data de Nascimento: {self.DataNasc}, Telefone: {self.telefone}, "
+            f"Endereço: {self.endereco_id}, Salário: {self.salario}")

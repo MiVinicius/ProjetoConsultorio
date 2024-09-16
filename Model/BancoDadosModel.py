@@ -1,216 +1,565 @@
 import sys
 sys.path.append('.')
+import sqlite3
+from ProjetoConsultorio.Model.UsuarioModel import Usuario
 from ProjetoConsultorio.Model.ClienteModel import Cliente
 from ProjetoConsultorio.Model.MedicoModel import Medico
 from ProjetoConsultorio.Model.AtendenteModel import Atendente
 from ProjetoConsultorio.Model.ConsultaModel import Consulta
-from ProjetoConsultorio.Model.UsuarioModel import Usuario
-from ProjetoConsultorio.Model.EnderecoModel import Endereco
 
+# from ProjetoConsultorio.Model.EnderecoModel import Endereco
 
 class BancoDadosModel:
+    def __init__(self, db_path):
+        self.connection = sqlite3.connect(db_path)
+        self.cursor = self.connection.cursor()
 
-    def __init__(self) -> None:
-        self.atendentes: list[Atendente] = []
-        self.medicos: list[Medico] = []
-        self.clientes: list[Cliente] = []
-        self.consultas: list[Consulta] = []
-        self.usuarios: list[Usuario] = []
-        self._inicializarBase()
-    
-    def _inicializarBase(self):
-        try:
-            endereco = Endereco("SP", "Bauru", "Tomás", "Tomate", "52", "45.450-000")
-            admin = Usuario("admin", "admin", 0, True)
-            self.cadastrarUsuario(admin)
-            cliente = Cliente("George", "123.456.789-00", "8888-8888", endereco)
-            self.cadastrarCliente(cliente)
-            medico = Medico("Carlos", "127.834.566-00", "7777-7777", endereco, 1500, "123456")
-            self.cadastrarMedico(medico)
-            consulta = Consulta("Dor de cabeça", "01/01/2022", "10:00", 100, cliente.cpf, medico.crm)
-            self.cadastrarConsulta(consulta)
-            atendente = Atendente("Rafael", "456.123.785-00", "9999-9999", endereco, 1000)
-            self.cadastrarAtendente(atendente)
-            
-        except Exception as e:
-            print("Erro ao inicializar o banco de dados:", e)
-            return False
-        return True
-    
     # Create
-    def cadastrarUsuario(self, usuario: Usuario):
-        if not any(u.login == usuario.login for u in self.usuarios):
-            self.usuarios.append(usuario)
-            return True
-        return False
+    def cadastrarUsuario(self, usuario):
+        query = '''
+        INSERT INTO usuarios (login, senha, tipo, administrador)
+        VALUES (?, ?, ?, ?)
+        '''
+        self.cursor.execute(query, (usuario.login, usuario.senha, usuario.tipo, usuario.admin))
+        self.connection.commit()
+        return self.cursor.lastrowid
     
-    def cadastrarConsulta(self, consulta: Consulta):
-        try:
-            cliente = next((c for c in self.clientes if c.cpf == consulta.cliente), None)
-            if cliente:
-                self.consultas.append(consulta)
-                cliente.consulta = consulta.numero
-                return True
-            return False
-        except Exception as e:
-            print("Erro ao cadastrar consulta na Base de dados:", e)
-            return False
-    
-    def cadastrarCliente(self, cliente: Cliente):
-        if not any(c.cpf == cliente.cpf for c in self.clientes):
-            self.clientes.append(cliente)
-            return True
-        return False
-    
-    def cadastrarMedico(self, medico: Medico):
-        if not any(m.cpf == medico.cpf for m in self.medicos):
-            self.medicos.append(medico)
-            return True
-        return False
-    
-    def cadastrarAtendente(self, atendente: Atendente):
-        if not any(a.cpf == atendente.cpf for a in self.atendentes):
-            self.atendentes.append(atendente)
-            return True
-        return False
-    
+    def cadastrarEndereco(self, endereco):
+        query = '''
+        INSERT INTO enderecos (estado, cidade, bairro, rua, numero, cep)
+        VALUES (?, ?, ?, ?, ?, ?)
+        '''
+        self.cursor.execute(query, (endereco.estado, endereco.cidade, endereco.bairro, endereco.rua, endereco.numero, endereco.cep))
+        self.connection.commit()
+        return self.cursor.lastrowid
+
+    def cadastrarCliente(self, cliente, endereco):
+        cliente.endereco_id = self.cadastrarEndereco(endereco)
+        query = '''
+        INSERT INTO clientes (cpf, nome, DataNasc, telefone, endereco_id)
+        VALUES (?, ?, ?, ?, ?)
+        '''
+        self.cursor.execute(query, (cliente.cpf, cliente.nome, cliente.DataNasc, cliente.telefone, cliente.endereco_id))
+        self.connection.commit()
+        return self.cursor.lastrowid
+
+    def cadastrarConsulta(self, consulta):
+        query = '''
+        INSERT INTO consultas (descricao, data, horario, cliente_id, medico, valor)
+        VALUES (?, ?, ?, ?, ?, ?)
+        '''
+        self.cursor.execute(query, (consulta.descricao, consulta.data, consulta.horario, consulta.cliente, consulta.medico, consulta.valor))
+        self.connection.commit()
+        return self.cursor.lastrowid
+
+    def cadastrarAtendente(self, atendente, endereco):
+        atendente.endereco_id = self.cadastrarEndereco(endereco)
+        query = '''
+        INSERT INTO atendentes (cpf, nome, DataNasc, telefone, endereco_id, salario)
+        VALUES (?, ?, ?, ?, ?, ?)
+        '''
+        self.cursor.execute(query, (atendente.cpf, atendente.nome, atendente.DataNasc, atendente.telefone, atendente.endereco_id, atendente.salario))
+        self.connection.commit()
+        return self.cursor.lastrowid
+
+    def cadastrarMedico(self, medico, endereco):
+        medico.endereco_id = self.cadastrarEndereco(endereco)
+        query = '''
+        INSERT INTO medicos (cpf, nome, DataNasc, telefone, endereco_id, salario, crm)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        '''
+        self.cursor.execute(query, (medico.cpf, medico.nome, medico.DataNasc, medico.telefone, medico.endereco_id, medico.salario, medico.crm))
+        self.connection.commit()
+        return self.cursor.lastrowid
+
     # Retrieve
-    def buscarUsuario(self, usuario: Usuario):
-        return next((u for u in self.usuarios if u.login == usuario.login and u.senha == usuario.senha and u.tipo == usuario.tipo), None)
-    
+    def buscarUsuario(self, usuario):
+        query = '''
+        SELECT * FROM usuarios WHERE login = ? AND senha = ? AND tipo = ? 
+        '''
+        self.cursor.execute(query, (usuario.login, usuario.senha, usuario.tipo))
+        user = self.cursor.fetchone()
+        
+        if user:
+            
+            login, senha, tipo, admin = user 
+            admin_bool = bool(admin)  
+            return Usuario(login, senha, tipo, admin_bool)
+        else:
+            return None
+
+    def buscarEndereco(self, endereco_id):
+        query = '''
+        SELECT * FROM enderecos WHERE id = ?
+        '''
+        self.cursor.execute(query, (endereco_id,))
+        return self.cursor.fetchone()
+
+    def buscarCliente(self, nome, cpf):
+        try:
+            query = '''
+            SELECT * FROM clientes WHERE nome = ? AND cpf = ?
+            '''
+            self.cursor.execute(query, (nome, cpf))
+            cliente_data = self.cursor.fetchone()
+            if cliente_data:
+                cliente_str = (
+                    f"Cliente encontrado: CPF = {cliente_data[0]}, Nome = {cliente_data[1]}, "
+                    f"Data de Nascimento = {cliente_data[2]}, Telefone = {cliente_data[3]}, "
+                    f"Endereço = {cliente_data[4]}"
+                )
+                print(cliente_str)
+                endereco_id = cliente_data[4]
+                if endereco_id:
+                    self.cursor.execute('SELECT * FROM Enderecos WHERE id = ?', (endereco_id,))
+                    endereco = self.cursor.fetchone()
+                    if endereco:
+                        endereco_str = (
+                            f"Endereço encontrado: Estado: {endereco[1]}, Cidade: {endereco[2]}, "
+                            f"Bairro: {endereco[3]}, Rua: {endereco[4]} - Número {endereco[5]}, CEP: {endereco[6]}"
+                        )
+                        print(endereco_str)
+                    else:
+                        print("Endereço não encontrado.")
+                else:
+                    print("Cliente não tem um endereço vinculado.")
+                return Cliente(
+                    nome=cliente_data[1],
+                    cpf=cliente_data[0],
+                    DataNasc=cliente_data[2],
+                    telefone=cliente_data[3],
+                    endereco=endereco_id
+                )
+            else:
+                print("Cliente não encontrado.")
+                return None
+        except Exception as e:
+            print(f"Ocorreu um erro ao buscar o cliente: {e}")
+            return None
+
+
     def buscarConsulta(self, numero):
-        return next((consulta for consulta in self.consultas if consulta.numero == numero), None)
+        query = '''
+        SELECT * FROM consultas WHERE id = ?
+        '''
+        self.cursor.execute(query, (numero,))
+        consult = self.cursor.fetchone()
+        if consult:
+            return Consulta(consult[2], consult[3], consult[4], consult[5], consult[1], consult[6], consult[0])
+        return None
     
-    def buscarCliente(self, cliente: Cliente):
-        return next((c for c in self.clientes if c.nome == cliente.nome and c.cpf == cliente.cpf), None)
-    
-    def buscarAtendente(self, atendente: Atendente):
-        return next((a for a in self.atendentes if a.nome == atendente.nome and a.cpf == atendente.cpf), None)
-    
-    def buscarMedico(self, medico: Medico):
-        return next((m for m in self.medicos if m.nome == medico.nome and m.cpf == medico.cpf), None)
-    
+    def buscarListaConsulta(self, cliente_id):
+        query = '''
+        SELECT * FROM consultas WHERE cliente_id = ?
+        '''
+        self.cursor.execute(query, (cliente_id,))
+        consultas = self.cursor.fetchall()
+        if consultas:
+            lista_consultas = []
+            for consult in consultas:
+                consulta = Consulta(consult[2], consult[3], consult[4], consult[5], consult[1], consult[6], consult[0])
+                lista_consultas.append(consulta)
+            return lista_consultas
+        return []
+
+    def buscarAtendente(self, nome, cpf):
+        try:
+            query = '''
+            SELECT * FROM atendentes WHERE nome = ? AND cpf = ?
+            '''
+            self.cursor.execute(query, (nome, cpf))
+            atendente_data = self.cursor.fetchone()
+            if atendente_data:
+                atendente_str = (
+                    f"Atendente encontrado: CPF = {atendente_data[0]}, Nome = {atendente_data[1]}, "
+                    f"Data de Nascimento = {atendente_data[2]}, Telefone = {atendente_data[3]}, "
+                    f"Endereço = {atendente_data[4]}, Salário = {atendente_data[5]}"
+                )
+                print(atendente_str)
+                endereco_id = atendente_data[4]
+                if endereco_id:
+                    self.cursor.execute('SELECT * FROM Enderecos WHERE id = ?', (endereco_id,))
+                    endereco = self.cursor.fetchone()
+
+                    if endereco:
+                        endereco_str = (
+                            f"Endereço encontrado: Estado: {endereco[1]}, Cidade: {endereco[2]}, "
+                            f"Bairro: {endereco[3]}, Rua: {endereco[4]} - Número {endereco[5]}, CEP: {endereco[6]}"
+                        )
+                        print(endereco_str)
+                    else:
+                        print("Endereço não encontrado.")
+                else:
+                    print("Atendente não tem um endereço vinculado.")
+                return Atendente(
+                    nome=atendente_data[1],
+                    cpf=atendente_data[0],
+                    DataNasc=atendente_data[2],
+                    telefone=atendente_data[3],
+                    endereco=endereco_id,
+                    salario=atendente_data[5]
+                )
+            else:
+                print("Atendente não encontrado.")
+                return None
+        except Exception as e:
+            print(f"Ocorreu um erro ao buscar o atendente: {e}")
+            return None
+
+
+    def buscarMedico(self, nome, cpf):
+        try:
+            query = '''
+            SELECT * FROM medicos WHERE nome = ? AND cpf = ?
+            '''
+            self.cursor.execute(query, (nome, cpf))
+            medico_data = self.cursor.fetchone()
+            if medico_data:
+                medico_str = (
+                    f"Médico encontrado: CPF = {medico_data[0]}, Nome = {medico_data[1]}, "
+                    f"Data de Nascimento = {medico_data[2]}, Telefone = {medico_data[3]}, "
+                    f"Endereço = {medico_data[4]}, Salário = {medico_data[5]}, CRM = {medico_data[6]}"
+                )
+                print(medico_str)
+                endereco_id = medico_data[4]
+                endereco_query = 'SELECT * FROM Enderecos WHERE id = ?'
+                self.cursor.execute(endereco_query, (endereco_id,))
+                endereco = self.cursor.fetchone()
+                if endereco:
+                    endereco_str = (
+                        f"Endereço encontrado: Estado: {endereco[1]}, Cidade: {endereco[2]}, "
+                        f"Bairro: {endereco[3]}, Rua: {endereco[4]} - Número {endereco[5]}, CEP: {endereco[6]}"
+                    )
+                    print(endereco_str)
+                else:
+                    print("Endereço não encontrado.")
+                return Medico(
+                    nome=medico_data[1],
+                    cpf=medico_data[0],
+                    DataNasc=medico_data[2],
+                    telefone=medico_data[3],
+                    endereco=endereco_id,
+                    salario=medico_data[5],
+                    crm=medico_data[6]
+                )
+            else:
+                print("Médico não encontrado.")
+                return None
+        except Exception as e:
+            print(f"Ocorreu um erro ao buscar o médico: {e}")
+            return None
+
+
     # Update
-    def modificarUsuario(self, usuarioAntigo: Usuario, usuarioAtualizado: Usuario):
-        usuario = self.buscarUsuario(usuarioAntigo)
-        if usuario:
-            usuario.login = usuarioAtualizado.login
-            usuario.senha = usuarioAtualizado.senha
-            usuario.tipo = usuarioAtualizado.tipo
+    def modificarUsuario(self, usuarioAntigo, usuario):
+        query = '''
+        UPDATE usuarios
+        SET login = ?, senha = ?, tipo = ?, administrador = ?
+        WHERE id = ?
+        '''
+        self.cursor.execute(query, (usuario.login, usuario.senha, usuario.tipo, usuario.admin, usuarioAntigo.id))
+        self.connection.commit()
+
+    def atualizarEndereco(self, ID, endereco):
+        try:
+            query = '''
+            UPDATE enderecos
+            SET estado = ?, cidade = ?, bairro = ?, rua = ?, numero = ?, cep = ?
+            WHERE id = ?
+            '''
+            self.cursor.execute(query, (endereco.estado, endereco.cidade, endereco.bairro, endereco.rua, endereco.numero, endereco.cep, ID.endereco_id))
+            self.connection.commit()
             return True
-        return False
-    
-    def modificarConsulta(self, consultaNova: Consulta, consultaModificar: Consulta):
-        consulta = self.buscarConsulta(consultaModificar.numero)
-        if consulta:
-            consulta.descricao = consultaNova.descricao
-            consulta.data = consultaNova.data
-            consulta.horario = consultaNova.horario
-            consulta.valor = consultaNova.valor
-            consulta.medico = consultaNova.medico
+        except sqlite3.OperationalError:
+            print("Erro: Não foi possível alterar o endereço.")
+            return False
+
+    def modificarCliente(self, clienteAntigo, cliente):
+        try:
+            query = '''
+            UPDATE clientes
+            SET nome = ?, DataNasc = ?, telefone = ?
+            WHERE cpf = ?
+            '''
+            self.cursor.execute(query, (cliente.nome, cliente.DataNasc, cliente.telefone, clienteAntigo.cpf))
+            self.connection.commit()
             return True
-        return False
-    
-    def modificarCliente(self, id_cliente: Cliente, cliente_novo: Cliente):
-        cliente = self.buscarCliente(id_cliente)
-        if cliente:
-            cliente.nome = cliente_novo.nome
-            cliente.cpf = cliente_novo.cpf
-            cliente.telefone = cliente_novo.telefone
-            cliente.endereco = cliente_novo.endereco
-            return True
-        return False
-    
-    def modificarMedico(self, id_medico: Medico, medico_novo: Medico):
-        medico = self.buscarMedico(id_medico)
-        if medico:
-            medico.nome = medico_novo.nome
-            medico.cpf = medico_novo.cpf
-            medico.telefone = medico_novo.telefone
-            medico.endereco = medico_novo.endereco
-            medico.salario = medico_novo.salario
-            medico.crm = medico_novo.crm
-            return True
-        return False
-    
-    def modificarAtendente(self, id_atendente: Atendente, atendente_novo: Atendente):
-        atendente = self.buscarAtendente(id_atendente)
-        if atendente:
-            atendente.nome = atendente_novo.nome
-            atendente.cpf = atendente_novo.cpf
-            atendente.telefone = atendente_novo.telefone
-            atendente.endereco = atendente_novo.endereco
-            atendente.salario = atendente_novo.salario
-            return True
-        return False
-    
+        except sqlite3.OperationalError:
+            print("Erro: Não foi possível alterar o cliente.")
+            return False
+        
+
+    def modificarConsulta(self, consultaAntiga, consulta):
+        query = '''
+        UPDATE consultas
+        SET descricao = ?, data = ?, horario = ?, medico = ?, valor = ?
+        WHERE id = ?
+        '''
+        self.cursor.execute(query, (consulta.descricao, consulta.data, consulta.horario, consulta.medico, consulta.valor, consultaAntiga.numero))
+        self.connection.commit()
+        return True
+
+    def modificarAtendente(self, atendenteAntigo, atendente):
+        query = '''
+        UPDATE atendentes
+        SET nome = ?, DataNasc = ?, telefone = ?, salario = ?
+        WHERE cpf = ?
+        '''
+        self.cursor.execute(query, (atendente.nome, atendente.DataNasc, atendente.telefone, atendente.salario, atendenteAntigo.cpf))
+        self.connection.commit()
+
+    def modificarMedico(self, medicoAntigo, medico):
+        query = '''
+        UPDATE medicos
+        SET nome = ?, DataNasc = ?, telefone = ?, salario = ?, crm = ?
+        WHERE cpf = ?
+        '''
+        self.cursor.execute(query, (medico.nome, medico.DataNasc, medico.telefone, medico.salario, medico.crm, medicoAntigo.cpf))
+        self.connection.commit()
+
     # Delete
-    def deletarUsuario(self, usuario: Usuario):
-        usuario_a_remover = self.buscarUsuario(usuario)
-        if usuario_a_remover:
-            self.usuarios.remove(usuario_a_remover)
-            return True
-        return False
-    
-    def deletarConsulta(self, numero_consulta):
-        consulta_a_remover = self.buscarConsulta(numero_consulta)
-        if consulta_a_remover:
-            self.consultas.remove(consulta_a_remover)
-            return True
-        print("Consulta não encontrada na lista")
-        return False
-    
-    def deletarCliente(self, cliente: Cliente):
-        cliente_a_remover = self.buscarCliente(cliente)
-        if cliente_a_remover:
-            self.clientes.remove(cliente_a_remover)
-            return True
-        return False
-    
-    def deletarAtendente(self, atendente: Atendente):
-        atendente_a_remover = self.buscarAtendente(atendente)
-        if atendente_a_remover:
-            self.atendentes.remove(atendente_a_remover)
-            return True
-        return False
-    
-    def deletarMedico(self, medico: Medico):
-        medico_a_remover = self.buscarMedico(medico)
-        if medico_a_remover:
-            self.medicos.remove(medico_a_remover)
-            return True
-        return False
-    
-    # Métodos adicionais
-    def mostrarClientes(self):
-        print("Clientes:")
-        for cliente in self.clientes:
-            print(cliente, end='\n\n')
-        input("pressione ENTER para continuar")
+    def deletarUsuario(self, usuario):
+        query = '''
+        DELETE FROM usuarios WHERE login = ?
+        '''
+        self.cursor.execute(query, (usuario.login,))
+        self.connection.commit()
 
-    def mostrarMedicos(self):
-        print("Médicos:")
-        for medico in self.medicos:
-            print(medico, end='\n\n')
-        input("pressione ENTER para continuar")
+    def deletarCliente(self, cliente):
+        query = '''
+        DELETE FROM clientes WHERE cpf = ?
+        '''
+        self.cursor.execute(query, (cliente.cpf,))
+        self.connection.commit()
+        self._delete_orphan_endereco(cliente.endereco_id)
 
-    def mostrarAtendentes(self):
-        print("Atendentes:")
-        for atendente in self.atendentes:
-            print(atendente, end='\n\n')
-        input("pressione ENTER para continuar")
+    def deletarAtendente(self, atendente):
+        query = '''
+        DELETE FROM atendentes WHERE cpf = ?
+        '''
+        self.cursor.execute(query, (atendente.cpf,))
+        self.connection.commit()
+        self._delete_orphan_endereco(atendente.endereco_id)
 
-    def mostrarConsultas(self):
-        print("Consultas Cadastradas:")
-        for consulta in self.consultas:
-            print(consulta, end='\n\n')
-        input("pressione ENTER para continuar")
+    def deletarMedico(self, medico):
+        query = '''
+        DELETE FROM medicos WHERE cpf = ?
+        '''
+        self.cursor.execute(query, (medico.cpf,))
+        self.connection.commit()
+        self._delete_orphan_endereco(medico.endereco_id)
 
-    def valorTotalConsultas(self):
-        total = sum(consulta.valor for consulta in self.consultas)
-        print(f'O valor total das consultas é: R${total:.2f}')
-        input("pressione ENTER para continuar")
+    def deletarConsulta(self, consulta):
+        query = '''
+        DELETE FROM consultas WHERE id = ?
+        '''
+        self.cursor.execute(query, (consulta.numero,))
+        self.connection.commit()
 
-# if __name__ == "__main__":
-#     bd = BancoDadosModel()
-#     bd.mostrarConsultas()
+    def deletarEndereco(self, endereco_id):
+        query = '''
+        SELECT COUNT(*) FROM (
+            SELECT endereco_id FROM clientes WHERE endereco_id = ?
+            UNION ALL
+            SELECT endereco_id FROM medicos WHERE endereco_id = ?
+            UNION ALL
+            SELECT endereco_id FROM atendentes WHERE endereco_id = ?
+        ) AS combined
+        '''
+        self.cursor.execute(query, (endereco_id, endereco_id, endereco_id))
+        count = self.cursor.fetchone()[0]
+        if count == 0:
+            delete_query = '''
+            DELETE FROM enderecos WHERE id = ?
+            '''
+            self.cursor.execute(delete_query, (endereco_id,))
+            self.connection.commit()
+
+    def _delete_orphan_endereco(self, endereco_id):
+        query = '''
+        SELECT COUNT(*) FROM (
+            SELECT endereco_id FROM clientes WHERE endereco_id = ?
+            UNION ALL
+            SELECT endereco_id FROM medicos WHERE endereco_id = ?
+            UNION ALL
+            SELECT endereco_id FROM atendentes WHERE endereco_id = ?
+        ) AS combined
+        '''
+        self.cursor.execute(query, (endereco_id, endereco_id, endereco_id))
+        count = self.cursor.fetchone()[0]
+        if count == 0:
+            delete_query = '''
+            DELETE FROM enderecos WHERE id = ?
+            '''
+            self.cursor.execute(delete_query, (endereco_id,))
+            self.connection.commit()
+
+
+    # Adicionais
+    
+    def obterTodosClientes(self):
+        query = 'SELECT * FROM clientes'
+        self.cursor.execute(query)
+        for row in self.cursor.fetchall():
+            cliente = Cliente(row[1], row[0], row[2], row[3], row[4])
+            print(cliente)
+        input("Pressione ENTER para continuar...")
+        return 
+
+    def obterTodosMedicos(self):
+        query = 'SELECT * FROM medicos'
+        self.cursor.execute(query)
+        for row in self.cursor.fetchall():
+            medico = Medico(row[1], row[0], row[2], row[3], row[4], row[5], row[6])
+            print(medico)
+        input("Pressione ENTER para continuar...")
+        return 
+        
+
+    def obterTodosAtendentes(self):
+        query = 'SELECT * FROM atendentes'
+        self.cursor.execute(query)
+        for row in self.cursor.fetchall():
+            atendente = Atendente(row[1], row[0], row[2], row[3], row[4], row[5])
+            print(atendente)
+        input("Pressione ENTER para continuar...")
+        return 
+
+    def obterTodasConsultas(self):
+        query = 'SELECT * FROM consultas'
+        self.cursor.execute(query)
+        consultas = []
+        for row in self.cursor.fetchall():
+            consulta = Consulta(row[2], row[3], row[4], row[5], row[1], row[6], row[0])
+            consultas.append(consulta)
+        return print(consultas)
+
+    def calcularValorTotalConsultas(self):
+        query = 'SELECT SUM(valor) FROM consultas'
+        self.cursor.execute(query)
+        total = self.cursor.fetchone()[0]
+        if total:
+            print("R$ ",total, "reais")
+            input("Pressione ENTER para continuar...")
+        else :
+            print(0.0)
+            input("Pressione ENTER para continuar...")
+        return   
+
+    def close(self):
+        self.connection.close()
+
+if __name__ == "__main__":
+    banco = BancoDadosModel('Consultorio.db')
+
+    # Testes!
+    
+    # enderecoOrfao = banco._delete_orphan_endereco(1)
+    
+    # enderec = Endereco("São paulo", "Santos", "Tijuca", "Jacarepaguá", "90", "12.345-678")
+    # client = Cliente("Misael", "1234567800", "8888-8888", enderec)
+    # cliente1 = banco.cadastrarCliente(client)
+    
+    # buscar1 = banco.buscarCliente(Cliente("Misael", "1234567800", None, None))
+    # print(buscar1)
+    # buscarEnder = banco.buscarEndereco("1")
+    # print(buscarEnder)
+    # ender = Endereco("Pernambuco", "Recife", "Porto digital", "Inhegas", "108", "00.415-218")
+    # mudarEnder = banco.atualizarEndereco(Cliente(buscar1[1], buscar1[0], buscar1[2], buscar1[3]), ender)
+    
+    # cliente2 = Cliente("Marta", "12345678900", "9999-9999", enderec)
+    # modificar = banco.modificarCliente(Cliente(buscar1[1], buscar1[0], buscar1[2], buscar1[3]), cliente2)
+    
+    # buscar2 = banco.buscarCliente(Cliente("Marta", "12345678900", None, None))
+    # print(buscar2)
+    # deletar = banco.deletarCliente(Cliente(buscar2[1], buscar2[0], buscar2[2], buscar2[3]))
+    
+    
+    
+    # enderec = Endereco("São paulo", "Santos", "Tijuca", "Jacarepaguá", "90", "12.345-678")
+    # client = Atendente("Misael", "12345678900", "8888-8888", enderec, "1500")
+    # cliente1 = banco.cadastrarAtendente(client)
+    
+    # buscar1 = banco.buscarAtendente(Atendente("Misael", "12345678900", None, None, None))
+    # print(buscar1)
+    # buscarEnder = banco.buscarEndereco("2")
+    # print(buscarEnder)
+    # ender = Endereco("Pernambuco", "Recife", "Porto digital", "Inhegas", "108", "00.415-218")
+    # mudarEnder = banco.atualizarEndereco(Atendente(buscar1[1], buscar1[0], buscar1[3], buscar1[2], buscar1[4]), ender)
+    
+    
+    # cliente2 = Atendente("Marta", "12345678900", "9999-9999", enderec, "2000")
+    # modificar = banco.modificarAtendente(Atendente(buscar1[1], buscar1[0], buscar1[3], buscar1[2], buscar1[4]), cliente2)
+    
+    # buscar2 = banco.buscarAtendente(Atendente("Marta", "12345678900", None, None, None))
+    # print(buscar2)
+    # deletar = banco.deletarAtendente(Atendente(buscar2[1], buscar2[0], buscar2[2], buscar2[3], buscar2[4]))
+    
+    
+    
+    # enderec = Endereco("São paulo", "Santos", "Tijuca", "Jacarepaguá", "90", "12.345-678")
+    # client = Medico("Misael", "123456789000", "8888-8888", enderec, "1500", "Pediatra")
+    # cliente1 = banco.cadastrarMedico(client)
+    
+    # buscar1 = banco.buscarMedico(Medico("Misael", "123456789000", None, None, None, None))
+    # print(buscar1)
+    # buscarEnder = banco.buscarEndereco("3")
+    # print(buscarEnder)
+    # ender = Endereco("Pernambuco", "Recife", "Porto digital", "Inhegas", "108", "00.415-218")
+    # mudarEnder = banco.atualizarEndereco(Atendente(buscar1[1], buscar1[0], buscar1[3], buscar1[2], buscar1[4]), ender)
+    
+    # cliente2 = Medico("Marta", "12345678900", "9999-9999", enderec, "2000", "Cardiologista")
+    # modificar = banco.modificarMedico(Medico(buscar1[1], buscar1[0], buscar1[3], buscar1[2], buscar1[4], buscar1[5]), cliente2)
+    
+    # buscar2 = banco.buscarMedico(Medico("Marta", "12345678900", None, None, None, None))
+    # print(buscar2)
+    # deletar = banco.deletarMedico(Medico(buscar2[1], buscar2[0], buscar2[3], buscar2[2], buscar2[4], buscar2[5]))
+    
+    
+    
+    # user = Usuario("administrador", "administrador", 0, True)
+    # banco.cadastrarUsuario(user)
+    
+    # usuario = banco.buscarUsuario(Usuario("admin", "admin", 0))
+    # print(usuario)
+    
+    # user2 = Usuario("user", "user", 1, False)
+    # modificar = banco.modificarUsuario(Usuario(usuario[1], usuario[2], usuario[3], usuario[4], usuario[0]), user2)
+    
+    # buscar = banco.buscarUsuario(Usuario("user", "user", 1))
+    # print(buscar)
+    # deletar = banco.deletarUsuario(Usuario(buscar[1], buscar[2], buscar[3]))
+    # deletar = banco.deletarUsuario(Usuario("admin", "admin", 0))
+    
+    
+    # medico = banco.buscarMedico(Medico("Misael", "123456789000", None, None, None, None))
+    # cliente = banco.buscarCliente(Cliente("Misael", "1234567800", None, None))
+    # consulta = Consulta("Consulta de teste", "01/01/2022", "10:00", 100.00, cliente[0], medico[5])
+    # # consultaCadast = banco.cadastrarConsulta(consulta)
+    # consultaBusc = banco.buscarConsulta(1)
+    # print(consultaBusc)
+    # consultaAntiga = Consulta(consultaBusc[2], consultaBusc[3], consultaBusc[4], consultaBusc[5], consultaBusc[1], consultaBusc[6], consultaBusc[0])
+    # consultaNova = Consulta("Consulta de modificação", "07/09/2024", "17:00", 150.00, cliente[0], medico[5])
+    # consultaModif = banco.modificarConsulta(consultaAntiga, consultaNova)
+    # delet = banco.deletarConsulta(2)
+    
+    
+    
+    # endereco = Endereco("São paulo", "Santos", "Tijuca", "Jacarepagua", "90", "12.345-678")
+    # cliente = Cliente("Misael", "12345678900", "8888-8888", endereco)
+    # # banco.cadastrarCliente(cliente)
+    # cliente0 = banco.buscarCliente(cliente)
+    # print(cliente0)
+    # print(banco.buscarEndereco(str(cliente0[3])))
+    # endereco2 = Endereco("Paraiba", "João pessoa", "Campina Grande", "Campis", "60", "10.765-008")
+    # cliente2 = Cliente("Marta", "12345678900", "9999-9999", endereco2)
+    # banco.modificarCliente(Cliente(cliente0[1], cliente0[0], cliente0[2], cliente0[3]), cliente2)
+    # endereco0 = banco.buscarEndereco(str(2))
+    # print(endereco0)
+    # banco.atualizarEndereco(Endereco("São paulo", "Santos", "Tijuca", "Jacarepagua", "90", "12.345-678", "2"), endereco2)
+    # cliente10 = Cliente(cliente0[1], cliente0[0], cliente0[2], cliente0[3])
+    # print(cliente10)
+    # deletar = banco.deletarCliente(cliente10)
+    # buscar = banco.buscarCliente(Cliente("Marta", "12345678900", None, None))
+    # deletar = banco.deletarCliente(Cliente(buscar[1], buscar[0], buscar[2], buscar[3]))
+

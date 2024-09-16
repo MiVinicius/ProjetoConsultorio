@@ -1,49 +1,61 @@
 import sys
+from ProjetoConsultorio.Model.AtendenteModel import Atendente
 sys.path.append('.')
-from ProjetoConsultorio.Controller.EnderecoController import EnderecoController
 
 
 class AtendenteController():
     
-    def __init__(self, banco_dados_controller):
+    def __init__(self, banco_dados_controller, endereco_controller):
         self.banco_dados_controller = banco_dados_controller
+        self.endereco_controller = endereco_controller
     
     def cadastrarAtendente(self):
-        nome = str(input("Digite o nome do Atendente: \n"))
-        cpf = str(input("Digite o CPF: \n"))
-        Atendente_existe = self.banco_dados_controller.buscarAtendente(nome, cpf)
-        if Atendente_existe is None:
-            telefone = str(input("Digite o Telefone: \n"))
-            endereco = EnderecoController.cadastrarEndereco()
-            salario = float(input("Digite o Salário: \n"))
-            self.banco_dados_controller.cadastrarAtendente(nome, cpf, telefone, endereco, salario)
-            print("cadastro do Atendente sucedido!")
-            input("pressione ENTER para continuar")
-            return True
-        else: 
-            print("o Atendente já existe!")
-            input("pressione ENTER para continuar")
-            return False
+        try:
+            nome = str(input("Digite o nome do Atendente: \n")).strip()
+            cpf = str(input("Digite o CPF: \n")).strip()
+            cpf_limpo = Atendente.validar_cpf(cpf)
+            Atendente_existe = self.banco_dados_controller.buscarAtendente(nome, cpf_limpo)
+            if Atendente_existe is None:
+                print("Cadastrando o Atendente...")            
+                DataNasc = str(input("Digite a Data de Nascimento: \n"))
+                telefone = str(input("Digite o Telefone: \n"))
+                endereco = self.endereco_controller.cadastrarEndereco()
+                salario = float(input("Digite o Salário: \n"))
+                self.banco_dados_controller.cadastrarAtendente(nome, cpf, DataNasc, telefone, salario, endereco)
+                print("cadastro do Atendente sucedido!")
+                input("pressione ENTER para continuar")
+                return True
+            else: 
+                print("o Atendente já existe!")
+                input("pressione ENTER para continuar")
+                return False
+        except Exception as e:
+                print("cadastro do Atendente falhou, erro", e)
+                input("pressione ENTER para continuar")
+                return False
     
     
     def buscarAtendente(self):
         nome = str(input("Digite o nome do Atendente: \n"))
         cpf = str(input("Digite o CPF: \n"))
-        if self.banco_dados_controller.buscarAtendente(nome, cpf) is None:
+        cpf_limpo = Atendente.validar_cpf(cpf)
+        atendente_existe = self.banco_dados_controller.buscarAtendente(nome, cpf_limpo)
+        if atendente_existe is None:
             print("o Atendente não existe!")
             input("pressione ENTER para continuar")
-        else: 
-            print(self.banco_dados_controller.buscarAtendente(nome, cpf).__str__())
+        else:
             input("pressione ENTER para continuar")
     
     
     def buscarAtendente2(self):
         nome = str(input("Digite o nome do Atendente: \n"))
         cpf = str(input("Digite o CPF: \n"))
-        if self.banco_dados_controller.buscarAtendente(nome, cpf) is None:
+        cpf_limpo = Atendente.validar_cpf(cpf)
+        atendente_existe = self.banco_dados_controller.buscarAtendente(nome, cpf_limpo)
+        if atendente_existe is None:
             return None
         else:
-            return self.banco_dados_controller.buscarAtendente(nome, cpf)
+            return atendente_existe
     
     
     def modificarAtendente(self):
@@ -56,12 +68,11 @@ class AtendenteController():
             return False
         else:
             nomeNovo = str(input("Digite o novo nome do Atendente: \n"))
-            cpfNovo = str(input("Digite o novo CPF: \n"))
+            DataNasc = str(input("Digite a nova Data de Nascimento: \n"))
             telefoneNovo = str(input("Digite o telefone: \n"))
-            enderecoNovo = EnderecoController.cadastrarEndereco()
             salarioNovo = float(input("Digite o salário: \n"))
             try:
-                self.banco_dados_controller.modificarAtendente(Atendente_existe, nomeNovo, cpfNovo, telefoneNovo, enderecoNovo, salarioNovo)
+                self.banco_dados_controller.modificarAtendente(Atendente_existe, nomeNovo, Atendente_existe.cpf, DataNasc, telefoneNovo, salarioNovo)
                 print(f'o Atendente {nomeNovo} foi Atualizado')
                 input("pressione ENTER para continuar")
                 return True
@@ -69,6 +80,22 @@ class AtendenteController():
                 print(f'o Atendente {nomeNovo} não foi Atualizado por erro: {e}')
                 input("pressione ENTER para continuar")
                 return False
+            
+    def atualizarEndereco(self):
+        nomeModificar = input("Digite o nome do Atendente para buscar: \n").strip()
+        cpfModificar = input("Digite o CPF para buscar: \n").strip()
+        cpf_limpo = Atendente.validar_cpf(cpfModificar)
+        atendente_existente = self.banco_dados_controller.buscarAtendente(nomeModificar, cpf_limpo)
+        if atendente_existente is None:
+            print("O Atendente não existe!")
+            input("Pressione ENTER para continuar")
+            return False
+        else:
+            novoEndereco = self.endereco_controller.cadastrarEndereco()
+            self.banco_dados_controller.atualizar_endereco(atendente_existente, novoEndereco)
+            print("Endereço atualizado com sucesso!")
+            input("Pressione ENTER para continuar")
+            return True
     
     
     def deletarAtendente(self):

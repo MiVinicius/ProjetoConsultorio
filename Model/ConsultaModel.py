@@ -4,16 +4,14 @@ sys.path.append('.')
 
 class Consulta:
     
-    __contador = 0 
     
-    def __init__(self, descricao, data, horario, valor, cliente, medico):
+    def __init__(self, descricao, data, horario, valor, cliente, medico, numero=None):
         self.__descricao = descricao
         self.__data = data
         self.__horario = horario
         self.__valor = valor
         self.__cliente = cliente
-        Consulta.__contador += 1  # Incrementa o contador de classe
-        self.__numero = Consulta.__contador
+        self.__numero = numero
         self.__medico = medico
 
     @property
@@ -59,6 +57,10 @@ class Consulta:
     @property
     def numero(self):
         return self.__numero
+    
+    @numero.setter
+    def numero(self, numero):
+        self.__numero = numero
     
     @property
     def medico(self):

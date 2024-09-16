@@ -2,6 +2,7 @@ import sys
 sys.path.append('.')
 
 from ProjetoConsultorio.Model.ClienteModel import Cliente
+from ProjetoConsultorio.Model.MedicoModel import Medico
 
 
 
@@ -16,9 +17,10 @@ class ConsultaController():
         while True:
             opcao = input("O cliente já tem cadastro? S para continuar - N para cadastrar! \n").lower()  # Assim não tem problema de digitar S maiúsculo
             if opcao == "s":
-                nome = input("Digite o nome do cliente para procurar: \n")
-                cpf = input("Digite o CPF do cliente para procurar: \n")
-                cliente_existente = self.banco_dados_controller.buscarCliente(nome, cpf)
+                nome = input("Digite o nome do cliente para procurar: \n").strip()
+                cpf = input("Digite o CPF do cliente para procurar: \n").strip()
+                cpf_limpo = Cliente.validar_cpf(cpf)
+                cliente_existente = self.banco_dados_controller.buscarCliente(nome, cpf_limpo)
                 if cliente_existente:
                     self.cadastrarConsulta2(cliente_existente)
                     break
@@ -27,21 +29,23 @@ class ConsultaController():
                     input("Pressione ENTER para continuar")
                     break
             elif opcao == "n":
-                self.cadastrarCliente()
+                print("Cadastre um novo cliente!")
+                input("Pressione ENTER para continuar")
                 break
             else:
                 print("Opção inválida. Por favor, responda 's' ou 'n'.")
-
     
     def cadastrarConsulta2(self, cliente: Cliente):
         descricao = str(input("Digite a descrição da consulta: \n"))
         data = str(input("Digite a data da consulta (dd/mm/yyyy): \n"))
         horario = str(input("Digite o horário da consulta (hh:mm): \n"))
         valor = float(input("Digite o valor da consulta: \n"))
-        crm = self.buscarMedicoConsulta()
-        if crm is None:
-            print("Medico inexistente")  # vou deixar passar mesmo se o medico não existir por enquanto
-        if self.banco_dados_controller.cadastrarConsulta(descricao, data, horario, valor, cliente.cpf, crm):
+        medico = self.buscarMedicoConsulta()
+        if medico is None:
+            print("Medico inexistente") 
+            input("pressione ENTER para continuar")
+            return False
+        if self.banco_dados_controller.cadastrarConsulta(descricao, data, horario, valor, cliente.cpf, medico.crm):
             print(f"Consulta adicionada para o cliente {cliente.nome}")
             input("pressione ENTER para continuar")
             return True
@@ -49,27 +53,28 @@ class ConsultaController():
 
     # Retrieve
 
-    def buscarClienteConsulta(self):  # isso aqui eu acho que deveria não estar aqui
-        nome = str(input("Digite o nome do cliente para procurar: \n"))
-        cpf = str(input("Digite o CPF do cliente para procurar: \n"))
-        return self.banco_dados_controller.buscarCliente(nome, cpf)
+    def buscarClienteConsulta(self):  
+        nome = input("Digite o nome do cliente para procurar: \n").strip()
+        cpf = input("Digite o CPF do cliente para procurar: \n").strip()
+        cpf_limpo = Cliente.validar_cpf(cpf)
+        return self.banco_dados_controller.buscarCliente(nome, cpf_limpo)
     
     def buscarMedicoConsulta(self):
-        nome = str(input("Digite o nome do medico para procurar: \n"))
-        cpf = str(input("Digite o CPF do medico para procurar: \n"))
-        return self.banco_dados_controller.buscarMedico(nome, cpf).crm
-
+        nome = input("Digite o nome do medico para procurar: \n").strip()
+        cpf = input("Digite o CPF do medico para procurar: \n").strip()
+        cpf_limpo = Medico.validar_cpf(cpf)
+        return self.banco_dados_controller.buscarMedico(nome, cpf_limpo)
     
     def buscarNumeroListaConsulta(self):
-        lista = self.buscarClienteConsulta().consulta
+        numero = int(input("Digite o número do CPF do CLiente para procurar as consultas: \n"))
+        lista = self.banco_dados_controller.buscarListaConsulta(numero)
         print("Consultas:")
         for consulta in lista:
-            print(self.banco_dados_controller.buscarConsulta(consulta))  # funciona!
+            print(consulta)  
             print()
         input("pressione ENTER para continuar")
+        return
         
-    
-    
     def buscarConsulta(self):
         numero = int(input("Digite o número da consulta para procurar: \n"))
         consulta = self.banco_dados_controller.buscarConsulta(numero)
@@ -82,9 +87,8 @@ class ConsultaController():
             input("pressione ENTER para continuar")
             return None
 
-
     # Update
-    
+
     def modificarConsulta(self):
         consultaModificar = self.buscarConsulta()
         if consultaModificar is not None:
@@ -92,20 +96,23 @@ class ConsultaController():
             data = str(input("Digite a nova data da consulta (dd/mm/yyyy): \n"))
             horario = str(input("Digite o novo horário da consulta (hh:mm): \n"))
             valor = float(input("Digite o novo valor da consulta: \n"))
-            crm = self.buscarMedicoConsulta()
-            consulta = self.banco_dados_controller.modificarConsulta(descricao, data, horario, valor, crm, consultaModificar)
-            if consulta is not None:
-                print("consulta modificada com sucesso!")
+            medico = self.buscarMedicoConsulta()
+            try:
+                consulta = self.banco_dados_controller.modificarConsulta(descricao, data, horario, valor, None, medico.crm, consultaModificar)
+                if consulta is not None:
+                    print("consulta modificada com sucesso!")
+                    input("pressione ENTER para continuar")
+                    return True
+                else:
+                    print("consulta não foi modificada!")
+                    input("pressione ENTER para continuar")
+                    return False
+            except Exception as e:
+                print("Consulta não foi modificada, erro:", e)
                 input("pressione ENTER para continuar")
-                return True
-            else:
-                print("consulta não foi modificada!")
-                input("pressione ENTER para continuar")
-                return False
         else:
             print("consulta inexistente")
             return False
-        
         
     # Delete
     
@@ -114,8 +121,7 @@ class ConsultaController():
         if cliente:
             consulta = self.buscarConsulta()
             if consulta:
-                cliente.consulta.remove(consulta.numero)
-                self.banco_dados_controller.deletarConsulta(consulta.numero)
+                self.banco_dados_controller.deletarConsulta(consulta)
                 print("consulta deletada com sucesso!")
                 input("pressione ENTER para continuar")
                 return True
@@ -128,8 +134,3 @@ class ConsultaController():
             input("pressione ENTER para continuar")
             return False
             
-    
-# if __name__ == "__main__":
-#     caos = ConsultaController()
-#     caos.cadastrarConsulta()
-#     # caos.buscarConsulta()

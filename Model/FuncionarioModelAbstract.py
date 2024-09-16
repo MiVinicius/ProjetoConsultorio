@@ -5,19 +5,22 @@ from ProjetoConsultorio.Model.PessoaModelAbstract import Pessoa
 
 class Funcionario(Pessoa, ABC ):
     
-    def __init__(self, nome, cpf, telefone, salario, endereco):
-        super().__init__(nome, cpf, telefone, endereco)
-        self.__salario = float(salario)
+    def __init__(self, nome, cpf, DataNasc, telefone, endereco, salario):
+        super().__init__(nome, cpf, DataNasc, telefone, endereco)
+        self._salario = float(salario)
 
     @property
     def salario(self):
-        return self.__salario
-
+        return self._salario
+    
     @salario.setter
-    def salario(self, novo_salario):
-        self.__salario = novo_salario
+    def salario(self, salario):
+        salario_str = str(salario).replace('.', '').replace(',', '.')
+        salario_float = float(salario_str)
+        if salario_float < 0:
+            raise ValueError("O salário não pode ser negativo!")
         
     @abstractmethod
-    def mostrarInformacoes(self):
-        return super().mostrarInformacoes()
+    def mostrar_informacoes(self):
+        pass
         

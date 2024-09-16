@@ -1,19 +1,20 @@
+import re
 import sys
 sys.path.append('.')
 from ProjetoConsultorio.Model.PessoaModelAbstract import Pessoa
 class Cliente(Pessoa):
     
-    def __init__(self, nome, cpf, telefone, endereco):
-        super().__init__(nome, cpf, telefone, endereco)
-        self.__consulta = []
+    def __init__(self, nome, cpf, DataNasc, telefone, endereco):
+        super().__init__(nome, cpf, DataNasc, telefone, endereco)
         
-    @property
-    def consulta(self):
-        return self.__consulta
-    
-    @consulta.setter
-    def consulta(self, consulta):
-        self.__consulta.append(consulta)
+    @staticmethod
+    def validar_cpf(cpf: str) -> str:
+        cpf_limpo = re.sub(r'[\s.-]', '', cpf)
+        if not cpf_limpo.isdigit():
+            raise ValueError("CPF deve conter apenas números.")
+        if len(cpf_limpo) != 11:
+            raise ValueError("CPF deve conter exatamente 11 dígitos.")
+        return cpf_limpo
         
     def __eq__(self, other):
         if isinstance(other, Cliente):
@@ -21,11 +22,8 @@ class Cliente(Pessoa):
         return False
         
     def __repr__(self) -> str:
-        return f"Nome: {self.nome}, CPF: {self.cpf}, Telefone: {self.telefone}, Endereço: {self.endereco}"
+        return f"Nome: {self.nome}, CPF: {self.cpf}, Data de Nascimento: {self.DataNasc}, Telefone: {self.telefone}, Endereço: {self.endereco_id}"
     
-    def mostrarConsultas(self):
-        for consulta in self.__consulta:
-            print(f'Descrição: {consulta.descricao} - Data: {consulta.data} - Numero da consulta: {consulta.numero} - Cliente: {consulta.cliente}', end='\n\n')
-    
-    def mostrarInformacoes(self):
-        print(f'Nome: {self.nome}, CPF: {self.cpf}, Telefone: {self.telefone}, Endereço: {self.endereco}')
+    def mostrar_informacoes(self):
+        print(f'Nome: {self.nome}, CPF: {self.cpf}, Data de Nascimento: {self.DataNasc}, Telefone: {self.telefone}, Endereço: {self.endereco_id}')
+        

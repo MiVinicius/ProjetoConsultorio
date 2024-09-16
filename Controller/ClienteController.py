@@ -1,21 +1,25 @@
 import sys
+from ProjetoConsultorio.Model.ClienteModel import Cliente
 sys.path.append('.')
-from ProjetoConsultorio.Controller.EnderecoController import EnderecoController
 
 class ClienteController:
     
-    def __init__(self, banco_dados_controller):
+    def __init__(self, banco_dados_controller, endereco_controller):
         self.banco_dados_controller = banco_dados_controller
+        self.endereco_controller = endereco_controller
     
     def cadastrarCliente(self):
         try:
-            nome = input("Digite o nome do novo Cliente: \n")
-            cpf = input("Digite o CPF do novo cliente: \n")
-            cliente_existe = self.banco_dados_controller.buscarCliente(nome, cpf)
+            nome = input("Digite o nome do novo Cliente: \n").strip()
+            cpf = input("Digite o CPF do novo cliente: \n").strip()
+            cpf_limpo = Cliente.validar_cpf(cpf)
+            cliente_existe = self.banco_dados_controller.buscarCliente(nome, cpf_limpo)
             if cliente_existe is None:
+                print("Cadastrando o cliente...")
+                dataNasc = input("Digite a data de nascimento do novo cliente: \n")
                 telefone = input("Digite o telefone do novo cliente: \n")
-                endereco = EnderecoController.cadastrarEndereco() # eu sei que tem como fazer isso melhor
-                self.banco_dados_controller.cadastrarCliente(nome, cpf, telefone, endereco)
+                endereco = self.endereco_controller.cadastrarEndereco() 
+                self.banco_dados_controller.cadastrarCliente(nome, cpf, dataNasc, telefone, endereco)
                 print("Cadastro do cliente realizado com sucesso!")
                 input("Pressione ENTER para continuar")
                 return True
@@ -29,35 +33,37 @@ class ClienteController:
             return False
         
     def buscarCliente(self):
-        nome = input("Digite o nome do cliente para procurar: \n")
-        cpf = input("Digite o CPF para procurar: \n")
-        cliente_existe = self.banco_dados_controller.buscarCliente(nome, cpf)
+        nome = input("Digite o nome do cliente para procurar: \n").strip()
+        cpf = input("Digite o CPF para procurar: \n").strip()
+        cpf_limpo = Cliente.validar_cpf(cpf)
+        cliente_existe = self.banco_dados_controller.buscarCliente(nome, cpf_limpo)
         if cliente_existe is None:
             print("O cliente não existe!")
             input("Pressione ENTER para continuar")
         else:
-            print(cliente_existe)
             input("Pressione ENTER para continuar")
         
     def buscarCliente2(self):
-        nome = input("Digite o nome do cliente para procurar: \n")
-        cpf = input("Digite o CPF para procurar: \n")
-        return self.banco_dados_controller.buscarCliente(nome, cpf)
+        nome = input("Digite o nome do cliente para procurar: \n").strip()
+        cpf = input("Digite o CPF para procurar: \n").strip()
+        cpf_limpo = Cliente.validar_cpf(cpf)
+        return self.banco_dados_controller.buscarCliente(nome, cpf_limpo)
         
     def modificarCliente(self):
-        nomeModificar = input("Digite o nome do cliente para buscar: \n")
-        cpfModificar = input("Digite o CPF para buscar: \n")
-        cliente_existe = self.banco_dados_controller.buscarCliente(nomeModificar, cpfModificar)
+        nomeModificar = input("Digite o nome do cliente para buscar: \n").strip()
+        cpfModificar = input("Digite o CPF para buscar: \n").strip()
+        cpf_limpo = Cliente.validar_cpf(cpfModificar)
+        cliente_existe = self.banco_dados_controller.buscarCliente(nomeModificar, cpf_limpo)
         if cliente_existe is None:
             print("O cliente não existe!")
             input("Pressione ENTER para continuar")
             return False
         else:
+            print("Atualizando o cliente...")
             nomeNovo = input("Digite o novo nome do cliente: \n")
-            cpfNovo = input("Digite o novo CPF: \n")
-            telefone = input("Digite o novo telefone do cliente: \n")
-            endereco = EnderecoController.cadastrarEndereco()
-            cliente_novo = self.banco_dados_controller.modificarCliente(cliente_existe, nomeNovo, cpfNovo, telefone, endereco)
+            dataNasc = input("Digite a nova data de nascimento do cliente no formato dd/mm/yyyy: \n")
+            telefone = input("Digite o novo telefone do cliente (xx) xxxxx-xxxx: \n")
+            cliente_novo = self.banco_dados_controller.modificarCliente(cliente_existe, nomeNovo, cliente_existe.cpf, dataNasc, telefone)
             if cliente_novo:
                 print(f"O cliente {nomeNovo} foi atualizado com sucesso!")
                 input("Pressione ENTER para continuar")
@@ -66,6 +72,22 @@ class ClienteController:
                 print("Ocorreu um erro ao atualizar o cliente")
                 input("Pressione ENTER para continuar")
                 return False
+            
+    def atualizarEndereco(self):
+        nomeModificar = input("Digite o nome do cliente para buscar: \n").strip()
+        cpfModificar = input("Digite o CPF para buscar: \n").strip()
+        cpf_limpo = Cliente.validar_cpf(cpfModificar)
+        cliente_existe = self.banco_dados_controller.buscarCliente(nomeModificar, cpf_limpo)
+        if cliente_existe is None:
+            print("O cliente não existe!")
+            input("Pressione ENTER para continuar")
+            return False
+        else:
+            novoEndereco = self.endereco_controller.cadastrarEndereco()
+            self.banco_dados_controller.atualizar_endereco(cliente_existe, novoEndereco)
+            print("Endereço atualizado com sucesso!")
+            input("Pressione ENTER para continuar")
+            return True
     
     def deletarCliente(self):
         try:
@@ -74,9 +96,6 @@ class ClienteController:
                 print("O cliente não existe!")
                 input("Pressione ENTER para continuar")
                 return False
-            if clienteDeletar.consulta:
-                for consulta in clienteDeletar.consulta:
-                    self.banco_dados_controller.deletarConsulta(consulta)
             self.banco_dados_controller.deletarCliente(clienteDeletar)
             print("Cliente deletado com sucesso!")
             input("Pressione ENTER para continuar")

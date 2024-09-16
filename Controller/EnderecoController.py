@@ -5,9 +5,9 @@ from ProjetoConsultorio.Model.EnderecoModel import Endereco
 
 
 class EnderecoController:
+
     
-    @staticmethod
-    def cadastrarEndereco():
+    def cadastrarEndereco(self):
         endereco = Endereco(str(input("Digite o nome do Estado: \n")),
                             str(input("Digite o nome da Cidade: \n")),
                             str(input("Digite o nome do Bairro: \n")),
@@ -17,14 +17,11 @@ class EnderecoController:
                             )
         return endereco
     
-    @staticmethod
-    def buscarEndereco(pessoa):
+    def buscarEndereco(self,pessoa):
         return pessoa._getEndereco()
     
-    @staticmethod
-    def atualizarEndereco(endereco, pessoa):
+    def atualizarEndereco(self, endereco, pessoa):
         return pessoa._setEndereco(endereco)
     
-    @staticmethod
-    def deletarEndereco(endereco, pessoa):
+    def deletarEndereco(self, endereco, pessoa):
         return pessoa._setEndereco(endereco)

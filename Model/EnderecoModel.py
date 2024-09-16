@@ -2,13 +2,14 @@ import sys
 sys.path.append('.')
 class Endereco():
     
-    def __init__(self, estado, cidade, bairro, rua, numero, cep):
+    def __init__(self, estado, cidade, bairro, rua, numero, cep, id = None):
         self.__estado = estado
         self.__cidade = cidade
         self.__bairro = bairro
         self.__rua = rua
         self.__numero = numero
         self.__cep = cep
+        self.__id = id
     
     @property
     def estado(self):
@@ -57,7 +58,15 @@ class Endereco():
     @cep.setter
     def cep(self, cep):
         self.__cep = cep
+        
+    @property
+    def id(self):
+        return self.__id
     
+    @id.setter
+    def id(self, id):
+        self.__id = id
+        
     def __repr__(self) -> str:
         return (f"Rua: {self.__rua}, Bairro: {self.__bairro}, Número: {self.__numero}, "
                 f"CEP: {self.__cep}, Cidade: {self.__cidade}, Estado: {self.__estado}")

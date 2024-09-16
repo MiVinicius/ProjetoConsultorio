@@ -5,6 +5,7 @@ from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosControl
 from ProjetoConsultorio.Controller.ClienteController import ClienteController
 from ProjetoConsultorio.Controller.ConsultaController import ConsultaController
 import os
+from ProjetoConsultorio.Controller.EnderecoController import EnderecoController
 
 def clear():
     return os.system('cls')
@@ -13,7 +14,8 @@ class MenuViewMedico():
     
     def __init__(self):
         self.banco_dados_controller = BancoDadosController()
-        self.cliente_controller = ClienteController(self.banco_dados_controller)
+        self.endereco_controller = EnderecoController()
+        self.cliente_controller = ClienteController(self.banco_dados_controller, self.endereco_controller)
         self.consulta_controller = ConsultaController(self.banco_dados_controller)
     
     def menuView(self):
@@ -23,21 +25,19 @@ class MenuViewMedico():
             print("""
                 ----------------------------------------------------
                 |Menu 1x    Menu 2x      Menu 3x       Menu 4x     | 
-                |Cliente   Consulta    Atendentes  Administrativo|
+                |Cliente   Consulta      Medicos     Administrativo|
                 ----------------------------------------------------  
 
 
-12 - Buscar Cliente			    22 - Verificar histórico de consultas do cliente
-13 - Modificar dados do cliente		    23 - Modificar consulta (precisa do numero da consulta)
-                                            24 - Cancelar consulta              
-
-41 - Todas as Consultas agendadas   
-42 - valor total do faturamento     
-44 - Mostrar todos os clientes
-
+12 - Buscar Cliente                         22 - Verificar histórico de consultas do cliente
+13 - Modificar dados do cliente             23 - Modificar consulta (precisa do numero da consulta)
+43 - Mostrar todos os clientes              24 - Cancelar consulta              
+                                            25 - Buscar consulta por Número
+                                            
+31 - Gerar Receita (não implementado)       41 - Todas as Consultas agendadas   
+32 - Gerar Atestado (não implementado)      42 - valor total do faturamento     
+                                            43 - Mostrar todos os clientes
 00 - Sair
-
-
 
                 """)
             try:
@@ -54,11 +54,13 @@ class MenuViewMedico():
                         self.consulta_controller.modificarConsulta()
                     case 24:
                         self.consulta_controller.deletarConsulta()
+                    case 25:
+                        self.consulta_controller.buscarConsulta()
                     case 41:
                         self.banco_dados_controller.mostrar_consultas()
                     case 42:
                         self.banco_dados_controller.valorTotalConsultas()
-                    case 44:
+                    case 43:
                         self.banco_dados_controller.mostrarClientes()
                     case 00:
                         break

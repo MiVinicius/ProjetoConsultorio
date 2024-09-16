@@ -4,18 +4,22 @@ from ProjetoConsultorio.Controller.ClienteController import ClienteController
 from ProjetoConsultorio.Controller.ConsultaController import ConsultaController
 from ProjetoConsultorio.Controller.MedicoController import MedicoController
 from ProjetoConsultorio.Controller.AtendenteController import AtendenteController
+from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosController
 import os
+from ProjetoConsultorio.Controller.EnderecoController import EnderecoController
 
 def clear():
     return os.system('cls')
 
 class MenuView:
-    def __init__(self, BancoDadosController):  # deveria estar tudo no main...
-        self.banco_dados_controller = BancoDadosController
-        self.cliente_controller = ClienteController(self.banco_dados_controller)
+    def __init__(self):  
+        self.endereco_controller = EnderecoController()
+        self.banco_dados_controller = BancoDadosController()
         self.consulta_controller = ConsultaController(self.banco_dados_controller)
-        self.medico_controller = MedicoController(self.banco_dados_controller)
-        self.atendente_controller = AtendenteController(self.banco_dados_controller)
+        self.cliente_controller = ClienteController(self.banco_dados_controller, self.endereco_controller)
+        self.medico_controller = MedicoController(self.banco_dados_controller, self.endereco_controller)
+        self.atendente_controller = AtendenteController(self.banco_dados_controller, self.endereco_controller)
+        
 
     def menuView(self):
         clear()
@@ -26,19 +30,22 @@ class MenuView:
                 |Cliente   Consulta    Atendentes  Administrativo  |
                 ----------------------------------------------------  
 
-11 - Cadastrar Cliente			21 - Agendar consulta
-12 - Buscar Cliente			22 - Verificar histórico de consultas do cliente
-13 - Modificar dados do cliente		23 - Modificar consulta (precisa do numero da consulta)
-14 - Remover cliente 			24 - Cancelar consulta
+11 - Cadastrar Cliente                  21 - Agendar consulta
+12 - Buscar Cliente                     22 - Verificar histórico de consultas do cliente
+13 - Modificar dados do cliente         23 - Modificar consulta (precisa do numero da consulta)
+14 - Remover cliente                    24 - Cancelar consulta (precisa do numero da consulta)
+15 - Alterar endereço do cliente        25 - Buscar consulta por Número
 
-31 - Cadastrar Médico			41 - Todas as Consultas agendadas
-32 - Cadastrar Atendente		42 - valor total do faturamento das consultas agendadas
-33 - Buscar Médico			43 - Mostrar todos os Atendentes
+31 - Cadastrar Médico                   41 - Todas as Consultas agendadas
+32 - Cadastrar Atendente                42 - valor total do faturamento das consultas agendadas
+33 - Buscar Médico                      43 - Mostrar todos os Atendentes
 34 - Buscar Atendente                   44 - Mostrar todos os clientes
 35 - Modificar dados de Médico          45 - Mostrar todos os médicos
-36 - Modificar dados de Atendente       00 - Sair
-37 - Remover Médico
-38 - Remover Atendente
+36 - Modificar dados de Atendente       46 - Alterar endereco (Médico)
+37 - Remover Médico                     47 - Alterar endereço (Atendente)
+38 - Remover Atendente                  48 - Gerar Receita (não implementado)
+00 - Sair                               49 - Gerar Atestado (não implementado)
+
 
             """)
             try:
@@ -53,14 +60,18 @@ class MenuView:
                         self.cliente_controller.modificarCliente()
                     case 14:
                         self.cliente_controller.deletarCliente()
+                    case 15:
+                        self.cliente_controller.atualizarEndereco()
                     case 21:
                         self.consulta_controller.cadastrarConsulta()
                     case 22:
-                        self.consulta_controller.buscarNumeroListaConsulta()
+                        self.consulta_controller.buscarNumeroListaConsulta() 
                     case 23:
                         self.consulta_controller.modificarConsulta()
                     case 24:
                         self.consulta_controller.deletarConsulta()
+                    case 25:
+                        self.consulta_controller.buscarConsulta()
                     case 31:
                         self.medico_controller.cadastrarMedico()
                     case 32:
@@ -87,6 +98,10 @@ class MenuView:
                         self.banco_dados_controller.mostrarClientes()
                     case 45:
                         self.banco_dados_controller.mostrarMedicos()
+                    case 46:
+                        self.medico_controller.atualizarEndereco()
+                    case 47:
+                        self.atendente_controller.atualizarEndereco()
                     case 00:
                         break
             except ValueError:
@@ -94,8 +109,7 @@ class MenuView:
                 input("Pressione Enter para continuar")
                 self.menuView()
 
-# menu = MenuView()
-# menu.menuView()
+
 
                     
 if __name__ == "__main__":
