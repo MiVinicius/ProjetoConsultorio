@@ -1,8 +1,7 @@
 
-from View.LoginView import LoginView
-
 import Model.TabelaModel
-from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosController
+from Controller.BancoDadosController import BancoDadosController
+from View.LoginView import LoginView
 
 
 
