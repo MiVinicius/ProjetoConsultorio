@@ -10,11 +10,11 @@ class Medico(Funcionario):
         self._crm = crm
 
     @property
-    def crm(self):
+    def crm(self) -> str:
         return self._crm
     
     @crm.setter
-    def crm(self, crm):
+    def crm(self, crm: str) -> str:
         self._crm = crm
         
     def mostrar_informacoes(self):

@@ -40,7 +40,7 @@ class ConsultaController():
         data = str(input("Digite a data da consulta (dd/mm/yyyy): \n"))
         horario = str(input("Digite o horário da consulta (hh:mm): \n"))
         valor = float(input("Digite o valor da consulta: \n"))
-        medico = self.buscarMedicoConsulta()
+        medico: Medico = self.buscarMedicoConsulta()
         if medico is None:
             print("Medico inexistente") 
             input("pressione ENTER para continuar")
@@ -98,7 +98,7 @@ class ConsultaController():
             valor = float(input("Digite o novo valor da consulta: \n"))
             medico = self.buscarMedicoConsulta()
             try:
-                consulta = self.banco_dados_controller.modificarConsulta(descricao, data, horario, valor, None, medico.crm, consultaModificar)
+                consulta = self.banco_dados_controller.modificarConsulta(descricao, data, horario, valor, consultaModificar.cliente, medico.crm, consultaModificar)
                 if consulta is not None:
                     print("consulta modificada com sucesso!")
                     input("pressione ENTER para continuar")

@@ -83,6 +83,8 @@ class BancoDadosModel:
             connection.commit()
             return cursor.lastrowid
         
+    # Retrieve
+        
     def buscarUsuario(self, usuario):
         query = '''
         SELECT * FROM usuarios WHERE login = ? AND senha = ? AND tipo = ? 
@@ -270,6 +272,8 @@ class BancoDadosModel:
             print(f"Ocorreu um erro ao buscar o médico: {e}")
             return None
     
+    # Update
+    
     def modificarUsuario(self, usuarioAntigo, usuario):
         query = '''
         UPDATE usuarios
@@ -347,7 +351,8 @@ class BancoDadosModel:
             cursor.execute(query, (medico.nome, medico.DataNasc, medico.telefone, medico.salario, medico.crm, medicoAntigo.cpf))
             connection.commit()
             
-
+    # Delete
+    
     def deletarUsuario(self, usuario):
         query = '''
         DELETE FROM usuarios WHERE login = ?
