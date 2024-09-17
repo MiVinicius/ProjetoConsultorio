@@ -443,59 +443,63 @@ class BancoDadosModel:
             cursor = connection.cursor()
             query = 'SELECT * FROM clientes'
             cursor.execute(query)
-            for row in self.cursor.fetchall():
+            for row in cursor.fetchall():  
                 cliente = Cliente(row[1], row[0], row[2], row[3], row[4])
                 print(cliente)
             input("Pressione ENTER para continuar...")
             return 
 
+    
     def obterTodosMedicos(self):
         with sqlite3.connect(self.db_path) as connection:
             cursor = connection.cursor()
             query = 'SELECT * FROM medicos'
             cursor.execute(query)
-            for row in self.cursor.fetchall():
+            for row in cursor.fetchall():  
                 medico = Medico(row[1], row[0], row[2], row[3], row[4], row[5], row[6])
                 print(medico)
             input("Pressione ENTER para continuar...")
             return 
-        
 
+    
     def obterTodosAtendentes(self):
         with sqlite3.connect(self.db_path) as connection:
             cursor = connection.cursor()
             query = 'SELECT * FROM atendentes'
             cursor.execute(query)
-            for row in self.cursor.fetchall():
+            for row in cursor.fetchall():  
                 atendente = Atendente(row[1], row[0], row[2], row[3], row[4], row[5])
                 print(atendente)
             input("Pressione ENTER para continuar...")
             return 
 
+    
     def obterTodasConsultas(self):
         with sqlite3.connect(self.db_path) as connection:
             cursor = connection.cursor()
             query = 'SELECT * FROM consultas'
             cursor.execute(query)
-            for row in self.cursor.fetchall():
+            for row in cursor.fetchall():  
                 consulta = Consulta(row[2], row[3], row[4], row[5], row[1], row[6], row[0])
                 print(consulta)
             input("Pressione ENTER para continuar...")
             return
 
+    
     def calcularValorTotalConsultas(self):
         with sqlite3.connect(self.db_path) as connection:
             cursor = connection.cursor()
             query = 'SELECT SUM(valor) FROM consultas'
             cursor.execute(query)
-            total = self.cursor.fetchone()[0]
+            total = cursor.fetchone()[0] 
             if total:
-                print("R$ ",total, "reais")
+                print("R$ ", total, "reais")
                 input("Pressione ENTER para continuar...")
-            else :
+            else:
                 print(0.0)
                 input("Pressione ENTER para continuar...")
-            return   
+            return
+
         
 if __name__ == "ProjetoConsultorio.Model.BancoDadosModel":  # A maior gambiarra da minha vida! kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
     tabela = TabelaModel.main()                             # não tive ideia melhor na hora kkkkkkkkkkkkk
