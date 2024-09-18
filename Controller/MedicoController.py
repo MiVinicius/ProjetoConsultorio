@@ -73,7 +73,7 @@ class MedicoController():
             crmNovo = str(input("Digite o CRM: \n"))
             try:
                 self.banco_dados_controller.modificarMedico(medico_existe, nomeNovo, medico_existe.cpf, DataNascNovo, telefoneNovo, salarioNovo, crmNovo)
-                print(f"O Médico {medico_existe.nome} foi Atualizado")
+                print(f"O Médico {nomeNovo} foi Atualizado")
                 input("pressione ENTER para continuar")
                 return True
             except Exception as e:
