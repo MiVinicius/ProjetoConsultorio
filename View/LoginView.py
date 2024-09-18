@@ -1,8 +1,8 @@
 import sys
 sys.path.append('.')
-from ProjetoConsultorio.View.MenuView import MenuView
-from ProjetoConsultorio.View.MenuViewMedico import MenuViewMedico
-from ProjetoConsultorio.View.MenuViewAtendente import MenuViewAtendente
+from View.MenuView import MenuView
+from View.MenuViewMedico import MenuViewMedico
+from View.MenuViewAtendente import MenuViewAtendente
 import os
 
 

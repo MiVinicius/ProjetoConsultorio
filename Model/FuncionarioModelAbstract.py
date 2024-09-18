@@ -1,7 +1,7 @@
 import sys
 sys.path.append('.')
 from abc import ABC, abstractmethod
-from ProjetoConsultorio.Model.PessoaModelAbstract import Pessoa
+from Model.PessoaModelAbstract import Pessoa
 from typing import Optional
 
 class Funcionario(Pessoa, ABC):

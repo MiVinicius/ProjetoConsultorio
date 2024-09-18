@@ -1,6 +1,7 @@
 import sys
-from ProjetoConsultorio.Model.ClienteModel import Cliente
 sys.path.append('.')
+from Model.ClienteModel import Cliente
+
 
 class ClienteController:
     

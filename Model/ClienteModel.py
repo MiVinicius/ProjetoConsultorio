@@ -1,7 +1,7 @@
 import re
 import sys
 sys.path.append('.')
-from ProjetoConsultorio.Model.PessoaModelAbstract import Pessoa
+from Model.PessoaModelAbstract import Pessoa
 from typing import Optional
 
 class Cliente(Pessoa):

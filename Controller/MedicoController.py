@@ -1,6 +1,6 @@
 import sys
 sys.path.append('.')
-from ProjetoConsultorio.Model.MedicoModel import Medico
+from Model.MedicoModel import Medico
 
 class MedicoController():
     

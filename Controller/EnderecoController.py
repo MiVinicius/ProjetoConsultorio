@@ -1,6 +1,6 @@
 import sys
 sys.path.append('.')
-from ProjetoConsultorio.Model.EnderecoModel import Endereco
+from Model.EnderecoModel import Endereco
 
 
 

@@ -1,8 +1,8 @@
 import sys
 sys.path.append('.')
 
-from ProjetoConsultorio.Model.ClienteModel import Cliente
-from ProjetoConsultorio.Model.MedicoModel import Medico
+from Model.ClienteModel import Cliente
+from Model.MedicoModel import Medico
 
 
 

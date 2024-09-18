@@ -1,13 +1,12 @@
 import sys
 sys.path.append('.')
-from ProjetoConsultorio.Controller.ClienteController import ClienteController
-from ProjetoConsultorio.Controller.ConsultaController import ConsultaController
-from ProjetoConsultorio.Controller.MedicoController import MedicoController
-from ProjetoConsultorio.Controller.AtendenteController import AtendenteController
-from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosController
+from Controller.ClienteController import ClienteController
+from Controller.ConsultaController import ConsultaController
+from Controller.MedicoController import MedicoController
+from Controller.AtendenteController import AtendenteController
+from Controller.BancoDadosController import BancoDadosController
+from Controller.EnderecoController import EnderecoController
 import os
-from ProjetoConsultorio.Controller.EnderecoController import EnderecoController
-
 def clear():
     return os.system('cls')
 

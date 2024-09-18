@@ -1,6 +1,6 @@
 import sys
 sys.path.append('.')
-from ProjetoConsultorio.Controller.BancoDadosController import BancoDadosController
+from Controller.BancoDadosController import BancoDadosController
 
 
 

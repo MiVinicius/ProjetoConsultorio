@@ -1,13 +1,13 @@
 import sys
 sys.path.append('.')
 import sqlite3
-from ProjetoConsultorio.Model.MedicoModel import Medico
-from ProjetoConsultorio.Model.AtendenteModel import Atendente
-from ProjetoConsultorio.Model.ConsultaModel import Consulta
-from ProjetoConsultorio.Model.ClienteModel import Cliente
-from ProjetoConsultorio.Model.UsuarioModel import Usuario
-from ProjetoConsultorio.Model import TabelaModel
-from ProjetoConsultorio.Model.EnderecoModel import Endereco
+from Model.MedicoModel import Medico
+from Model.AtendenteModel import Atendente
+from Model.ConsultaModel import Consulta
+from Model.ClienteModel import Cliente
+from Model.UsuarioModel import Usuario
+from Model import TabelaModel
+from Model.EnderecoModel import Endereco
 
 class BancoDadosModel:
     
@@ -541,7 +541,7 @@ class BancoDadosModel:
             return
 
         
-if __name__ == "ProjetoConsultorio.Model.BancoDadosModel":  # A maior gambiarra da minha vida! kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+if __name__ == "Model.BancoDadosModel":                     # A maior gambiarra da minha vida! kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
     tabela = TabelaModel.main()                             # não tive ideia melhor na hora kkkkkkkkkkkkk
     banco = BancoDadosModel('Consultorio.db')               
     user = Usuario("admin", "admin", 0, True)

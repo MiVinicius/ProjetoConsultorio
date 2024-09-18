@@ -1,12 +1,12 @@
 import sys
 sys.path.append('.')
 
-from ProjetoConsultorio.Model.UsuarioModel import Usuario
-from ProjetoConsultorio.Model.ClienteModel import Cliente
-from ProjetoConsultorio.Model.ConsultaModel import Consulta
-from ProjetoConsultorio.Model.MedicoModel import Medico
-from ProjetoConsultorio.Model.AtendenteModel import Atendente
-from ProjetoConsultorio.Model.BancoDadosModel import BancoDadosModel
+from Model.UsuarioModel import Usuario
+from Model.ClienteModel import Cliente
+from Model.ConsultaModel import Consulta
+from Model.MedicoModel import Medico
+from Model.AtendenteModel import Atendente
+from Model.BancoDadosModel import BancoDadosModel
 
 
 

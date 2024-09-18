@@ -1,6 +1,7 @@
 import sys
-from ProjetoConsultorio.Model.AtendenteModel import Atendente
 sys.path.append('.')
+from Model.AtendenteModel import Atendente
+
 
 
 class AtendenteController():

@@ -1,7 +1,7 @@
 import re
 import sys
 sys.path.append('.')
-from ProjetoConsultorio.Model.FuncionarioModelAbstract import Funcionario
+from Model.FuncionarioModelAbstract import Funcionario
 from typing import Optional
 
 class Atendente(Funcionario):
