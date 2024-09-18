@@ -5,7 +5,9 @@ from Controller.BancoDadosController import BancoDadosController
 from Controller.ClienteController import ClienteController
 from Controller.ConsultaController import ConsultaController
 from Controller.EnderecoController import EnderecoController
+from Controller.MedicoController import MedicoController
 import os
+
 def clear():
     return os.system('cls')
 
@@ -16,11 +18,12 @@ class MenuViewMedico():
         self.endereco_controller = EnderecoController()
         self.cliente_controller = ClienteController(self.banco_dados_controller, self.endereco_controller)
         self.consulta_controller = ConsultaController(self.banco_dados_controller)
+        self.medico_controller = MedicoController(self.banco_dados_controller, self.endereco_controller)
     
     def menuView(self):
-        
+        clear()
         while True:
-            
+            # clear()                  OBSERVAÇÃO!!!!!! ISSO FARÁ COM QUE O PROGRAMA SEJA LIMPO A CADA VEZ QUE VOLTAR PRO MENU!
             print("""
                 ----------------------------------------------------
                 |Menu 1x    Menu 2x      Menu 3x       Menu 4x     | 
@@ -33,8 +36,8 @@ class MenuViewMedico():
 43 - Mostrar todos os clientes              24 - Cancelar consulta              
                                             25 - Buscar consulta por Número
                                             
-31 - Gerar Receita (não implementado)       41 - Todas as Consultas agendadas   
-32 - Gerar Atestado (não implementado)      42 - valor total do faturamento     
+31 - Gerar Receita                          41 - Todas as Consultas agendadas   
+32 - Gerar Atestado                         42 - valor total do faturamento     
                                             43 - Mostrar todos os clientes
 00 - Sair
 
@@ -55,6 +58,10 @@ class MenuViewMedico():
                         self.consulta_controller.deletarConsulta()
                     case 25:
                         self.consulta_controller.buscarConsulta()
+                    case 31:
+                        self.medico_controller.gerar_receita()
+                    case 32:
+                        self.medico_controller.gerar_atestado()
                     case 41:
                         self.banco_dados_controller.mostrar_consultas()
                     case 42:

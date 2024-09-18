@@ -61,7 +61,6 @@ class LoginView:
             tipo = int(tipo)
             try:
                 usuario = self.BancoDadosController.buscarUsuario(login, senha, tipo)
-                print(usuario)
                 if usuario:
                     if usuario.admin is True or usuario.admin == 1:
                         MenuView().menuView()
@@ -119,5 +118,5 @@ class LoginView:
 
             
     
-if __name__ == "__main__":            
-    loginview = LoginView()
+# if __name__ == "__main__":            
+#     loginview = LoginView()

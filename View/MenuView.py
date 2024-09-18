@@ -23,6 +23,7 @@ class MenuView:
     def menuView(self):
         clear()
         while True:
+            # clear()                  OBSERVAÇÃO!!!!!! ISSO FARÁ COM QUE O PROGRAMA SEJA LIMPO A CADA VEZ QUE VOLTAR PRO MENU!
             print("""
                 ----------------------------------------------------
                 |Menu 1x    Menu 2x      Menu 3x       Menu 4x     | 
@@ -42,8 +43,8 @@ class MenuView:
 35 - Modificar dados de Médico          45 - Mostrar todos os médicos
 36 - Modificar dados de Atendente       46 - Alterar endereco (Médico)
 37 - Remover Médico                     47 - Alterar endereço (Atendente)
-38 - Remover Atendente                  48 - Gerar Receita (não implementado)
-00 - Sair                               49 - Gerar Atestado (não implementado)
+38 - Remover Atendente                  48 - Gerar Receita 
+00 - Sair                               49 - Gerar Atestado 
 
 
             """)
@@ -115,7 +116,7 @@ class MenuView:
 
 
                     
-if __name__ == "__main__":
+# if __name__ == "__main__":
     
-    menuview = MenuView()
-    menuview.menuView()
+#     menuview = MenuView()
+#     menuview.menuView()

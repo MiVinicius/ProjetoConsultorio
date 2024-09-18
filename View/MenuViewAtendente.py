@@ -18,9 +18,9 @@ class MenuViewAtendente():
         self.consulta_controller = ConsultaController(self.banco_dados_controller)
     
     def menuView(self):
-        
+        clear()
         while True:
-            
+            # clear()                  OBSERVAÇÃO!!!!!! ISSO FARÁ COM QUE O PROGRAMA SEJA LIMPO A CADA VEZ QUE VOLTAR PRO MENU!
             print("""
                 -----------------------------------------
                 |Menu 1x    Menu 2x      Menu 3x        | 
