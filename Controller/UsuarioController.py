@@ -13,13 +13,18 @@ class UsuarioController:
         nome = str(input("Digite o nome do usuario: \n"))
         senha = str(input("Digite a senha do usuario: \n"))
         tipo = int(input("Digite o tipo do usuario: ->Funcionario = 1, Medico = 2<- \n"))
-        if BancoDadosController.buscarUsuario(nome, senha, tipo) is None:
-            BancoDadosController.cadastrarUsuario(nome, senha, tipo)
-            print("o usuario foi Cadastrado")
-            input("pressione ENTER para continuar")
-            return True
-        else:
-            print("o usuario não foi Cadastrado")
+        try:
+            if BancoDadosController.buscarUsuario(nome, senha, tipo) is None:
+                BancoDadosController.cadastrarUsuario(nome, senha, tipo)
+                print("o usuario foi Cadastrado")
+                input("pressione ENTER para continuar")
+                return True
+            else:
+                print("o usuario não foi Cadastrado")
+                input("pressione ENTER para continuar")
+                return False
+        except Exception as e:
+            print("o usuario não foi Cadastrado, erro:", e)
             input("pressione ENTER para continuar")
             return False
             

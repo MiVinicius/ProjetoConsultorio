@@ -59,52 +59,61 @@ class MedicoController():
     def modificarMedico(self):
         nomeModificar = str(input("Digite o nome do médico para modificar: \n")).strip()
         cpfModificar = str(input("Digite o CPF para modificar: \n")).strip()
-        cpf_limpo = Medico.validar_cpf(cpfModificar)
-        medico_existe = self.banco_dados_controller.buscarMedico(nomeModificar, cpf_limpo)
-        if medico_existe is None:
-            print("O Médico não existe!")
+        try:
+            cpf_limpo = Medico.validar_cpf(cpfModificar)
+            medico_existe = self.banco_dados_controller.buscarMedico(nomeModificar, cpf_limpo)
+            if medico_existe is None:
+                print("O Médico não existe!")
+                input("Pressione ENTER para continuar")
+                return False
+            else:
+                nomeNovo = str(input("Digite o novo nome do médico: \n")).strip()
+                DataNascNovo = str(input("Digite a nova data de nascimento: \n"))
+                telefoneNovo = str(input("Digite o telefone: \n"))
+                salarioNovo = float(input("Digite o salário: \n"))
+                crmNovo = str(input("Digite o CRM: \n"))
+                try:
+                    self.banco_dados_controller.modificarMedico(medico_existe, nomeNovo, medico_existe.cpf, DataNascNovo, telefoneNovo, salarioNovo, crmNovo)
+                    print(f"O Médico {nomeNovo} foi Atualizado")
+                    input("pressione ENTER para continuar")
+                    return True
+                except Exception as e:
+                    print("O Médico não foi Atualizado, erro", e)
+                    input("pressione ENTER para continuar")
+                    return False
+        except Exception as e:
+            print("Ocorreu um erro ao modificar o medico:", e)
             input("Pressione ENTER para continuar")
             return False
-        else:
-            nomeNovo = str(input("Digite o novo nome do médico: \n")).strip()
-            DataNascNovo = str(input("Digite a nova data de nascimento: \n"))
-            telefoneNovo = str(input("Digite o telefone: \n"))
-            salarioNovo = float(input("Digite o salário: \n"))
-            crmNovo = str(input("Digite o CRM: \n"))
-            try:
-                self.banco_dados_controller.modificarMedico(medico_existe, nomeNovo, medico_existe.cpf, DataNascNovo, telefoneNovo, salarioNovo, crmNovo)
-                print(f"O Médico {nomeNovo} foi Atualizado")
-                input("pressione ENTER para continuar")
-                return True
-            except Exception as e:
-                print("O Médico não foi Atualizado, erro", e)
-                input("pressione ENTER para continuar")
-                return False
             
     def atualizarEndereco(self):
         nomeModificar = input("Digite o nome do Medico para buscar: \n").strip()
         cpfModificar = input("Digite o CPF para buscar: \n").strip()
-        cpf_limpo = Medico.validar_cpf(cpfModificar)
-        medico_existente: Medico = self.banco_dados_controller.buscarMedico(nomeModificar, cpf_limpo)
-        if medico_existente is None:
-            print("O Médico não existe!")
-            input("Pressione ENTER para continuar")
-            return False
-        else:
-            novoEndereco = self.endereco_controller.cadastrarEndereco()
-            try:
-                enderecoAntigo = medico_existente.endereco_id
-                enderecoAtualizar = self.banco_dados_controller.atualizar_endereco(enderecoAntigo, novoEndereco)
-                if enderecoAtualizar:
-                    print("Endereço atualizado com sucesso!")
-                    input("Pressione ENTER para continuar")
-                    return True
-                else:
-                    print("Erro ao atualizar o endereço.")
-                    input("Pressione ENTER para continuar")
-            except Exception as e:
-                print("Ocorreu um erro ao atualizar o endereço:", e)
+        try:
+            cpf_limpo = Medico.validar_cpf(cpfModificar)
+            medico_existente: Medico = self.banco_dados_controller.buscarMedico(nomeModificar, cpf_limpo)
+            if medico_existente is None:
+                print("O Médico não existe!")
                 input("Pressione ENTER para continuar")
+                return False
+            else:
+                novoEndereco = self.endereco_controller.cadastrarEndereco()
+                try:
+                    enderecoAntigo = medico_existente.endereco_id
+                    enderecoAtualizar = self.banco_dados_controller.atualizar_endereco(enderecoAntigo, novoEndereco)
+                    if enderecoAtualizar:
+                        print("Endereço atualizado com sucesso!")
+                        input("Pressione ENTER para continuar")
+                        return True
+                    else:
+                        print("Erro ao atualizar o endereço.")
+                        input("Pressione ENTER para continuar")
+                except Exception as e:
+                    print("Ocorreu um erro ao atualizar o endereço:", e)
+                    input("Pressione ENTER para continuar")
+        except Exception as e:
+            print("Ocorreu um erro ao buscar o medico:", e)
+            input("Pressione ENTER para continuar")
 
     def deletarMedico(self):
         try:

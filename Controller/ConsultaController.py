@@ -19,8 +19,8 @@ class ConsultaController():
             if opcao == "s":
                 nome = input("Digite o nome do cliente para procurar: \n").strip()
                 cpf = input("Digite o CPF do cliente para procurar: \n").strip()
-                cpf_limpo = Cliente.validar_cpf(cpf)
                 try:
+                    cpf_limpo = Cliente.validar_cpf(cpf)
                     cliente_existente = self.banco_dados_controller.buscarCliente(nome, cpf_limpo)
                     if cliente_existente:
                         self.cadastrarConsulta2(cliente_existente)
@@ -68,8 +68,8 @@ class ConsultaController():
     def buscarClienteConsulta(self):  
         nome = input("Digite o nome do cliente para procurar: \n").strip()
         cpf = input("Digite o CPF do cliente para procurar: \n").strip()
-        cpf_limpo = Cliente.validar_cpf(cpf)
         try:
+            cpf_limpo = Cliente.validar_cpf(cpf)
             clienteBuscar = self.banco_dados_controller.buscarCliente(nome, cpf_limpo)
         except Exception as e:
             print("Ocorreu um erro ao buscar o cliente:", e)
