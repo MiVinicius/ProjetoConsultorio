@@ -12,13 +12,13 @@ class AtendenteController():
     def cadastrarAtendente(self):
         try:
             nome = str(input("Digite o nome do Atendente: \n")).strip()
-            cpf = str(input("Digite o CPF: \n")).strip()
+            cpf = str(input("Digite o CPF: 11 dígitos\n")).strip()
             cpf_limpo = Atendente.validar_cpf(cpf)
             Atendente_existe = self.banco_dados_controller.buscarAtendente(nome, cpf_limpo)
             if Atendente_existe is None:
                 print("Cadastrando o Atendente...")            
-                DataNasc = str(input("Digite a Data de Nascimento: \n"))
-                telefone = str(input("Digite o Telefone: \n"))
+                DataNasc = str(input("Digite a Data de Nascimento: (dd/mm/aaaa)\n"))
+                telefone = str(input("Digite o Telefone: (xx) xxxx-xxxx\n"))
                 endereco = self.endereco_controller.cadastrarEndereco()
                 salario = float(input("Digite o Salário: \n"))
                 self.banco_dados_controller.cadastrarAtendente(nome, cpf, DataNasc, telefone, salario, endereco)

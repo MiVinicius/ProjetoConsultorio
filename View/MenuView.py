@@ -102,6 +102,10 @@ class MenuView:
                         self.medico_controller.atualizarEndereco()
                     case 47:
                         self.atendente_controller.atualizarEndereco()
+                    case 48:
+                        self.medico_controller.gerar_receita()
+                    case 49:
+                        self.medico_controller.gerar_atestado()
                     case 00:
                         break
             except ValueError:

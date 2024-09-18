@@ -86,6 +86,9 @@ class BancoDadosController:
     
     def atualizar_endereco(self, enderecoExistente, novoEndereco):
         return self.model.atualizarEndereco(enderecoExistente, novoEndereco)
+    
+    def buscarConsultaAlternativa(self, numero):
+        return self.model.buscarConsultaAlternativa(numero)
 
     def mostrar_consultas(self):
         return self.model.obterTodasConsultas()

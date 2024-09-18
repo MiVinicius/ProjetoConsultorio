@@ -11,13 +11,13 @@ class ClienteController:
     def cadastrarCliente(self):
         try:
             nome = input("Digite o nome do novo Cliente: \n").strip()
-            cpf = input("Digite o CPF do novo cliente: \n").strip()
+            cpf = input("Digite o CPF do novo cliente: 11 dígitos\n").strip()
             cpf_limpo = Cliente.validar_cpf(cpf)
             cliente_existe = self.banco_dados_controller.buscarCliente(nome, cpf_limpo)
             if cliente_existe is None:
                 print("Cadastrando o cliente...")
-                dataNasc = input("Digite a data de nascimento do novo cliente: \n")
-                telefone = input("Digite o telefone do novo cliente: \n")
+                dataNasc = input("Digite a data de nascimento do novo cliente: dd/mm/aaaa\n")
+                telefone = input("Digite o telefone do novo cliente: (xx) xxxx-xxxx \n")
                 endereco = self.endereco_controller.cadastrarEndereco() 
                 self.banco_dados_controller.cadastrarCliente(nome, cpf_limpo, dataNasc, telefone, endereco)
                 print("Cadastro do cliente realizado com sucesso!")

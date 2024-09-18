@@ -7,6 +7,7 @@ from ProjetoConsultorio.Model.ConsultaModel import Consulta
 from ProjetoConsultorio.Model.ClienteModel import Cliente
 from ProjetoConsultorio.Model.UsuarioModel import Usuario
 from ProjetoConsultorio.Model import TabelaModel
+from ProjetoConsultorio.Model.EnderecoModel import Endereco
 
 class BancoDadosModel:
     
@@ -168,6 +169,33 @@ class BancoDadosModel:
                 return Consulta(consult[2], consult[3], consult[4], consult[5], str(consult[1]), consult[6], consult[0])
             return None
     
+    def buscarConsultaAlternativa(self, numero):
+        query = """
+        SELECT 
+            c.id, c.descricao, c.data, c.horario, c.valor, c.medico,
+            cl.nome, cl.cpf, cl.DataNasc, cl.telefone,
+            e.rua, e.numero, e.bairro, e.cidade, e.estado, e.cep,
+            m.cpf, m.nome, m.DataNasc, m.telefone, m.salario, m.crm
+        FROM 
+            consultas c
+        INNER JOIN clientes cl ON c.cliente_id = cl.cpf
+        INNER JOIN enderecos e ON cl.endereco_id = e.id
+        INNER JOIN medicos m ON c.medico = m.crm
+        WHERE c.id = ?
+        """
+        with sqlite3.connect(self.db_path) as connection:
+            cursor = connection.cursor()
+            cursor.execute(query, (numero,))
+            result = cursor.fetchone()
+            if result:
+                consulta_id, descricao, data, horario, valor, cMedico, nome, cpf, DataNasc, telefone, rua, numero, bairro, cidade, estado, cep, medico_cpf, medico_nome, medico_DataNasc, medico_telefone, medico_salario, medico_crm = result
+                endereco = Endereco(estado, cidade, bairro, rua, numero, cep)
+                cliente = Cliente(nome, str(cpf), DataNasc, telefone, None)
+                medico = Medico(medico_nome, str(medico_cpf), medico_DataNasc, medico_telefone, None, medico_salario, medico_crm)
+                consulta = Consulta(descricao, data, horario, valor, cpf, cMedico, consulta_id)
+                return consulta, endereco, cliente, medico
+            return None
+
     def buscarListaConsulta(self, cliente_id):
         query = '''
         SELECT * FROM consultas WHERE cliente_id = ?
@@ -516,7 +544,7 @@ class BancoDadosModel:
 if __name__ == "ProjetoConsultorio.Model.BancoDadosModel":  # A maior gambiarra da minha vida! kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
     tabela = TabelaModel.main()                             # não tive ideia melhor na hora kkkkkkkkkkkkk
     banco = BancoDadosModel('Consultorio.db')               
-    user = Usuario("administrador", "administrador", 0, True)
+    user = Usuario("admin", "admin", 0, True)
     userBuscar = banco.buscarUsuario(user)
     if userBuscar is None:
         banco.cadastrarUsuario(user)

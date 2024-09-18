@@ -11,16 +11,16 @@ class MedicoController():
     def cadastrarMedico(self):
         try:
             nome = str(input("Digite o nome do Médico: \n")).strip()
-            cpf = str(input("Digite o CPF: \n")).strip()
+            cpf = str(input("Digite o CPF: 11 digitos \n")).strip()
             cpf_limpo = Medico.validar_cpf(cpf)
             medico_existe = self.banco_dados_controller.buscarMedico(nome, cpf_limpo)
             if medico_existe is None:
                 print("Cadastrando o medico...")
-                DataNasc = str(input("Digite a data de nascimento: \n"))
-                telefone = str(input("Digite o telefone: \n"))
+                DataNasc = str(input("Digite a data de nascimento: dd/mm/aaaa \n"))
+                telefone = str(input("Digite o telefone: (XX) XXXX-XXXX\n"))
                 endereco = self.endereco_controller.cadastrarEndereco()
                 salario = float(input("Digite o salário: \n"))
-                crm = str(input("Digite o CRM: \n"))
+                crm = str(input("Digite o CRM: Sem espaços\n"))
                 self.banco_dados_controller.cadastrarMedico(nome, cpf_limpo, DataNasc, telefone, salario, crm, endereco)
                 print("cadastro do médico sucedido!")
                 input("pressione ENTER para continuar")
@@ -115,5 +115,85 @@ class MedicoController():
             return True
         except Exception as e:
             print("o medico não foi excluído, erro", e)
+            input("pressione ENTER para continuar")
+            return False
+        
+    def gerar_atestado(self):
+        numero = int(input("Digite o número da consulta para procurar: \n"))
+        try:
+            consulta, endereco, cliente, medico = self.banco_dados_controller.buscarConsultaAlternativa(numero)
+            if consulta is not None:
+                periodo = input("digite o período do atestado: ex: 3 meses ou 2 semanas ou 2 dias \n")
+                atestado_str = f"""
+                Atestado
+
+                Atesto para os devidos fins, que o(a) Sr(a).
+                {cliente.nome}
+                Portador do CPF: {cliente.cpf}
+                Data de Nascimento: {cliente.DataNasc}
+                Telefone: {cliente.telefone}
+                Endereço:
+                Estado: {endereco.estado} Cidade: {endereco.cidade}
+                Bairro: {endereco.bairro} Rua: {endereco.rua}
+                Número: {endereco.numero} CEP: {endereco.cep}
+                Esteve sob meus cuidados profissionais:
+                Medico: {medico.nome} CRM: {medico.crm}
+                No periodo de: {consulta.data}
+                Horário: {consulta.horario}
+                Necessitando de: {periodo} de convalescença.
+                """
+                print(atestado_str)
+                input("pressione ENTER para continuar")
+                return True
+            else:
+                print("Consulta inexistente")
+                input("pressione ENTER para continuar")
+            return False
+        except Exception as e:
+            print("Ocorreu um erro ao gerar o atestado:", e)
+            input("pressione ENTER para continuar")
+            return False
+    
+    def gerar_receita(self):
+        numero = int(input("Digite o número da consulta para procurar: \n"))
+        try:
+            consulta, endereco, cliente, medico = self.banco_dados_controller.buscarConsultaAlternativa(numero)
+            if consulta is not None:
+                print("Gerando receita")
+                medicamento = input("digite o nome do medicamento: \n")
+                uso = input("digite o uso do medicamento: oral ou intravenosa \n")
+                dosagem = input("digite a dosagem do medicamento: \n")
+                frequencia = input("digite a frequência do medicamento: \n")
+                duracao = input("digite a duração do uso do medicamento: \n")
+                receita_str = f"""
+                Receituário
+
+                Identificação do Emitente
+                Nome Completo: {medico.nome}
+                CRM: {cliente.cpf}
+                Data de Nascimento: {cliente.DataNasc}
+                Telefone: {cliente.telefone}
+                
+                Paciente:
+                Nome Completo: {cliente.nome}
+                CPF: {cliente.cpf}
+                Data de Nascimento: {cliente.DataNasc}
+                Endereço:
+                Estado: {endereco.estado} Cidade: {endereco.cidade}
+                Bairro: {endereco.bairro} Rua: {endereco.rua}
+                Número: {endereco.numero} CEP: {endereco.cep}
+                
+                Prescrição:
+                Medicamentos: {medicamento} - uso: {uso} - dosagem: {dosagem} - frequência: {frequencia} - duração: {duracao}
+                """
+                print(receita_str)
+                input("pressione ENTER para continuar")
+                return True
+            else:
+                print("consulta inexistente")
+                input("pressione ENTER para continuar")
+                return None
+        except Exception as e:
+            print("Ocorreu um erro ao gerar a receita:", e)
             input("pressione ENTER para continuar")
             return False
