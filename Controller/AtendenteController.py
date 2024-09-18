@@ -85,17 +85,26 @@ class AtendenteController():
         nomeModificar = input("Digite o nome do Atendente para buscar: \n").strip()
         cpfModificar = input("Digite o CPF para buscar: \n").strip()
         cpf_limpo = Atendente.validar_cpf(cpfModificar)
-        atendente_existente = self.banco_dados_controller.buscarAtendente(nomeModificar, cpf_limpo)
+        atendente_existente: Atendente = self.banco_dados_controller.buscarAtendente(nomeModificar, cpf_limpo)
         if atendente_existente is None:
             print("O Atendente não existe!")
             input("Pressione ENTER para continuar")
             return False
         else:
             novoEndereco = self.endereco_controller.cadastrarEndereco()
-            self.banco_dados_controller.atualizar_endereco(atendente_existente, novoEndereco)
-            print("Endereço atualizado com sucesso!")
-            input("Pressione ENTER para continuar")
-            return True
+            try:
+                enderecoAntigo = atendente_existente.endereco_id
+                enderecoAtualizar = self.banco_dados_controller.atualizar_endereco(enderecoAntigo, novoEndereco)
+                if enderecoAtualizar:
+                    print("Endereço atualizado com sucesso!")
+                    input("Pressione ENTER para continuar")
+                    return True
+                else:
+                    print("Erro ao atualizar o endereço.")
+                    input("Pressione ENTER para continuar")
+            except Exception as e:
+                print("Ocorreu um erro ao atualizar o endereço:", e)
+                input("Pressione ENTER para continuar")
     
     
     def deletarAtendente(self):

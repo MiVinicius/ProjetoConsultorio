@@ -125,6 +125,7 @@ class BancoDadosModel:
                         f"Data de Nascimento = {cliente_data[2]}, Telefone = {cliente_data[3]}, "
                         f"Endereço = {cliente_data[4]}"
                     )
+                    print()
                     print(cliente_str)
                     endereco_id = cliente_data[4]
                     if endereco_id:
@@ -136,6 +137,7 @@ class BancoDadosModel:
                                 f"Bairro: {endereco[3]}, Rua: {endereco[4]} - Número {endereco[5]}, CEP: {endereco[6]}"
                             )
                             print(endereco_str)
+                            print()
                         else:
                             print("Endereço não encontrado.")
                     else:
@@ -145,7 +147,7 @@ class BancoDadosModel:
                         cpf=cliente_data[0],
                         DataNasc=cliente_data[2],
                         telefone=cliente_data[3],
-                        endereco=endereco_id
+                        endereco_id=endereco_id
                     )
                 else:
                     print("Cliente não encontrado.")
@@ -163,7 +165,7 @@ class BancoDadosModel:
             cursor.execute(query, (numero,))
             consult = cursor.fetchone()
             if consult:
-                return Consulta(consult[2], consult[3], consult[4], consult[5], consult[1], consult[6], consult[0])
+                return Consulta(consult[2], consult[3], consult[4], consult[5], str(consult[1]), consult[6], consult[0])
             return None
     
     def buscarListaConsulta(self, cliente_id):
@@ -177,7 +179,7 @@ class BancoDadosModel:
             if consultas:
                 lista_consultas = []
                 for consult in consultas:
-                    consulta = Consulta(consult[2], consult[3], consult[4], consult[5], consult[1], consult[6], consult[0])
+                    consulta = Consulta(consult[2], consult[3], consult[4], consult[5], str(consult[1]), consult[6], consult[0])
                     lista_consultas.append(consulta)
                 return lista_consultas
             return []
@@ -197,6 +199,7 @@ class BancoDadosModel:
                         f"Data de Nascimento = {atendente_data[2]}, Telefone = {atendente_data[3]}, "
                         f"Endereço = {atendente_data[4]}, Salário = {atendente_data[5]}"
                     )
+                    print()
                     print(atendente_str)
                     endereco_id = atendente_data[4]
                     if endereco_id:
@@ -209,6 +212,7 @@ class BancoDadosModel:
                                 f"Bairro: {endereco[3]}, Rua: {endereco[4]} - Número {endereco[5]}, CEP: {endereco[6]}"
                             )
                             print(endereco_str)
+                            print()
                         else:
                             print("Endereço não encontrado.")
                     else:
@@ -218,7 +222,7 @@ class BancoDadosModel:
                         cpf=atendente_data[0],
                         DataNasc=atendente_data[2],
                         telefone=atendente_data[3],
-                        endereco=endereco_id,
+                        endereco_id=endereco_id,
                         salario=atendente_data[5]
                     )
                 else:
@@ -243,6 +247,7 @@ class BancoDadosModel:
                         f"Data de Nascimento = {medico_data[2]}, Telefone = {medico_data[3]}, "
                         f"Endereço = {medico_data[4]}, Salário = {medico_data[5]}, CRM = {medico_data[6]}"
                     )
+                    print()
                     print(medico_str)
                     endereco_id = medico_data[4]
                     endereco_query = 'SELECT * FROM enderecos WHERE id = ?'
@@ -254,6 +259,7 @@ class BancoDadosModel:
                             f"Bairro: {endereco[3]}, Rua: {endereco[4]} - Número {endereco[5]}, CEP: {endereco[6]}"
                         )
                         print(endereco_str)
+                        print()
                     else:
                         print("Endereço não encontrado.")
                     return Medico(
@@ -261,7 +267,7 @@ class BancoDadosModel:
                         cpf=medico_data[0],
                         DataNasc=medico_data[2],
                         telefone=medico_data[3],
-                        endereco=endereco_id,
+                        endereco_id=endereco_id,
                         salario=medico_data[5],
                         crm=medico_data[6]
                     )
@@ -294,7 +300,7 @@ class BancoDadosModel:
             '''
             with sqlite3.connect(self.db_path) as connection:
                 cursor = connection.cursor()
-                cursor.execute(query, (endereco.estado, endereco.cidade, endereco.bairro, endereco.rua, endereco.numero, endereco.cep, ID.endereco_id))
+                cursor.execute(query, (endereco.estado, endereco.cidade, endereco.bairro, endereco.rua, endereco.numero, endereco.cep, ID))
                 connection.commit()
             return True
         except sqlite3.OperationalError:
@@ -485,7 +491,8 @@ class BancoDadosModel:
             query = 'SELECT * FROM consultas'
             cursor.execute(query)
             for row in cursor.fetchall():  
-                consulta = Consulta(row[2], row[3], row[4], row[5], row[1], row[6], row[0])
+                consulta = Consulta(row[2], row[3], row[4], row[5], str(row[1]), row[6], row[0])
+                print()
                 print(consulta)
             input("Pressione ENTER para continuar...")
             return

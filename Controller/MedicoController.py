@@ -73,7 +73,7 @@ class MedicoController():
             crmNovo = str(input("Digite o CRM: \n"))
             try:
                 self.banco_dados_controller.modificarMedico(medico_existe, nomeNovo, medico_existe.cpf, DataNascNovo, telefoneNovo, salarioNovo, crmNovo)
-                print("O Médico foi Atualizado")
+                print(f"O Médico {medico_existe.nome} foi Atualizado")
                 input("pressione ENTER para continuar")
                 return True
             except Exception as e:
@@ -85,17 +85,26 @@ class MedicoController():
         nomeModificar = input("Digite o nome do Medico para buscar: \n").strip()
         cpfModificar = input("Digite o CPF para buscar: \n").strip()
         cpf_limpo = Medico.validar_cpf(cpfModificar)
-        medico_existente = self.banco_dados_controller.buscarMedico(nomeModificar, cpf_limpo)
+        medico_existente: Medico = self.banco_dados_controller.buscarMedico(nomeModificar, cpf_limpo)
         if medico_existente is None:
             print("O Médico não existe!")
             input("Pressione ENTER para continuar")
             return False
         else:
             novoEndereco = self.endereco_controller.cadastrarEndereco()
-            self.banco_dados_controller.atualizar_endereco(medico_existente, novoEndereco)
-            print("Endereço atualizado com sucesso!")
-            input("Pressione ENTER para continuar")
-            return True
+            try:
+                enderecoAntigo = medico_existente.endereco_id
+                enderecoAtualizar = self.banco_dados_controller.atualizar_endereco(enderecoAntigo, novoEndereco)
+                if enderecoAtualizar:
+                    print("Endereço atualizado com sucesso!")
+                    input("Pressione ENTER para continuar")
+                    return True
+                else:
+                    print("Erro ao atualizar o endereço.")
+                    input("Pressione ENTER para continuar")
+            except Exception as e:
+                print("Ocorreu um erro ao atualizar o endereço:", e)
+                input("Pressione ENTER para continuar")
 
     def deletarMedico(self):
         try:

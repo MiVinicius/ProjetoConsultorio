@@ -2,20 +2,27 @@ import re
 import sys
 sys.path.append('.')
 from ProjetoConsultorio.Model.FuncionarioModelAbstract import Funcionario
+from typing import Optional
 
 class Medico(Funcionario):
     
-    def __init__(self, nome, cpf, DataNasc, telefone, endereco, salario, crm):
-        super().__init__(nome, cpf, DataNasc, telefone, endereco, salario)
-        self._crm = crm
+    def __init__(self, nome: str, cpf: str, DataNasc: str, telefone: str, endereco_id: Optional[int], salario: float, crm: str):
+        super().__init__(nome, cpf, DataNasc, telefone, endereco_id, salario)
+        self._crm = self._validar_crm(crm)
 
+    def _validar_crm(self, crm: str) -> str:
+        if not crm:
+            raise ValueError("CRM não pode ser vazio.")
+        crm_formatado = crm.strip()
+        if not re.match(r'^[A-Za-z0-9]+$', crm_formatado):
+            raise ValueError("CRM deve conter apenas letras e números.")
+        if len(crm_formatado) < 5 or len(crm_formatado) > 20:
+            raise ValueError("CRM deve ter entre 5 e 20 caracteres.")
+        return crm_formatado
+    
     @property
     def crm(self) -> str:
         return self._crm
-    
-    @crm.setter
-    def crm(self, crm: str) -> str:
-        self._crm = crm
         
     def mostrar_informacoes(self):
         print(f"Nome: {self.nome}, Cpf: {self.cpf}, Data de Nascimento: {self.DataNasc}, Telefone: {self.telefone}, "

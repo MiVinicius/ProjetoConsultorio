@@ -24,8 +24,8 @@ class Usuario:
 
     @senha.setter
     def senha(self, senha: str):
-        if not isinstance(senha, str) or len(senha) < 6:
-            raise ValueError("A senha deve ter pelo menos 6 caracteres.")
+        if not isinstance(senha, str) or len(senha) < 5:
+            raise ValueError("A senha deve ter pelo menos 5 caracteres.")
         self.__senha = senha
 
     @property

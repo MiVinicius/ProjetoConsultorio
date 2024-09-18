@@ -23,7 +23,7 @@ class LoginView:
             print("-----------" * 6)
             print("Deseja logar ou cadastrar?")
             print("-----------" * 6)
-            print("1 - Logar  --  2 - Cadastrar")
+            print("1 - Logar  --  2 - Cadastrar -- 3 - Sair")
             print()
             opcao = input("Opção: ").strip()
             print("-----------" * 6)
@@ -32,6 +32,8 @@ class LoginView:
                 break
             elif opcao == "2":
                 self.cadastro()
+                break
+            elif opcao == "3":
                 break
             else:
                 print('Opção inválida')

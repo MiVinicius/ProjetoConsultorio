@@ -2,11 +2,12 @@ import re
 import sys
 sys.path.append('.')
 from ProjetoConsultorio.Model.FuncionarioModelAbstract import Funcionario
+from typing import Optional
 
 class Atendente(Funcionario):
     
-    def __init__(self, nome, cpf, DataNasc, telefone, endereco, salario):
-        super().__init__(nome, cpf, DataNasc, telefone, endereco, salario)
+    def __init__(self,nome: str, cpf: str, DataNasc: str, telefone: str, endereco_id: Optional[int], salario: float):
+        super().__init__(nome, cpf, DataNasc, telefone, endereco_id, salario)
         
     def mostrar_informacoes(self):
         print(f"Nome: {self.nome}, Cpf: {self.cpf}, Data de Nascimento: {self.DataNasc}, Telefone: {self.telefone}, "

@@ -28,10 +28,10 @@ class MenuViewAtendente():
                 ----------------------------------------- 
 
 11 - Cadastrar Cliente			        21 - Agendar consulta
-12 - Buscar Cliente                     22 - Verificar histórico de consultas do cliente
-13 - Modificar dados do cliente         23 - Modificar consulta (precisa do numero da consulta)
+12 - Buscar Clientes			        22 - Verificar histórico de consultas do cliente
+13 - Modificar dados do cliente                 23 - Modificar consulta (precisa do numero da consulta)
 14 - Remover cliente 			        24 - Cancelar consulta
-15 - Alterar endereço do cliente        25 - Buscar consulta por Número
+15 - Alterar endereço do cliente                25 - Buscar consulta por Número
 
 31 - Todas as Consultas agendadas
 32 - Mostrar todos os Médicos

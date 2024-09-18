@@ -16,12 +16,3 @@ class EnderecoController:
                             str(input("Digite o CEP: \n"))
                             )
         return endereco
-    
-    def buscarEndereco(self,pessoa):
-        return pessoa._getEndereco()
-    
-    def atualizarEndereco(self, endereco, pessoa):
-        return pessoa._setEndereco(endereco)
-    
-    def deletarEndereco(self, endereco, pessoa):
-        return pessoa._setEndereco(endereco)

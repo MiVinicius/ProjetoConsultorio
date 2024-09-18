@@ -2,10 +2,12 @@ import re
 import sys
 sys.path.append('.')
 from ProjetoConsultorio.Model.PessoaModelAbstract import Pessoa
+from typing import Optional
+
 class Cliente(Pessoa):
     
-    def __init__(self, nome, cpf, DataNasc, telefone, endereco):
-        super().__init__(nome, cpf, DataNasc, telefone, endereco)
+    def __init__(self, nome: str, cpf: str, DataNasc: str, telefone: str, endereco_id: Optional[int]):
+        super().__init__(nome, cpf, DataNasc, telefone, endereco_id)
         
     @staticmethod
     def validar_cpf(cpf: str) -> str:

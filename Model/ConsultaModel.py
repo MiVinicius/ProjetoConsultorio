@@ -68,7 +68,7 @@ class Consulta:
         return valor
 
     def __validar_cliente(self, nome):
-        if not nome or not isinstance(nome, int):
+        if not nome or not isinstance(nome, str):
             raise _InvalidDataError("CPF de cliente não pode ser vazio.")
         return nome
     
