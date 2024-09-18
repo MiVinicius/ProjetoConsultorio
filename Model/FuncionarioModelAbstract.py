@@ -19,6 +19,10 @@ class Funcionario(Pessoa, ABC):
     @property
     def salario(self) -> float:
         return self._salario
+    
+    @salario.setter
+    def salario(self, salario: float) -> None:
+        self._salario = self._validar_salario(salario)
 
     @abstractmethod
     def mostrar_informacoes(self):

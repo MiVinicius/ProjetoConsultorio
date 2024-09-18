@@ -23,6 +23,10 @@ class Medico(Funcionario):
     @property
     def crm(self) -> str:
         return self._crm
+    
+    @crm.setter
+    def crm(self, crm: str):
+        self._crm = self._validar_crm(crm)
         
     def mostrar_informacoes(self):
         print(f"Nome: {self.nome}, Cpf: {self.cpf}, Data de Nascimento: {self.DataNasc}, Telefone: {self.telefone}, "

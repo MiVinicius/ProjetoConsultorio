@@ -42,6 +42,18 @@ class Pessoa(ABC):
     def endereco_id(self) -> Optional[int]:
         return self._endereco_id
     
+    @nome.setter
+    def nome(self, nome: str):
+        self._nome = self._validar_nome(nome)
+
+    @cpf.setter
+    def cpf(self, cpf: str):
+        self._cpf = self._validar_cpf(cpf)
+
+    @DataNasc.setter
+    def DataNasc(self, DataNasc: str):
+        self._DataNasc = self._validar_data_nasc(DataNasc)
+    
     @endereco_id.setter   
     def endereco_id(self, new_endereco_id: Optional[int]):
         self._endereco_id = self._validar_endereco_id(new_endereco_id)

@@ -44,6 +44,34 @@ class Consulta:
     @property
     def medico(self):
         return self.__medico
+    
+    @descricao.setter
+    def descricao(self, descricao):
+        self.__descricao = self.__validar_descricao(descricao)
+
+    @data.setter
+    def data(self, data):
+        self.__data = self.__validar_data(data)
+
+    @horario.setter
+    def horario(self, horario):
+        self.__horario = self.__validar_horario(horario)
+
+    @valor.setter
+    def valor(self, valor):
+        self.__valor = self.__validar_valor(valor)
+
+    @cliente.setter
+    def cliente(self, cliente):
+        self.__cliente = self.__validar_cliente(cliente)
+
+    @numero.setter
+    def numero(self, numero):
+        self.__numero = numero
+
+    @medico.setter
+    def medico(self, medico):
+        self.__medico = self.__validar_medico(medico)
 
     def __validar_descricao(self, descricao):
         if not descricao or not isinstance(descricao, str):
@@ -77,7 +105,7 @@ class Consulta:
             raise _InvalidDataError("CRM de médico não pode ser vazio.")
         return nome
 
-    def __eq__(self, other):  # Resquício de uma era perdida... 
+    def __eq__(self, other):   
         if isinstance(other, Consulta):
             return self.numero == other.numero
         return False

@@ -16,7 +16,9 @@ class Endereco():
         return self.__estado
     
     @estado.setter
-    def estado(self, estado):
+    def estado(self, estado: str):
+        if not estado:
+            raise ValueError("O estado deve ser preenchido")
         self.__estado = estado
     
     @property
@@ -24,7 +26,9 @@ class Endereco():
         return self.__cidade
     
     @cidade.setter
-    def cidade(self, cidade):
+    def cidade(self, cidade: str):
+        if not cidade:
+            raise ValueError("A cidade deve ser preenchida")
         self.__cidade = cidade
     
     @property
@@ -32,7 +36,9 @@ class Endereco():
         return self.__bairro
     
     @bairro.setter
-    def bairro(self, bairro):
+    def bairro(self, bairro: str):
+        if not bairro:
+            raise ValueError("O bairro deve ser preenchido")
         self.__bairro = bairro
     
     @property
@@ -40,7 +46,9 @@ class Endereco():
         return self.__rua
     
     @rua.setter
-    def rua(self, rua):
+    def rua(self, rua: str):
+        if not rua:
+            raise ValueError("A rua deve ser preenchida")
         self.__rua = rua
     
     @property
@@ -49,6 +57,8 @@ class Endereco():
     
     @numero.setter
     def numero(self, numero):
+        if not numero:
+            raise ValueError("O numero deve ser preenchido")
         self.__numero = numero
     
     @property
@@ -56,7 +66,9 @@ class Endereco():
         return self.__cep
     
     @cep.setter
-    def cep(self, cep):
+    def cep(self, cep: str):
+        if not cep:
+            raise ValueError("O CEP deve ser preenchido")
         self.__cep = cep
         
     @property
@@ -65,6 +77,8 @@ class Endereco():
     
     @id.setter
     def id(self, id):
+        if not id:
+            raise ValueError("O ID deve ser preenchido")
         self.__id = id
         
     def __repr__(self) -> str:
